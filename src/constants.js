@@ -1,0 +1,1 @@
+export const TASKS_MANAGEMENT_MAIN_MENU_CONTRIBUTION_KEY = 'tasksManagement.MainMenu';
