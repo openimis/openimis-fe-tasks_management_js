@@ -20,10 +20,7 @@ const useStyles = makeStyles((theme) => ({
 function BenefitPlanTasksPage({ rights }) {
   const classes = useStyles();
   const modulesManager = useModulesManager();
-  const { formatMessage } = useTranslations(
-    'tasksManagement',
-    modulesManager,
-  );
+  const { formatMessage } = useTranslations('tasksManagement', modulesManager);
 
   return (
     <Box className={classes.page}>
