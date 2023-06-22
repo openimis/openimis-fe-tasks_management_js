@@ -3,6 +3,7 @@ export const TASKS_MANAGEMENT_MAIN_MENU_CONTRIBUTION_KEY = 'tasksManagement.Main
 export const DEFAULT_DEBOUNCE_TIME = 500;
 export const DEFAULT_PAGE_SIZE = 10;
 export const EMPTY_STRING = '';
+export const HYPHEN = '-';
 export const ROWS_PER_PAGE_OPTIONS = [10, 20, 50, 100];
 export const CONTAINS_LOOKUP = 'Icontains';
 

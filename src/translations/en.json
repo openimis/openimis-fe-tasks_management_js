@@ -17,5 +17,7 @@
   "tasksManagement.benefitPlanTask.status.RECEIVED": "RECEIVED",
   "tasksManagement.benefitPlanTask.status.ACCEPTED": "ACCEPTED",
   "tasksManagement.benefitPlanTask.status.COMPLETED": "COMPLETED",
-  "tasksManagement.benefitPlanTask.status.FAILED": "FAILED"
+  "tasksManagement.benefitPlanTask.status.FAILED": "FAILED",
+  "tasksManagement.TaskPreviewTable.rowsPerPage": "Rows per page",
+  "tasksManagement.TaskPreviewTable.ofPages": "{from} - {to} of {count}"
 }

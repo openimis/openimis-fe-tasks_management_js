@@ -16,7 +16,7 @@ function TaskTriageDetailsPage() {
   const classes = useStyles();
   const modulesManager = useModulesManager();
   const history = useHistory();
-  const { formatMessage } = useTranslations('tasksManagement', modulesManager);
+  const { formatMessage, formatMessageWithValues } = useTranslations('tasksManagement', modulesManager);
   const [editedTask, setEditedTask] = useState({});
   const back = () => history.goBack();
 
@@ -36,6 +36,7 @@ function TaskTriageDetailsPage() {
         // save={handleSave}
         HeadPanel={TaskHeadPanel}
         formatMessage={formatMessage}
+        formatMessageWithValues={formatMessageWithValues}
         Panels={[TaskPreviewPanel]}
         rights={rights}
         // actions={actions}
