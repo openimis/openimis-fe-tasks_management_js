@@ -1,20 +1,19 @@
-/* eslint-disable import/no-extraneous-dependencies */
+// Disable due to core architecture
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/jsx-props-no-spreading */
-/* Rules disabled due to core architecture */
 
 import React from 'react';
 import { useSelector } from 'react-redux';
-// import { injectIntl } from 'react-intl';
+import { injectIntl } from 'react-intl';
 import AssignmentIcon from '@material-ui/icons/Assignment';
-import { MainMenuContribution, withModulesManager } from '@openimis/fe-core';
+import { formatMessage, MainMenuContribution, withModulesManager } from '@openimis/fe-core';
 import { TASKS_MANAGEMENT_MAIN_MENU_CONTRIBUTION_KEY } from '../constants';
 
 function TasksMainMenu(props) {
   const rights = useSelector((store) => store.core?.user?.i_user?.rights ?? []);
   const entries = [
     {
-      text: 'TasksWithoutTranslation',
+      text: formatMessage(props.intl, 'tasksManagement', 'entries.tasksManagementView'),
       icon: <AssignmentIcon />,
       route: '/tasks',
     },
@@ -28,10 +27,10 @@ function TasksMainMenu(props) {
   return (
     <MainMenuContribution
       {...props}
-      header="TasksWithoutTranslation"
+      header={formatMessage(props.intl, 'tasksManagement', 'tasksMainMenu')}
       entries={entries}
     />
   );
 }
 
-export default withModulesManager(TasksMainMenu);
+export default withModulesManager(injectIntl(TasksMainMenu));

@@ -1,3 +1,14 @@
 {
-  "tasksManagement.tasksMainMenu": "Tasks Management"
+  "tasksManagement.tasksMainMenu": "Tasks Management",
+  "tasksManagement.defaultValue.any": "Any",
+  "tasksManagement.entries.tasksManagementView": "Tasks",
+  "tasksManagement.benefitPlan.tasks.title": "Benefit Plan Update Tasks",
+  "tasksManagement.benefitPlan.tasks.searcherResultsTitle": "{tasksTotalCount} Tasks Found",
+  "tasksManagement.benefitPlan.tooltip.viewDetails": "View details",
+  "tasksManagement.benefitPlanTask.source": "Source",
+  "tasksManagement.benefitPlanTask.type": "Type",
+  "tasksManagement.benefitPlanTask.entity": "Entity",
+  "tasksManagement.benefitPlanTask.assignee": "Assignee",
+  "tasksManagement.benefitPlanTask.businessStatus": "Business Status",
+  "tasksManagement.benefitPlanTask.status": "Status"
 }
