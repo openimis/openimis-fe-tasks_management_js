@@ -10,6 +10,7 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import TaskPreviewCell from './TaskPreviewCell';
+import TASK_PREVIEW_COLUMNS from '../constants';
 
 const useStyles = makeStyles((theme) => ({
   table: theme.table,
@@ -51,8 +52,6 @@ const useStyles = makeStyles((theme) => ({
 function TaskPreviewTable({ formatMessage, previewItems }) {
   const classes = useStyles();
 
-  const TASK_COLUMNS = ['source', 'type', 'entity', 'assignee', 'businessStatus', 'status'];
-
   const itemFormatters = () => {
     const formatters = [
       (item) => item.source,
@@ -72,7 +71,9 @@ function TaskPreviewTable({ formatMessage, previewItems }) {
       <Table size="small" className={classes.table}>
         <TableHead>
           <TableRow>
-            {TASK_COLUMNS.map((column) => (<TableCell>{formatMessage(`benefitPlanTask.${column}`)}</TableCell>))}
+            {TASK_PREVIEW_COLUMNS.map((column) => (
+              <TableCell>{formatMessage(`benefitPlanTask.${column}`)}</TableCell>
+            ))}
           </TableRow>
         </TableHead>
         <TableBody>

@@ -6,9 +6,9 @@ function TaskPreviewCell({ formatterIndex, item, formatter }) {
     if (formatter(item.historic, formatterIndex) === formatter(item, formatterIndex)) {
       return HYPHEN;
     }
-
     return formatter(item.historic, formatterIndex);
   };
+
   return (
     <>
       <p>

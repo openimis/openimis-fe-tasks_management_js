@@ -4,7 +4,6 @@ import { makeStyles } from '@material-ui/styles';
 import TaskPreview from './TaskPreviewTable';
 
 const useStyles = makeStyles((theme) => ({
-  page: theme.page,
   paper: theme.paper.paper,
   title: theme.paper.title,
 }));
@@ -49,7 +48,7 @@ const DUMMY_PREVIEW_ITEMS = [
   },
 ];
 
-function TaskPreviewPanel({ rights, formatMessage, formatMessageWithValues }) {
+function TaskPreviewPanel({ rights, formatMessage }) {
   const classes = useStyles();
 
   return (
@@ -57,14 +56,11 @@ function TaskPreviewPanel({ rights, formatMessage, formatMessageWithValues }) {
       <Typography className={classes.title}>
         {formatMessage('benefitPlanTask.detailsPage.triage.preview')}
       </Typography>
-      <div className={classes.page}>
-        <TaskPreview
-          rights={rights}
-          formatMessageWithValues={formatMessageWithValues}
-          formatMessage={formatMessage}
-          previewItems={DUMMY_PREVIEW_ITEMS}
-        />
-      </div>
+      <TaskPreview
+        rights={rights}
+        formatMessage={formatMessage}
+        previewItems={DUMMY_PREVIEW_ITEMS}
+      />
     </Paper>
   );
 }
