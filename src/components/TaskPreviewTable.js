@@ -10,7 +10,7 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import TaskPreviewCell from './TaskPreviewCell';
-import TASK_PREVIEW_COLUMNS from '../constants';
+import { TASK_PREVIEW_COLUMNS } from '../constants';
 
 const useStyles = makeStyles((theme) => ({
   table: theme.table,
