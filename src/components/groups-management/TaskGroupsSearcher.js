@@ -21,33 +21,7 @@ import {
   TASKS_MANAGEMENT_ROUTE_GROUPS_GROUP,
 } from '../../constants';
 import TaskGroupsFilter from './TaskGroupsFilter';
-// import { deleteBenefitPlan, fetchBenefitPlans } from '../actions';
-// import BenefitPlanFilter from './BenefitPlanFilter';
-
-const DUMMY_CONTENT = {
-  groups: [
-    {
-      id: 1,
-      code: 'C-1',
-      description: 'Example of description',
-      numberOfMembers: 1,
-    },
-    {
-      id: 2,
-      code: 'C-2',
-      description: 'Example of description',
-      numberOfMembers: 2,
-    },
-  ],
-  taskGroupsPageInfo: {
-    totalCount: 2,
-    hasNextPage: false,
-    hasPreviousPage: false,
-    startCursor: 'YXJyYXljb25uZWN0aW9uOjA=',
-    endCursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
-  },
-  taskGroupsTotalCount: 2,
-};
+import { fetchTaskGroups, deleteTaskGroup } from '../../actions';
 
 function TaskGroupsSearcher({
   rights,
@@ -57,13 +31,13 @@ function TaskGroupsSearcher({
   journalize,
   submittingMutation,
   mutation,
-  // fetchBenefitPlans,
-  deleteBenefitPlan,
-  // fetchingBenefitPlans,
-  // errorBenefitPlans,
-  // benefitPlans,
-  // benefitPlansPageInfo,
-  groupTasksTotalCount,
+  deleteTaskGroup,
+  fetchTaskGroups,
+  fetchingTaskGroups,
+  errorTaskGroups,
+  taskGroups,
+  taskGroupsPageInfo,
+  taskGroupsTotalCount,
 }) {
   const history = useHistory();
   const modulesManager = useModulesManager();
@@ -73,23 +47,21 @@ function TaskGroupsSearcher({
   const [deletedTaskGroupsUuids, setDeletedTaskGroupsUuids] = useState([]);
   const prevSubmittingMutationRef = useRef();
 
-  const openDeleteBenefitPlanConfirmDialog = () => coreConfirm(
-    formatMessageWithValues('benefitPlan.delete.confirm.title', {
+  const openDeleteTaskGroupConfirmDialog = () => coreConfirm(
+    formatMessageWithValues('taskGroup.delete.confirm.title', {
       code: taskGroupToDelete.code,
-      name: taskGroupToDelete.name,
     }),
-    formatMessage('benefitPlan.delete.confirm.message'),
+    formatMessage('taskGroup.delete.confirm.message'),
   );
 
-  useEffect(() => taskGroupToDelete && openDeleteBenefitPlanConfirmDialog(), [taskGroupToDelete]);
+  useEffect(() => taskGroupToDelete && openDeleteTaskGroupConfirmDialog(), [taskGroupToDelete]);
 
   useEffect(() => {
     if (taskGroupToDelete && confirmed) {
-      deleteBenefitPlan(
+      deleteTaskGroup(
         taskGroupToDelete,
-        formatMessageWithValues('benefitPlan.delete.mutationLabel', {
+        formatMessageWithValues('taskGroup.delete.mutationLabel', {
           code: taskGroupToDelete.code,
-          name: taskGroupToDelete.name,
         }),
       );
       setDeletedTaskGroupsUuids([...deletedTaskGroupsUuids, taskGroupToDelete.id]);
@@ -110,12 +82,12 @@ function TaskGroupsSearcher({
     prevSubmittingMutationRef.current = submittingMutation;
   });
 
-  const fetch = (params) => console.log(params);
+  const fetch = (params) => fetchTaskGroups(params);
 
   const headers = () => {
     const headers = [
       'taskGroup.code',
-      'taskGroup.description',
+      'taskGroup.completionPolicy',
       'taskGroup.numberOfMembers',
     ];
     if (rights.includes(TASK_GROUP_UPDATE)) {
@@ -135,8 +107,8 @@ function TaskGroupsSearcher({
   const itemFormatters = () => {
     const formatters = [
       (taskGroup) => taskGroup.code,
-      (taskGroup) => taskGroup.description,
-      (taskGroup) => taskGroup.numberOfMembers,
+      (taskGroup) => taskGroup.completionPolicy,
+      (taskGroup) => taskGroup.code,
     ];
     if (rights.includes(TASK_GROUP_UPDATE)) {
       formatters.push((taskGroup) => (
@@ -165,7 +137,7 @@ function TaskGroupsSearcher({
 
   const sorts = () => [
     ['code', true],
-    ['description', true],
+    ['completionPolicy', true],
     ['numberOfMembers', true],
   ];
 
@@ -176,25 +148,32 @@ function TaskGroupsSearcher({
   const isRowDisabled = (_, taskGroup) => deletedTaskGroupsUuids.includes(taskGroup.id);
   const rowIdentifier = (taskGroup) => taskGroup.id;
 
+  const defaultFilters = () => ({
+    isDeleted: {
+      value: false,
+      filter: 'isDeleted: false',
+    },
+  });
+
   return (
     <Searcher
       module="tasksManagement"
       FilterPane={taskGroupFilter}
       fetch={fetch}
-      items={DUMMY_CONTENT.groups}
-      itemsPageInfo={DUMMY_CONTENT.taskGroupsPageInfo}
-    //   fetchedItems={fetchingTaskGroups}
-    //   errorItems={errorTaskGroups}
-      tableTitle={formatMessageWithValues('taskGroup.searcherResultsTitle', { groupTasksTotalCount })}
+      items={taskGroups}
+      itemsPageInfo={taskGroupsPageInfo}
+      fetchedItems={fetchingTaskGroups}
+      errorItems={errorTaskGroups}
+      tableTitle={formatMessageWithValues('taskGroup.searcherResultsTitle', { taskGroupsTotalCount })}
       headers={headers}
       itemFormatters={itemFormatters}
       sorts={sorts}
       rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
       defaultPageSize={DEFAULT_PAGE_SIZE}
       defaultOrderBy="code"
+      defaultFilters={defaultFilters()}
       rowIdentifier={rowIdentifier}
       onDoubleClick={onDoubleClick}
-    //   defaultFilters={defaultFilters()}
       rowDisabled={isRowDisabled}
       rowLocked={isRowDisabled}
     />
@@ -214,8 +193,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => bindActionCreators(
   {
-    // fetchTaskGroups,
-    // deleteTaskGroup,
+    fetchTaskGroups,
+    deleteTaskGroup,
     coreConfirm,
     clearConfirm,
     journalize,

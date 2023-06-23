@@ -23,8 +23,13 @@
   "tasksManagement.deleteButton.tooltip": "Delete",
   "tasksManagement.viewDetailsButton.tooltip": "View details",
   "tasksManagement.groupsManagement.groupHelmet": "Task Group",
-  "tasksManagement.taskGroup.searcherResultsTitle": "{groupTasksTotalCount} Task Groups Found",
+  "tasksManagement.taskGroup.searcherResultsTitle": "{taskGroupsTotalCount} Task Groups Found",
   "tasksManagement.taskGroup.code": "Code",
   "tasksManagement.taskGroup.description": "Description",
-  "tasksManagement.taskGroup.numberOfMembers": "Number of Members"
+  "tasksManagement.taskGroup.numberOfMembers": "Number of Members",
+  "tasksManagement.taskGroup.delete.confirm.title": "Delete task group {code}",
+  "tasksManagement.taskGroup.delete.confirm.message": "Are you sure you want to delete the task group?",
+  "tasksManagement.taskGroup.delete.mutationLabel": "Delete task group {code}",
+  "tasksManagement.taskGroup.update.mutationLabel": "Update task group {code}",
+  "tasksManagement.taskGroup.create.mutationLabel": "Create task group {code}"
 }

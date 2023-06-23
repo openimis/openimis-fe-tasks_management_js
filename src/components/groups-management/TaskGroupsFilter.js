@@ -4,8 +4,9 @@ import { makeStyles } from '@material-ui/styles';
 import _debounce from 'lodash/debounce';
 import { TextInput, NumberInput } from '@openimis/fe-core';
 import {
-  CONTAINS_LOOKUP, DEFAULT_DEBOUNCE_TIME, EMPTY_STRING,
+  CONTAINS_LOOKUP, DEFAULT_DEBOUNCE_TIME, EMPTY_STRING, POLICY_STATUS_LIST,
 } from '../../constants';
+import StatusPicker from '../../pickers/StatusPicker';
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -50,24 +51,31 @@ function TaskGroupsFilter({
     }
   };
 
-  console.log(filters);
-
   return (
     <Grid container className={classes.form}>
       <Grid item xs={3} className={classes.item}>
         <TextInput
           module="tasksManagement"
           label={formatMessage('taskGroup.code')}
-          value={filterTextFieldValue('source')}
-          onChange={onChangeStringFilter('source', CONTAINS_LOOKUP)}
+          value={filterTextFieldValue('code')}
+          onChange={onChangeStringFilter('code', CONTAINS_LOOKUP)}
         />
       </Grid>
       <Grid item xs={3} className={classes.item}>
-        <TextInput
-          module="tasksManagement"
-          label={formatMessage('taskGroup.description')}
-          value={filterTextFieldValue('description')}
-          onChange={onChangeStringFilter('type', CONTAINS_LOOKUP)}
+        <StatusPicker
+          label="taskGroup.completionPolicy"
+          constants={POLICY_STATUS_LIST}
+          withLabel
+          nullLabel={formatMessage('defaultValue.any')}
+          withNull
+          value={filterValue('completionPolicy')}
+          onChange={(value) => onChangeFilters([
+            {
+              id: 'completionPolicy',
+              value,
+              filter: `completionPolicy: ${value}`,
+            },
+          ])}
         />
       </Grid>
       <Grid item xs={3} className={classes.item}>
