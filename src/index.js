@@ -24,7 +24,7 @@ const DEFAULT_CONFIG = {
     { path: ROUTE_TASKS_MANAGEMENT, component: TasksManagementPage },
     { path: `${ROUTE_TASK_MANAGEMENT}/:task_uuid?`, component: TaskTriageDetailsPage },
     { path: ROUTE_GROUPS_MANAGEMENT, component: GroupsManagementPage },
-    { path: `${ROUTE_GROUP_MANAGEMENT}/:group_uuid?`, component: TaskGroupPage },
+    { path: `${ROUTE_GROUP_MANAGEMENT}/:task_group_uuid?`, component: TaskGroupPage },
   ],
   refs: [
     { key: 'tasksManagement.route.task', ref: ROUTE_TASK_MANAGEMENT },

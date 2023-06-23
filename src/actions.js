@@ -7,7 +7,9 @@ import {
   graphqlWithVariables,
 } from '@openimis/fe-core';
 import { ACTION_TYPE, MUTATION_SERVICE } from './reducer';
-import { REQUEST, SUCCESS, ERROR } from './utils/action-type';
+import {
+  REQUEST, SUCCESS, ERROR, CLEAR,
+} from './utils/action-type';
 
 const TASK_GROUP_PROJECTION = () => [
   'id',
@@ -24,8 +26,8 @@ export function fetchTaskGroups(modulesManager, params) {
 export function fetchTaskGroup(modulesManager, variables) {
   return graphqlWithVariables(
     `
-      query getTaskGroup ($taskGroupId: ID ) {
-        taskGroup(id: $taskGroupId) {
+      query getTaskGroup ($taskGroupUuid: ID ) {
+        taskGroup(id: $taskGroupUuid) {
           edges {
             node {
               id
@@ -41,6 +43,12 @@ export function fetchTaskGroup(modulesManager, variables) {
     ACTION_TYPE.GET_TASK_GROUP,
   );
 }
+
+export const clearTaskGroup = () => (dispatch) => {
+  dispatch({
+    type: CLEAR(ACTION_TYPE.GET_TASK_GROUP),
+  });
+};
 
 export function deleteTaskGroup(taskGroup, clientMutationLabel) {
   const taskGroupsUuids = `ids: ["${taskGroup?.id}"]`;

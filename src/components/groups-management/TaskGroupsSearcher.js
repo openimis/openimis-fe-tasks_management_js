@@ -97,7 +97,7 @@ function TaskGroupsSearcher({
   };
 
   const openGroup = (taskGroup) => history.push(
-    `/${modulesManager.getRef(TASKS_MANAGEMENT_ROUTE_GROUPS_GROUP)}/${taskGroup?.id}`,
+    `/${modulesManager.getRef(TASKS_MANAGEMENT_ROUTE_GROUPS_GROUP)}/${taskGroup?.uuid}`,
   );
 
   const onDoubleClick = (taskGroup) => rights.includes(TASK_GROUP_UPDATE) && openGroup(taskGroup);

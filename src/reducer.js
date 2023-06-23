@@ -9,7 +9,9 @@ import {
   parseData,
   pageInfo,
 } from '@openimis/fe-core';
-import { REQUEST, SUCCESS, ERROR } from './utils/action-type';
+import {
+  REQUEST, SUCCESS, ERROR, CLEAR,
+} from './utils/action-type';
 
 export const ACTION_TYPE = {
   MUTATION: 'TASK_MANAGEMENT_MUTATION',
@@ -77,7 +79,7 @@ function reducer(
     case SUCCESS(ACTION_TYPE.GET_TASK_GROUP):
       return {
         ...state,
-        taskGroup: {},
+        taskGroup: parseData(action.payload.data.taskGroup)?.[0],
         fetchingTaskGroup: false,
         errorTaskGroup: formatGraphQLError(action.payload),
         fetchedTaskGroup: true,
@@ -87,6 +89,14 @@ function reducer(
         ...state,
         fetchingTaskGroup: false,
         errorTaskGroup: formatServerError(action.payload),
+      };
+    case CLEAR(ACTION_TYPE.GET_TASK_GROUP):
+      return {
+        ...state,
+        taskGroup: {},
+        fetchingTaskGroup: false,
+        errorTaskGroup: null,
+        fetchedTaskGroup: false,
       };
     case REQUEST(ACTION_TYPE.MUTATION):
       return dispatchMutationReq(state, action);
