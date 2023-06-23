@@ -127,7 +127,7 @@ function BenefitPlanTasksSearcher({
     ];
     if (rights.includes(BENEFIT_PLAN_TASKS_SEARCH)) {
       formatters.push((benefitPlanTasks) => (
-        <Tooltip title={formatMessage('benefitPlan.tooltip.viewDetails')}>
+        <Tooltip title={formatMessage('viewDetailsButton.tooltip')}>
           <IconButton
             onClick={() => openTask(benefitPlanTasks)}
           >

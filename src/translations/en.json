@@ -4,7 +4,6 @@
   "tasksManagement.entries.tasksManagementView": "Tasks",
   "tasksManagement.benefitPlan.tasks.title": "Benefit Plan Update Tasks",
   "tasksManagement.benefitPlan.tasks.searcherResultsTitle": "{tasksTotalCount} Tasks Found",
-  "tasksManagement.benefitPlan.tooltip.viewDetails": "View details",
   "tasksManagement.benefitPlanTask.detailsPage.triage.title": "Task",
   "tasksManagement.benefitPlanTask.detailsPage.triage.preview": "Preview",
   "tasksManagement.benefitPlanTask.detailsPage.triage.headPanelTitle": "General Information",
@@ -19,5 +18,13 @@
   "tasksManagement.benefitPlanTask.status.COMPLETED": "COMPLETED",
   "tasksManagement.benefitPlanTask.status.FAILED": "FAILED",
   "tasksManagement.TaskPreviewTable.rowsPerPage": "Rows per page",
-  "tasksManagement.TaskPreviewTable.ofPages": "{from} - {to} of {count}"
+  "tasksManagement.TaskPreviewTable.ofPages": "{from} - {to} of {count}",
+  "tasksManagement.createButton.tooltip": "Create",
+  "tasksManagement.deleteButton.tooltip": "Delete",
+  "tasksManagement.viewDetailsButton.tooltip": "View details",
+  "tasksManagement.groupsManagement.groupHelmet": "Task Group",
+  "tasksManagement.taskGroup.searcherResultsTitle": "{groupTasksTotalCount} Task Groups Found",
+  "tasksManagement.taskGroup.code": "Code",
+  "tasksManagement.taskGroup.description": "Description",
+  "tasksManagement.taskGroup.numberOfMembers": "Number of Members"
 }

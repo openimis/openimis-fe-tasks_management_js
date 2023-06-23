@@ -7,9 +7,13 @@ import reducer from './reducer';
 import TasksMainMenu from './menus/TasksMainMenu';
 import TasksManagementPage from './pages/TasksManagementPage';
 import TaskTriageDetailsPage from './pages/TaskTriageDetailsPage';
+import GroupsManagementPage from './pages/GroupsManagementPage';
 
 const ROUTE_TASKS_MANAGEMENT = 'tasks';
 const ROUTE_TASK_MANAGEMENT = 'tasks/task';
+
+const ROUTE_GROUPS_MANAGEMENT = 'tasks/groups';
+const ROUTE_GROUP_MANAGEMENT = 'tasks/groups/group';
 
 const DEFAULT_CONFIG = {
   translations: [{ key: 'en', messages: messages_en }],
@@ -18,9 +22,12 @@ const DEFAULT_CONFIG = {
   'core.Router': [
     { path: ROUTE_TASKS_MANAGEMENT, component: TasksManagementPage },
     { path: `${ROUTE_TASK_MANAGEMENT}/:task_uuid?`, component: TaskTriageDetailsPage },
+    { path: ROUTE_GROUPS_MANAGEMENT, component: GroupsManagementPage },
+    // { path: `${ROUTE_GROUP_MANAGEMENT}/:group_uuid`, component: <></> }
   ],
   refs: [
     { key: 'tasksManagement.route.task', ref: ROUTE_TASK_MANAGEMENT },
+    { key: 'tasksManagement.route.group', ref: ROUTE_GROUP_MANAGEMENT },
   ],
 };
 
