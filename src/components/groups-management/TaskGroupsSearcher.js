@@ -108,7 +108,7 @@ function TaskGroupsSearcher({
     const formatters = [
       (taskGroup) => taskGroup.code,
       (taskGroup) => taskGroup.completionPolicy,
-      (taskGroup) => taskGroup.code,
+      (taskGroup) => taskGroup?.users?.length,
     ];
     if (rights.includes(TASK_GROUP_UPDATE)) {
       formatters.push((taskGroup) => (
