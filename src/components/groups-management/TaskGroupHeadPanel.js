@@ -46,6 +46,7 @@ class TaskGroupHeadPanel extends FormPanel {
       edited, classes, formatMessage, readOnly,
     } = this.props;
     const taskGroup = { ...edited };
+    console.log(taskGroup);
     return (
       <>
         {renderHeadPanelTitle(classes)}
@@ -73,12 +74,12 @@ class TaskGroupHeadPanel extends FormPanel {
             />
           </Grid>
           <Grid item xs={6} className={classes.item}>
-            {/* ADJUST IF BE READY */}
             <TaskExecutorsPicker
               required
               readOnly={readOnly}
+              groupId={taskGroup?.uuid}
               value={taskGroup?.executors}
-              onChange={(executor) => this.updateAttribute([...taskGroup.executors, executor])}
+              onChange={(executors) => this.updateAttribute('executors', executors)}
             />
           </Grid>
         </Grid>

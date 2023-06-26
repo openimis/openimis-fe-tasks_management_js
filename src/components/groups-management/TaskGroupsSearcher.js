@@ -19,6 +19,7 @@ import {
   TASK_GROUP_DELETE,
   ROWS_PER_PAGE_OPTIONS,
   TASKS_MANAGEMENT_ROUTE_GROUPS_GROUP,
+  HYPHEN,
 } from '../../constants';
 import TaskGroupsFilter from './TaskGroupsFilter';
 import { fetchTaskGroups, deleteTaskGroup } from '../../actions';
@@ -108,7 +109,7 @@ function TaskGroupsSearcher({
     const formatters = [
       (taskGroup) => taskGroup.code,
       (taskGroup) => taskGroup.completionPolicy,
-      (taskGroup) => taskGroup?.users?.length,
+      (taskGroup) => taskGroup?.executors?.length ?? HYPHEN,
     ];
     if (rights.includes(TASK_GROUP_UPDATE)) {
       formatters.push((taskGroup) => (

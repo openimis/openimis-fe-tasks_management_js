@@ -21,6 +21,7 @@
   "tasksManagement.TaskPreviewTable.ofPages": "{from} - {to} of {count}",
   "tasksManagement.createButton.tooltip": "Create",
   "tasksManagement.deleteButton.tooltip": "Delete",
+  "tasksManagement.saveButton.tooltip": "Save changes",
   "tasksManagement.viewDetailsButton.tooltip": "View details",
   "tasksManagement.groupsManagement.groupHelmet": "Task Group",
   "tasksManagement.taskGroup.detailsPage.title": "Task Group {code}",

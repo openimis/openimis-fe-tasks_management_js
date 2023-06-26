@@ -3,7 +3,7 @@ import {
   // formatPageQuery,
   formatPageQueryWithCount,
   formatMutation,
-  // formatGQLString,
+  formatGQLString,
   graphqlWithVariables,
 } from '@openimis/fe-core';
 import { ACTION_TYPE, MUTATION_SERVICE } from './reducer';
@@ -16,7 +16,16 @@ const TASK_GROUP_PROJECTION = () => [
   'uuid',
   'code',
   'completionPolicy',
+  // 'usersId',
 ];
+
+export const formatTaskGroupGQL = (taskGroup) => (`
+${taskGroup?.code ? `code: "${formatGQLString(taskGroup.code)}"` : ''}
+${taskGroup?.completionPolicy ? `completionPolicy: ${taskGroup.completionPolicy}` : ''}
+${taskGroup?.id ? `id: "${taskGroup.id}"` : ''}
+${taskGroup?.uuid ? `uuid: "${taskGroup.uuid}"` : ''}
+${taskGroup?.executors ? `userIds: ${taskGroup.executors.map(((executor) => executor.uuid))}` : 'userIds: []'}
+`);
 
 export function fetchTaskGroups(modulesManager, params) {
   const payload = formatPageQueryWithCount('taskGroup', params, TASK_GROUP_PROJECTION());
@@ -59,6 +68,44 @@ export function deleteTaskGroup(taskGroup, clientMutationLabel) {
     [REQUEST(ACTION_TYPE.MUTATION), SUCCESS(ACTION_TYPE.DELETE_TASK_GROUP), ERROR(ACTION_TYPE.MUTATION)],
     {
       actionType: ACTION_TYPE.DELETE_TASK_GROUP,
+      clientMutationId: mutation.clientMutationId,
+      clientMutationLabel,
+      requestedDateTime,
+    },
+  );
+}
+
+export function createTaskGroup(taskGroup, clientMutationLabel) {
+  const mutation = formatMutation(
+    MUTATION_SERVICE.TASK_GROUP.CREATE,
+    formatTaskGroupGQL(taskGroup),
+    clientMutationLabel,
+  );
+  const requestedDateTime = new Date();
+  return graphql(
+    mutation.payload,
+    [REQUEST(ACTION_TYPE.MUTATION), SUCCESS(ACTION_TYPE.CREATE_TASK_GROUP), ERROR(ACTION_TYPE.MUTATION)],
+    {
+      actionType: ACTION_TYPE.CREATE_TASK_GROUP,
+      clientMutationId: mutation.clientMutationId,
+      clientMutationLabel,
+      requestedDateTime,
+    },
+  );
+}
+
+export function updateTaskGroup(taskGroup, clientMutationLabel) {
+  const mutation = formatMutation(
+    MUTATION_SERVICE.TASK_GROUP.UPDATE,
+    formatTaskGroupGQL(taskGroup),
+    clientMutationLabel,
+  );
+  const requestedDateTime = new Date();
+  return graphql(
+    mutation.payload,
+    [REQUEST(ACTION_TYPE.MUTATION), SUCCESS(ACTION_TYPE.UPDATE_TASK_GROUP), ERROR(ACTION_TYPE.MUTATION)],
+    {
+      actionType: ACTION_TYPE.UPDATE_TASK_GROUP,
       clientMutationId: mutation.clientMutationId,
       clientMutationLabel,
       requestedDateTime,

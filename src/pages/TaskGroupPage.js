@@ -1,30 +1,34 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { makeStyles } from '@material-ui/styles';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
-  Form, Helmet, useTranslations, useModulesManager, useHistory,
+  Form, Helmet, useTranslations, useModulesManager, useHistory, clearConfirm, journalize, coreConfirm,
 } from '@openimis/fe-core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import _ from 'lodash';
 import TaskGroupHeadPanel from '../components/groups-management/TaskGroupHeadPanel';
 import { EMPTY_STRING } from '../constants';
-import { fetchTaskGroup, clearTaskGroup } from '../actions';
+import {
+  fetchTaskGroup, clearTaskGroup, deleteTaskGroup, updateTaskGroup, createTaskGroup,
+} from '../actions';
+import { ACTION_TYPE } from '../reducer';
 
 const useStyles = makeStyles((theme) => ({
   page: theme.page,
 }));
 
 function TaskGroupPage({
-  rights, taskGroup, taskGroupUuid, fetchTaskGroup,
+  rights, taskGroup, taskGroupUuid, fetchTaskGroup, confirmed, journalize, mutation, submittingMutation, coreConfirm,
 }) {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const modulesManager = useModulesManager();
   const history = useHistory();
   const { formatMessage, formatMessageWithValues } = useTranslations('tasksManagement', modulesManager);
   const [editedTaskGroup, setEditedTaskGroup] = useState({});
-  // const [confirmedAction, setConfirmedAction] = useState(() => null);
-  // const prevSubmittingMutationRef = useRef();
+  const [confirmedAction, setConfirmedAction] = useState(() => null);
+  const prevSubmittingMutationRef = useRef();
   const back = () => history.goBack();
 
   useEffect(() => {
@@ -42,19 +46,58 @@ function TaskGroupPage({
 
   const canSave = () => !mandatoryFieldsEmpty() && doesTaskGroupChange();
 
-  const handleSave = () => {};
+  const handleSave = () => {
+    if (taskGroup?.id) {
+      updateTaskGroup(
+        editedTaskGroup,
+        formatMessageWithValues('taskGroup.update.mutationLabel', { code: editedTaskGroup?.code ?? EMPTY_STRING }),
+      );
+    } else {
+      createTaskGroup(
+        editedTaskGroup,
+        formatMessageWithValues('taskGroup.create.mutationLabel', { code: editedTaskGroup?.code ?? EMPTY_STRING }),
+      );
+    }
+  };
+
+  const deleteTaskGroupCallback = () => deleteTaskGroup(
+    taskGroup,
+    formatMessageWithValues('taskGroup.delete.mutationLabel', { code: editedTaskGroup?.code ?? EMPTY_STRING }),
+  );
+
+  const openDeleteTaskGroupConfirmDialog = () => {
+    setConfirmedAction(() => deleteTaskGroupCallback);
+    coreConfirm(
+      formatMessageWithValues('taskGroup.delete.confirm.title', { code: editedTaskGroup?.code ?? EMPTY_STRING }),
+      formatMessage('taskGroup.delete.confirm.message'),
+    );
+  };
 
   const actions = [
     !!taskGroup && {
-      doIt: () => {},
+      doIt: openDeleteTaskGroupConfirmDialog,
       icon: <DeleteIcon />,
       tooltip: formatMessage('deleteButton.tooltip'),
     },
   ];
 
+  useEffect(() => {
+    if (confirmed) confirmedAction();
+    return () => confirmed && clearConfirm(null);
+  }, [confirmed]);
+
+  useEffect(() => {
+    if (prevSubmittingMutationRef.current && !submittingMutation) {
+      journalize(mutation);
+      if (mutation?.actionType === ACTION_TYPE.DELETE_TASK_GROUP) {
+        back();
+      }
+    }
+  }, [submittingMutation]);
+
   useEffect(() => setEditedTaskGroup(taskGroup), [taskGroup]);
 
-  useEffect(() => () => clearTaskGroup(), []);
+  useEffect(() => () => dispatch(clearTaskGroup()), []);
 
   return (
     <div className={classes.page}>
@@ -76,8 +119,8 @@ function TaskGroupPage({
         formatMessage={formatMessage}
         rights={rights}
         actions={actions}
-        // setConfirmedAction={setConfirmedAction}
-        // saveTooltip={formatMessage(intl, 'individual', `saveButton.tooltip.${canSave ? 'enabled' : 'disabled'}`)}
+        setConfirmedAction={setConfirmedAction}
+        saveTooltip={formatMessage('saveButton.tooltip')}
       />
     </div>
   );
@@ -96,14 +139,13 @@ const mapStateToProps = (state, props) => ({
 });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
-  // createBenefitPlan,
+  createTaskGroup,
   fetchTaskGroup,
-  clearTaskGroup,
-  // deleteBenefitPlan,
-  // updateBenefitPlan,
-  // coreConfirm,
-  // clearConfirm,
-  // journalize,
+  deleteTaskGroup,
+  updateTaskGroup,
+  coreConfirm,
+  clearConfirm,
+  journalize,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(TaskGroupPage);
