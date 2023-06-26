@@ -46,7 +46,6 @@ class TaskGroupHeadPanel extends FormPanel {
       edited, classes, formatMessage, readOnly,
     } = this.props;
     const taskGroup = { ...edited };
-    console.log(taskGroup);
     return (
       <>
         {renderHeadPanelTitle(classes)}
