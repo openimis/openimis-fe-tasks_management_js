@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   useTranslations, Autocomplete, useModulesManager, useGraphqlQuery,
 } from '@openimis/fe-core';
@@ -11,14 +11,13 @@ function TaskExecutorsPicker({
   readOnly,
   required,
 }) {
-  const [searchString, setSearchString] = useState();
   const modulesManager = useModulesManager();
   const { formatMessage } = useTranslations('tasksManagement', modulesManager);
 
   const { isLoading, data, error } = useGraphqlQuery(
     `
-    query TaskExecutorsPicker($str: String) {
-      users(str: $str) {
+    query TaskExecutorsPicker {
+      users {
         edges {
           node {
             id
@@ -29,10 +28,7 @@ function TaskExecutorsPicker({
       }
     }
   `,
-    { str: searchString },
   );
-
-  const uniqueValues = [...new Map(value?.map((user) => [user.id, user])).values()];
 
   const executors = data?.users?.edges.map((edge) => edge.node) ?? [];
 
@@ -57,14 +53,14 @@ function TaskExecutorsPicker({
       placeholder={formatMessage('TaskExecutorsPicker.placeholder')}
       readOnly={readOnly}
       withLabel={withLabel}
-      withPlaceholder={!uniqueValues?.length}
+      withPlaceholder={!value?.length}
       options={executors}
-      value={uniqueValues}
+      value={value}
       getOptionLabel={({ username, lastName }) => `${username} ${lastName}`}
       onChange={(executor) => onChange(executor)}
       filterOptions={filterOptions}
       filterSelectedOptions
-      onInputChange={() => setSearchString(searchString)}
+      onInputChange={() => {}}
     />
   );
 }
