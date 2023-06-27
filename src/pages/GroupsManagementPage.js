@@ -25,7 +25,7 @@ function GroupsManagementPage() {
   const rights = useSelector((store) => store.core.user.i_user.rights ?? []);
   const { formatMessage } = useTranslations('tasksManagement', modulesManager);
 
-  const onTaskAdd = () => history.push(`/${modulesManager.getRef(TASKS_MANAGEMENT_ROUTE_GROUPS_GROUP)}`);
+  const onTaskGroupAdd = () => history.push(`/${modulesManager.getRef(TASKS_MANAGEMENT_ROUTE_GROUPS_GROUP)}`);
 
   return (
     rights.includes(TASK_GROUP_SEARCH) && (
@@ -35,7 +35,7 @@ function GroupsManagementPage() {
       {rights.includes(TASK_GROUP_CREATE)
         && withTooltip(
           <div className={classes.fab}>
-            <Fab color="primary" onClick={onTaskAdd}>
+            <Fab color="primary" onClick={onTaskGroupAdd}>
               <AddIcon />
             </Fab>
           </div>,
