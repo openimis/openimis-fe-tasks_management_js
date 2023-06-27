@@ -9,7 +9,7 @@ import {
 import { injectIntl } from 'react-intl';
 import { withTheme, withStyles } from '@material-ui/core/styles';
 import StatusPicker from '../../pickers/StatusPicker';
-import { POLICY_STATUS_LIST } from '../../constants';
+import { GROUP_RESOLVE_POLICY_LIST } from '../../constants';
 import TaskExecutorsPicker from '../../pickers/TaskExecutorsPicker';
 
 const styles = (theme) => ({
@@ -64,7 +64,7 @@ class TaskGroupHeadPanel extends FormPanel {
           <Grid item xs={3} className={classes.item}>
             <StatusPicker
               label="taskGroup.completionPolicy"
-              constants={POLICY_STATUS_LIST}
+              constants={GROUP_RESOLVE_POLICY_LIST}
               withLabel
               nullLabel={formatMessage('defaultValue.any')}
               readOnly={readOnly}

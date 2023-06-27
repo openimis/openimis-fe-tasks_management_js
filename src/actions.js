@@ -31,6 +31,21 @@ export const formatTaskGroupGQL = (taskGroup) => {
   return GQLString;
 };
 
+const PERFORM_MUTATION = (mutationType, mutationInput, ACTION, clientMutationLabel) => {
+  const mutation = formatMutation(mutationType, mutationInput, ACTION);
+  const requestedDateTime = new Date();
+  return graphql(
+    mutation.payload,
+    [REQUEST(ACTION_TYPE.MUTATION), SUCCESS(ACTION_TYPE[ACTION]), ERROR(ACTION_TYPE.MUTATION)],
+    {
+      actionType: ACTION_TYPE[ACTION],
+      clientMutationId: mutation.clientMutationId,
+      clientMutationLabel,
+      requestedDateTime,
+    },
+  );
+};
+
 export function fetchTaskGroups(modulesManager, params) {
   const payload = formatPageQueryWithCount('taskGroup', params, TASK_GROUP_PROJECTION());
   return graphql(payload, ACTION_TYPE.SEARCH_TASK_GROUPS);
@@ -66,54 +81,28 @@ export const clearTaskGroup = () => (dispatch) => {
 
 export function deleteTaskGroup(taskGroup, clientMutationLabel) {
   const taskGroupsUuids = `ids: ["${decodeId(taskGroup?.id)}"]`;
-  const mutation = formatMutation(MUTATION_SERVICE.TASK_GROUP.DELETE, taskGroupsUuids, clientMutationLabel);
-  const requestedDateTime = new Date();
-  return graphql(
-    mutation.payload,
-    [REQUEST(ACTION_TYPE.MUTATION), SUCCESS(ACTION_TYPE.DELETE_TASK_GROUP), ERROR(ACTION_TYPE.MUTATION)],
-    {
-      actionType: ACTION_TYPE.DELETE_TASK_GROUP,
-      clientMutationId: mutation.clientMutationId,
-      clientMutationLabel,
-      requestedDateTime,
-    },
+  return PERFORM_MUTATION(
+    MUTATION_SERVICE.TASK_GROUP.DELETE,
+    taskGroupsUuids,
+    'DELETE_TASK_GROUP',
+    clientMutationLabel,
   );
 }
 
 export function createTaskGroup(taskGroup, clientMutationLabel) {
-  const mutation = formatMutation(
+  return PERFORM_MUTATION(
     MUTATION_SERVICE.TASK_GROUP.CREATE,
     formatTaskGroupGQL(taskGroup),
+    'CREATE_TASK_GROUP',
     clientMutationLabel,
-  );
-  const requestedDateTime = new Date();
-  return graphql(
-    mutation.payload,
-    [REQUEST(ACTION_TYPE.MUTATION), SUCCESS(ACTION_TYPE.CREATE_TASK_GROUP), ERROR(ACTION_TYPE.MUTATION)],
-    {
-      actionType: ACTION_TYPE.CREATE_TASK_GROUP,
-      clientMutationId: mutation.clientMutationId,
-      clientMutationLabel,
-      requestedDateTime,
-    },
   );
 }
 
 export function updateTaskGroup(taskGroup, clientMutationLabel) {
-  const mutation = formatMutation(
+  return PERFORM_MUTATION(
     MUTATION_SERVICE.TASK_GROUP.UPDATE,
     formatTaskGroupGQL(taskGroup),
+    'UPDATE_TASK_GROUP',
     clientMutationLabel,
-  );
-  const requestedDateTime = new Date();
-  return graphql(
-    mutation.payload,
-    [REQUEST(ACTION_TYPE.MUTATION), SUCCESS(ACTION_TYPE.UPDATE_TASK_GROUP), ERROR(ACTION_TYPE.MUTATION)],
-    {
-      actionType: ACTION_TYPE.UPDATE_TASK_GROUP,
-      clientMutationId: mutation.clientMutationId,
-      clientMutationLabel,
-      requestedDateTime,
-    },
   );
 }
