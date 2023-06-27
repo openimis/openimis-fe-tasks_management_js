@@ -58,6 +58,7 @@ class TaskGroupHeadPanel extends FormPanel {
               readOnly={readOnly}
               value={taskGroup?.code}
               onChange={(code) => this.updateAttribute('code', code)}
+              required
             />
           </Grid>
           <Grid item xs={3} className={classes.item}>
@@ -70,6 +71,7 @@ class TaskGroupHeadPanel extends FormPanel {
               withNull
               value={taskGroup?.completionPolicy}
               onChange={(completionPolicy) => this.updateAttribute('completionPolicy', completionPolicy)}
+              required
             />
           </Grid>
           <Grid item xs={6} className={classes.item}>

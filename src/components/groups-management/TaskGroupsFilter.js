@@ -2,7 +2,7 @@ import React from 'react';
 import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import _debounce from 'lodash/debounce';
-import { TextInput, NumberInput } from '@openimis/fe-core';
+import { TextInput } from '@openimis/fe-core';
 import {
   CONTAINS_LOOKUP, DEFAULT_DEBOUNCE_TIME, EMPTY_STRING, POLICY_STATUS_LIST,
 } from '../../constants';
@@ -41,7 +41,7 @@ function TaskGroupsFilter({
         },
       ]);
     } else {
-      onChangeFilters([
+      debouncedOnChangeFilters([
         {
           id: filterName,
           value,
@@ -76,14 +76,6 @@ function TaskGroupsFilter({
               filter: `completionPolicy: ${value}`,
             },
           ])}
-        />
-      </Grid>
-      <Grid item xs={3} className={classes.item}>
-        <NumberInput
-          module="tasksManagement"
-          label={formatMessage('taskGroup.numberOfMembers')}
-          value={filterValue('numberOfMembers')}
-          onChange={onChangeStringFilter('numberOfMembers')}
         />
       </Grid>
     </Grid>

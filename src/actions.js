@@ -1,9 +1,9 @@
 import {
   graphql,
-  // formatPageQuery,
   formatPageQueryWithCount,
   formatMutation,
   formatGQLString,
+  decodeId,
   graphqlWithVariables,
 } from '@openimis/fe-core';
 import { ACTION_TYPE, MUTATION_SERVICE } from './reducer';
@@ -16,16 +16,20 @@ const TASK_GROUP_PROJECTION = () => [
   'uuid',
   'code',
   'completionPolicy',
-  // 'usersId',
+  'taskexecutorSet { edges { node { user { id username lastName } } } }',
 ];
 
-export const formatTaskGroupGQL = (taskGroup) => (`
-${taskGroup?.code ? `code: "${formatGQLString(taskGroup.code)}"` : ''}
-${taskGroup?.completionPolicy ? `completionPolicy: ${taskGroup.completionPolicy}` : ''}
-${taskGroup?.id ? `id: "${taskGroup.id}"` : ''}
-${taskGroup?.uuid ? `uuid: "${taskGroup.uuid}"` : ''}
-${taskGroup?.executors ? `userIds: ${taskGroup.executors.map(((executor) => executor.uuid))}` : 'userIds: []'}
-`);
+export const formatTaskGroupGQL = (taskGroup) => {
+  const executors = taskGroup?.executors?.map((executor) => decodeId(executor.id));
+  const executorsString = executors ? `[${executors.map((executorUuid) => `"${executorUuid}"`).join(', ')}]` : '[]';
+  const GQLString = `
+  ${taskGroup?.code ? `code: "${formatGQLString(taskGroup.code)}"` : ''}
+  ${taskGroup?.completionPolicy ? `completionPolicy: ${taskGroup.completionPolicy}` : ''}
+  ${taskGroup?.id ? `id: "${decodeId(taskGroup.id)}"` : ''}
+  ${taskGroup?.executors ? `userIds: ${executorsString}` : 'userIds: []'}
+  `;
+  return GQLString;
+};
 
 export function fetchTaskGroups(modulesManager, params) {
   const payload = formatPageQueryWithCount('taskGroup', params, TASK_GROUP_PROJECTION());
@@ -43,6 +47,7 @@ export function fetchTaskGroup(modulesManager, variables) {
               uuid
               code
               completionPolicy
+              taskexecutorSet { edges { node { user { id username lastName } } } },
             }
           }
         }
@@ -60,7 +65,7 @@ export const clearTaskGroup = () => (dispatch) => {
 };
 
 export function deleteTaskGroup(taskGroup, clientMutationLabel) {
-  const taskGroupsUuids = `ids: ["${taskGroup?.id}"]`;
+  const taskGroupsUuids = `ids: ["${decodeId(taskGroup?.id)}"]`;
   const mutation = formatMutation(MUTATION_SERVICE.TASK_GROUP.DELETE, taskGroupsUuids, clientMutationLabel);
   const requestedDateTime = new Date();
   return graphql(

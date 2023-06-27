@@ -83,7 +83,7 @@ function BenefitPlanTasksSearcher({
     modulesManager,
   );
 
-  const fetch = (params) => console.log(params);
+  const fetch = () => {};
 
   const openTask = (task) => history.push(
     `/${modulesManager.getRef('tasksManagement.route.task')}`

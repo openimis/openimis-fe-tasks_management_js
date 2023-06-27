@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function TaskGroupPage({
-  rights, taskGroup, taskGroupUuid, fetchTaskGroup, confirmed, journalize, mutation, submittingMutation, coreConfirm,
+  rights, taskGroup, taskGroupUuid, confirmed, journalize, mutation, submittingMutation, coreConfirm,
 }) {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -31,13 +31,18 @@ function TaskGroupPage({
   const prevSubmittingMutationRef = useRef();
   const back = () => history.goBack();
 
+  const titleParams = (taskGroup) => ({
+    code: taskGroup?.code ?? EMPTY_STRING,
+  });
+
   useEffect(() => {
     if (taskGroupUuid) {
-      fetchTaskGroup(modulesManager, { taskGroupUuid });
+      dispatch(fetchTaskGroup(modulesManager, { taskGroupUuid }));
     }
   }, [taskGroupUuid]);
 
-  const mandatoryFieldsEmpty = () => !editedTaskGroup?.code && !editedTaskGroup?.completionPolicy;
+  const mandatoryFieldsEmpty = () => !editedTaskGroup?.code
+  || !editedTaskGroup?.completionPolicy || !editedTaskGroup?.executors?.length;
 
   const doesTaskGroupChange = () => {
     if (_.isEqual(taskGroup, editedTaskGroup)) return false;
@@ -48,33 +53,33 @@ function TaskGroupPage({
 
   const handleSave = () => {
     if (taskGroup?.id) {
-      updateTaskGroup(
+      dispatch(updateTaskGroup(
         editedTaskGroup,
-        formatMessageWithValues('taskGroup.update.mutationLabel', { code: editedTaskGroup?.code ?? EMPTY_STRING }),
-      );
+        formatMessageWithValues('taskGroup.update.mutationLabel', titleParams(editedTaskGroup)),
+      ));
     } else {
-      createTaskGroup(
+      dispatch(createTaskGroup(
         editedTaskGroup,
-        formatMessageWithValues('taskGroup.create.mutationLabel', { code: editedTaskGroup?.code ?? EMPTY_STRING }),
-      );
+        formatMessageWithValues('taskGroup.create.mutationLabel', titleParams(editedTaskGroup)),
+      ));
     }
   };
 
-  const deleteTaskGroupCallback = () => deleteTaskGroup(
+  const deleteTaskGroupCallback = () => dispatch(deleteTaskGroup(
     taskGroup,
-    formatMessageWithValues('taskGroup.delete.mutationLabel', { code: editedTaskGroup?.code ?? EMPTY_STRING }),
-  );
+    formatMessageWithValues('taskGroup.delete.mutationLabel', titleParams(taskGroup)),
+  ));
 
   const openDeleteTaskGroupConfirmDialog = () => {
     setConfirmedAction(() => deleteTaskGroupCallback);
     coreConfirm(
-      formatMessageWithValues('taskGroup.delete.confirm.title', { code: editedTaskGroup?.code ?? EMPTY_STRING }),
+      formatMessageWithValues('taskGroup.delete.confirm.title', titleParams(editedTaskGroup)),
       formatMessage('taskGroup.delete.confirm.message'),
     );
   };
 
   const actions = [
-    !!taskGroup && {
+    !!taskGroup?.id && {
       doIt: openDeleteTaskGroupConfirmDialog,
       icon: <DeleteIcon />,
       tooltip: formatMessage('deleteButton.tooltip'),
@@ -95,19 +100,30 @@ function TaskGroupPage({
     }
   }, [submittingMutation]);
 
-  useEffect(() => setEditedTaskGroup(taskGroup), [taskGroup]);
+  useEffect(() => {
+    prevSubmittingMutationRef.current = submittingMutation;
+  });
+
+  useEffect(() => {
+    const storedTaskGroup = { ...taskGroup };
+    const currentExecutors = storedTaskGroup?.taskexecutorSet?.edges?.map((executor) => executor.node.user);
+
+    delete storedTaskGroup.taskexecutorSet;
+
+    const formattedTaskGroup = { ...storedTaskGroup, executors: currentExecutors };
+
+    setEditedTaskGroup(formattedTaskGroup);
+  }, [taskGroup]);
 
   useEffect(() => () => dispatch(clearTaskGroup()), []);
 
   return (
     <div className={classes.page}>
-      <Helmet title={
-        formatMessageWithValues('taskGroup.detailsPage.title', { code: editedTaskGroup?.code ?? EMPTY_STRING })
-        }
-      />
+      <Helmet title={formatMessageWithValues('taskGroup.detailsPage.title', titleParams(editedTaskGroup))} />
       <Form
         module="tasksManagement"
-        title={formatMessageWithValues('taskGroup.detailsPage.title', { code: editedTaskGroup?.code ?? EMPTY_STRING })}
+        title={formatMessageWithValues('taskGroup.detailsPage.title', titleParams(editedTaskGroup))}
+        titleParams={titleParams(editedTaskGroup)}
         openDirty
         edited={editedTaskGroup}
         onEditedChanged={setEditedTaskGroup}
@@ -139,10 +155,6 @@ const mapStateToProps = (state, props) => ({
 });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
-  createTaskGroup,
-  fetchTaskGroup,
-  deleteTaskGroup,
-  updateTaskGroup,
   coreConfirm,
   clearConfirm,
   journalize,

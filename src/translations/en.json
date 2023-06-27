@@ -39,5 +39,6 @@
   "tasksManagement.taskGroup.delete.mutationLabel": "Delete task group {code}",
   "tasksManagement.taskGroup.update.mutationLabel": "Update task group {code}",
   "tasksManagement.taskGroup.create.mutationLabel": "Create task group {code}",
-  "tasksManagement.TaskExecutorsPicker.label": "Task Executors"
+  "tasksManagement.TaskExecutorsPicker.label": "Task Executors",
+  "tasksManagement.TaskExecutorsPicker.placeholder": "Search for Task Executor..."
 }

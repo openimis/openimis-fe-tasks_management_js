@@ -19,7 +19,6 @@ import {
   TASK_GROUP_DELETE,
   ROWS_PER_PAGE_OPTIONS,
   TASKS_MANAGEMENT_ROUTE_GROUPS_GROUP,
-  HYPHEN,
 } from '../../constants';
 import TaskGroupsFilter from './TaskGroupsFilter';
 import { fetchTaskGroups, deleteTaskGroup } from '../../actions';
@@ -83,13 +82,12 @@ function TaskGroupsSearcher({
     prevSubmittingMutationRef.current = submittingMutation;
   });
 
-  const fetch = (params) => fetchTaskGroups(params);
+  const fetch = (params) => fetchTaskGroups(modulesManager, params);
 
   const headers = () => {
     const headers = [
       'taskGroup.code',
       'taskGroup.completionPolicy',
-      'taskGroup.numberOfMembers',
     ];
     if (rights.includes(TASK_GROUP_UPDATE)) {
       headers.push('emptyLabel');
@@ -109,7 +107,6 @@ function TaskGroupsSearcher({
     const formatters = [
       (taskGroup) => taskGroup.code,
       (taskGroup) => taskGroup.completionPolicy,
-      (taskGroup) => taskGroup?.executors?.length ?? HYPHEN,
     ];
     if (rights.includes(TASK_GROUP_UPDATE)) {
       formatters.push((taskGroup) => (
@@ -139,7 +136,6 @@ function TaskGroupsSearcher({
   const sorts = () => [
     ['code', true],
     ['completionPolicy', true],
-    ['numberOfMembers', true],
   ];
 
   const taskGroupFilter = ({ filters, onChangeFilters }) => (

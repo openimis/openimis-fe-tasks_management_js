@@ -2,46 +2,50 @@ import React, { useState } from 'react';
 import {
   useTranslations, Autocomplete, useModulesManager, useGraphqlQuery,
 } from '@openimis/fe-core';
-import { EMPTY_STRING } from '../constants';
 
 function TaskExecutorsPicker({
   multiple = true,
-  groupId,
   withLabel,
-  withPlaceholder,
   onChange,
   value,
   readOnly,
   required,
 }) {
-  const [searchString, setSearchString] = useState(EMPTY_STRING);
+  const [searchString, setSearchString] = useState();
   const modulesManager = useModulesManager();
   const { formatMessage } = useTranslations('tasksManagement', modulesManager);
 
   const { isLoading, data, error } = useGraphqlQuery(
     `
-    query getTaskExecutors($taskGroupId: ID) {
-      taskExecutor(taskGroup_Id: $taskGroupId) {
+    query TaskExecutorsPicker($str: String) {
+      users(str: $str) {
         edges {
           node {
-            user {
-              id
-              username
-              lastName
-            }
+            id
+            username
+            lastName
           }
         }
       }
     }
   `,
-    { taskGroupId: groupId || EMPTY_STRING },
+    { str: searchString },
   );
 
   const uniqueValues = [...new Map(value?.map((user) => [user.id, user])).values()];
 
-  const executors = data?.taskExecutor?.edges.map((edge) => edge.node.user) ?? [];
+  const executors = data?.users?.edges.map((edge) => edge.node) ?? [];
 
-  const filterOptions = (users) => users.filter((user, i, arr) => arr.findIndex((u) => u.id === user.id) === i);
+  const filterOptions = (users, { inputValue }) => {
+    const filteredUsers = users?.filter((user) => {
+      const username = user.username.toLowerCase();
+      const lastName = user.lastName.toLowerCase();
+      const input = inputValue.toLowerCase();
+
+      return username.includes(input) || lastName.includes(input);
+    });
+    return filteredUsers.filter((user, i, arr) => arr.findIndex((u) => u.id === user.id) === i);
+  };
 
   return (
     <Autocomplete
@@ -50,9 +54,10 @@ function TaskExecutorsPicker({
       isLoading={isLoading}
       error={error}
       label={formatMessage('TaskExecutorsPicker.label')}
+      placeholder={formatMessage('TaskExecutorsPicker.placeholder')}
       readOnly={readOnly}
       withLabel={withLabel}
-      withPlaceholder={withPlaceholder}
+      withPlaceholder={!uniqueValues?.length}
       options={executors}
       value={uniqueValues}
       getOptionLabel={({ username, lastName }) => `${username} ${lastName}`}
