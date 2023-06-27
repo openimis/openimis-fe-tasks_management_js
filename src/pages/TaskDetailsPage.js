@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
   page: theme.page,
 }));
 
-function TaskTriageDetailsPage() {
+function TaskDetailsPage() {
   const rights = useSelector((store) => store.core.user.i_user.rights ?? []);
   const classes = useStyles();
   const modulesManager = useModulesManager();
@@ -31,19 +31,13 @@ function TaskTriageDetailsPage() {
         onEditedChanged={setEditedTask}
         back={back}
         readOnly
-        // mandatoryFieldsEmpty={isMandatoryFieldsEmpty}
-        // canSave={canSave}
-        // save={handleSave}
         HeadPanel={TaskHeadPanel}
         formatMessage={formatMessage}
         Panels={[TaskPreviewPanel]}
         rights={rights}
-        // actions={actions}
-        // setConfirmedAction={setConfirmedAction}
-        // saveTooltip={formatMessage(intl, 'individual', `saveButton.tooltip.${canSave ? 'enabled' : 'disabled'}`)}
       />
     </div>
   );
 }
 
-export default TaskTriageDetailsPage;
+export default TaskDetailsPage;

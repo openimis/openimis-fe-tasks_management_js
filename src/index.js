@@ -6,7 +6,7 @@ import messages_en from './translations/en.json';
 import reducer from './reducer';
 import TasksMainMenu from './menus/TasksMainMenu';
 import TasksManagementPage from './pages/TasksManagementPage';
-import TaskTriageDetailsPage from './pages/TaskTriageDetailsPage';
+import TaskDetailsPage from './pages/TaskDetailsPage';
 import GroupsManagementPage from './pages/GroupsManagementPage';
 import TaskGroupPage from './pages/TaskGroupPage';
 
@@ -22,7 +22,7 @@ const DEFAULT_CONFIG = {
   'core.MainMenu': [TasksMainMenu],
   'core.Router': [
     { path: ROUTE_TASKS_MANAGEMENT, component: TasksManagementPage },
-    { path: `${ROUTE_TASK_MANAGEMENT}/:task_uuid?`, component: TaskTriageDetailsPage },
+    { path: `${ROUTE_TASK_MANAGEMENT}/:task_uuid?`, component: TaskDetailsPage },
     { path: ROUTE_GROUPS_MANAGEMENT, component: GroupsManagementPage },
     { path: `${ROUTE_GROUP_MANAGEMENT}/:task_group_uuid?`, component: TaskGroupPage },
   ],
