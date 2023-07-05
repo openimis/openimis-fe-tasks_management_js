@@ -4,9 +4,8 @@ import { makeStyles } from '@material-ui/styles';
 import _debounce from 'lodash/debounce';
 import { TextInput } from '@openimis/fe-core';
 import {
-  CONTAINS_LOOKUP, DEFAULT_DEBOUNCE_TIME, EMPTY_STRING, GROUP_RESOLVE_POLICY_LIST,
+  CONTAINS_LOOKUP, DEFAULT_DEBOUNCE_TIME, EMPTY_STRING,
 } from '../../constants';
-import TaskStatusPicker from '../../pickers/TaskStatusPicker';
 import GroupPolicyPicker from '../../pickers/GroupPolicyPicker';
 
 const useStyles = makeStyles((theme) => ({
