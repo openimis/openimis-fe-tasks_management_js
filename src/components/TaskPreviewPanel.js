@@ -1,68 +1,56 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { injectIntl } from 'react-intl';
+import { withTheme, withStyles } from '@material-ui/core/styles';
 import { Paper, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/styles';
-import TaskPreview from './TaskPreviewTable';
+import {
+  Contributions,
+  withHistory,
+  withModulesManager,
+} from '@openimis/fe-core';
+import { BENEFIT_PLAN_TASK_PREVIEW_TABLE_VALUE, TASKS_PREVIEW_CONTRIBUTION_KEY } from '../constants';
 
-const useStyles = makeStyles((theme) => ({
-  paper: theme.paper.paper,
-  title: theme.paper.title,
-}));
+const styles = (theme) => ({
+  page: theme.page,
+});
 
-const DUMMY_PREVIEW_ITEMS = [
+function TaskPreviewPanel({
+  intl,
+  classes,
+  rights,
+  formatMessage,
+  edited,
+}) {
+  const [taskTable, setTaskTable] = useState('');
+  const task = { ...edited };
 
-  {
-    id: 1,
-    source: 'Phone',
-    type: 'Support',
-    entity: 'Customer A',
-    assignee: 'John Doe',
-    businessStatus: 'Pending',
-    status: 'RECEIVED',
-    historic: {
-      id: 1,
-      source: 'Email',
-      type: 'Support',
-      entity: 'Customer A',
-      assignee: 'John Doe',
-      businessStatus: 'Pending',
-      status: 'RECEIVED',
-    },
-  },
-  {
-    id: 2,
-    source: 'Phone',
-    type: 'Sales',
-    entity: 'Customer B',
-    assignee: 'Jane Smith',
-    businessStatus: 'Completed',
-    status: 'CLOSED',
-    historic: {
-      id: 2,
-      source: 'Phone',
-      type: 'Sales',
-      entity: 'Customer B',
-      assignee: 'Jane Smith',
-      businessStatus: 'In Progress',
-      status: 'ONGOING',
-    },
-  },
-];
+  useEffect(() => {
+    switch (task?.source) {
+      case 'Benefit Plan':
+        setTaskTable(BENEFIT_PLAN_TASK_PREVIEW_TABLE_VALUE);
+        break;
+      default:
+        setTaskTable('');
+    }
+  }, [task]);
 
-function TaskPreviewPanel({ rights, formatMessage }) {
-  const classes = useStyles();
-
-  return (
+  return taskTable && (
     <Paper className={classes.paper}>
       <Typography className={classes.title}>
-        {formatMessage('benefitPlanTask.detailsPage.triage.preview')}
+        {formatMessage(intl, 'tasksManagement', 'benefitPlanTask.detailsPage.triage.preview')}
       </Typography>
-      <TaskPreview
+      <Contributions
+        contributionKey={TASKS_PREVIEW_CONTRIBUTION_KEY}
         rights={rights}
+        value={taskTable}
         formatMessage={formatMessage}
-        previewItems={DUMMY_PREVIEW_ITEMS}
+        previewItem={task}
       />
     </Paper>
   );
 }
 
-export default TaskPreviewPanel;
+export default withHistory(
+  withModulesManager(injectIntl(withTheme(withStyles(styles)(
+    TaskPreviewPanel,
+  )))),
+);

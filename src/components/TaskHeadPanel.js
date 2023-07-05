@@ -5,12 +5,12 @@ import {
   FormPanel,
   TextInput,
   FormattedMessage,
-  //   PublishedComponent,
+  formatMessage,
 } from '@openimis/fe-core';
 import { injectIntl } from 'react-intl';
 import { withTheme, withStyles } from '@material-ui/core/styles';
-import StatusPicker from '../pickers/StatusPicker';
-import { TASK_STATUS_LIST } from '../constants';
+import TaskStatusPicker from '../pickers/TaskStatusPicker';
+import TaskGroupPicker from '../pickers/TaskGroupPicker';
 
 const styles = (theme) => ({
   tableTitle: theme.table.title,
@@ -43,7 +43,7 @@ const renderHeadPanelTitle = (classes) => (
 class TaskHeadPanel extends FormPanel {
   render() {
     const {
-      edited, classes, formatMessage, readOnly,
+      intl, edited, classes, readOnly,
     } = this.props;
     const task = { ...edited };
     return (
@@ -79,12 +79,14 @@ class TaskHeadPanel extends FormPanel {
             />
           </Grid>
           <Grid item xs={3} className={classes.item}>
-            <TextInput
+            <TaskGroupPicker
               module="tasksManagement"
-              label="benefitPlanTask.assignee"
-              readOnly={readOnly}
-              value={task?.assignee}
-              onChange={(assignee) => this.updateAttribute('assignee', assignee)}
+              mandatory
+              withLabel
+              readOnly={false}
+              withNull
+              value={task?.taskGroup}
+              onChange={(taskGroup) => this.updateAttribute('taskGroup', taskGroup)}
             />
           </Grid>
           <Grid item xs={3} className={classes.item}>
@@ -97,11 +99,10 @@ class TaskHeadPanel extends FormPanel {
             />
           </Grid>
           <Grid item xs={3} className={classes.item}>
-            <StatusPicker
+            <TaskStatusPicker
               label="benefitPlanTask.status"
-              constants={TASK_STATUS_LIST}
               withLabel
-              nullLabel={formatMessage('defaultValue.any')}
+              nullLabel={formatMessage(intl, 'tasksManagement', 'defaultValue.any')}
               readOnly={readOnly}
               withNull
               value={task?.status}

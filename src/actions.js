@@ -1,14 +1,14 @@
 import {
-  graphql,
-  formatPageQueryWithCount,
-  formatMutation,
-  formatGQLString,
   decodeId,
+  formatGQLString,
+  formatMutation,
+  formatPageQueryWithCount,
+  graphql,
   graphqlWithVariables,
 } from '@openimis/fe-core';
 import { ACTION_TYPE, MUTATION_SERVICE } from './reducer';
 import {
-  REQUEST, SUCCESS, ERROR, CLEAR,
+  CLEAR, ERROR, REQUEST, SUCCESS,
 } from './utils/action-type';
 
 const TASK_GROUP_PROJECTION = () => [
@@ -19,17 +19,36 @@ const TASK_GROUP_PROJECTION = () => [
   'taskexecutorSet { edges { node { user { id username lastName } } } }',
 ];
 
+const TASK_FULL_PROJECTION = () => [
+  'id',
+  'entityId',
+  'source',
+  'status',
+  'executorActionEvent',
+  'businessEvent',
+  'dateCreated',
+  'isDeleted',
+  'taskGroup{id, code, completionPolicy}',
+  'data',
+  'currentEntityData',
+];
+
 export const formatTaskGroupGQL = (taskGroup) => {
   const executors = taskGroup?.executors?.map((executor) => decodeId(executor.id));
   const executorsString = executors ? `[${executors.map((executorUuid) => `"${executorUuid}"`).join(', ')}]` : '[]';
-  const GQLString = `
+  return `
   ${taskGroup?.code ? `code: "${formatGQLString(taskGroup.code)}"` : ''}
   ${taskGroup?.completionPolicy ? `completionPolicy: ${taskGroup.completionPolicy}` : ''}
   ${taskGroup?.id ? `id: "${decodeId(taskGroup.id)}"` : ''}
   ${taskGroup?.executors ? `userIds: ${executorsString}` : 'userIds: []'}
   `;
-  return GQLString;
 };
+
+export const formatTaskGQL = (task) => `
+  ${task?.id ? `id: "${task.id}"` : ''}
+  ${task?.taskGroup?.id ? 'status: ACCEPTED' : ''}
+  ${task?.taskGroup?.id ? `taskGroupId: "${decodeId(task.taskGroup.id)}"` : ''}
+  `;
 
 const PERFORM_MUTATION = (mutationType, mutationInput, ACTION, clientMutationLabel) => {
   const mutation = formatMutation(mutationType, mutationInput, ACTION);
@@ -49,6 +68,11 @@ const PERFORM_MUTATION = (mutationType, mutationInput, ACTION, clientMutationLab
 export function fetchTaskGroups(modulesManager, params) {
   const payload = formatPageQueryWithCount('taskGroup', params, TASK_GROUP_PROJECTION());
   return graphql(payload, ACTION_TYPE.SEARCH_TASK_GROUPS);
+}
+
+export function fetchTask(modulesManager, params) {
+  const payload = formatPageQueryWithCount('task', params, TASK_FULL_PROJECTION());
+  return graphql(payload, ACTION_TYPE.GET_TASK);
 }
 
 export function fetchTaskGroup(modulesManager, variables) {
@@ -103,6 +127,15 @@ export function updateTaskGroup(taskGroup, clientMutationLabel) {
     MUTATION_SERVICE.TASK_GROUP.UPDATE,
     formatTaskGroupGQL(taskGroup),
     'UPDATE_TASK_GROUP',
+    clientMutationLabel,
+  );
+}
+
+export function updateTask(task, clientMutationLabel) {
+  return PERFORM_MUTATION(
+    MUTATION_SERVICE.TASK.UPDATE,
+    formatTaskGQL(task),
+    'UPDATE_TASK',
     clientMutationLabel,
   );
 }

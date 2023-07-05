@@ -8,9 +8,8 @@ import {
 } from '@openimis/fe-core';
 import { injectIntl } from 'react-intl';
 import { withTheme, withStyles } from '@material-ui/core/styles';
-import StatusPicker from '../../pickers/StatusPicker';
-import { GROUP_RESOLVE_POLICY_LIST } from '../../constants';
 import TaskExecutorsPicker from '../../pickers/TaskExecutorsPicker';
+import GroupPolicyPicker from '../../pickers/GroupPolicyPicker';
 
 const styles = (theme) => ({
   tableTitle: theme.table.title,
@@ -62,9 +61,8 @@ class TaskGroupHeadPanel extends FormPanel {
             />
           </Grid>
           <Grid item xs={3} className={classes.item}>
-            <StatusPicker
+            <GroupPolicyPicker
               label="taskGroup.completionPolicy"
-              constants={GROUP_RESOLVE_POLICY_LIST}
               withLabel
               nullLabel={formatMessage('defaultValue.any')}
               readOnly={readOnly}

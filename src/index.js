@@ -9,6 +9,9 @@ import TasksManagementPage from './pages/TasksManagementPage';
 import TaskDetailsPage from './pages/TaskDetailsPage';
 import GroupsManagementPage from './pages/GroupsManagementPage';
 import TaskGroupPage from './pages/TaskGroupPage';
+import TaskStatusPicker from './pickers/TaskStatusPicker';
+import TaskPreviewCell from './components/TaskPreviewCell';
+import TaskGroupPicker from './pickers/TaskGroupPicker';
 
 const ROUTE_TASKS_MANAGEMENT = 'tasks';
 const ROUTE_TASK_MANAGEMENT = 'tasks/task';
@@ -29,7 +32,11 @@ const DEFAULT_CONFIG = {
   refs: [
     { key: 'tasksManagement.route.task', ref: ROUTE_TASK_MANAGEMENT },
     { key: 'tasksManagement.route.group', ref: ROUTE_GROUP_MANAGEMENT },
+    { key: 'tasksManagement.taskStatusPicker', ref: TaskStatusPicker },
+    { key: 'tasksManagement.taskPreviewCell', ref: TaskPreviewCell },
+    { key: 'tasksManagement.taskGroupPicker', ref: TaskGroupPicker },
   ],
+  'tasksManagement.taskPreview': ['socialProtection.BenefitPlanTaskPreviewTable'],
 };
 
 export const TasksManagementModule = (cfg) => ({ ...DEFAULT_CONFIG, ...cfg });

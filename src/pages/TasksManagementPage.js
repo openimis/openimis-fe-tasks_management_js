@@ -1,10 +1,9 @@
 import React from 'react';
-// import { Helmet, formatMessage } from '@openimis/fe-core';
+import { PublishedComponent } from '@openimis/fe-core';
 import { useSelector } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { withTheme, withStyles } from '@material-ui/core/styles';
 import { RIGHT_TASKS_MANAGEMENT_SEARCH } from '../constants';
-import BenefitPlanTasksPage from './BenefitPlanTasksPage';
 
 const styles = (theme) => ({
   page: theme.page,
@@ -18,7 +17,11 @@ function TasksManagementPage() {
   return (
     rights.includes(RIGHT_TASKS_MANAGEMENT_SEARCH) && (
       <>
-        <BenefitPlanTasksPage rights={rights} />
+        <PublishedComponent
+          pubRef="socialProtection.BenefitPlanTasksPage"
+          module="tasks_management"
+          rights={rights}
+        />
         {/* REST OF PAGES */}
       </>
     )

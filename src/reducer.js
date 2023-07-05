@@ -1,16 +1,17 @@
 /* eslint-disable default-param-last */
 
 import {
-  formatServerError,
-  formatGraphQLError,
-  dispatchMutationReq,
   dispatchMutationErr,
+  dispatchMutationReq,
   dispatchMutationResp,
-  parseData,
+  formatGraphQLError,
+  formatServerError,
   pageInfo,
+  parseData,
+  decodeId,
 } from '@openimis/fe-core';
 import {
-  REQUEST, SUCCESS, ERROR, CLEAR,
+  CLEAR, ERROR, REQUEST, SUCCESS,
 } from './utils/action-type';
 
 export const ACTION_TYPE = {
@@ -20,6 +21,8 @@ export const ACTION_TYPE = {
   CREATE_TASK_GROUP: 'TASK_MANAGEMENT_CREATE_TASK_GROUP',
   UPDATE_TASK_GROUP: 'TASK_MANAGEMENT_UPDATE_TASK_GROUP',
   DELETE_TASK_GROUP: 'TASK_MANAGEMENT_DELETE_TASK_GROUP',
+  GET_TASK: 'TASK_MANAGEMENT_TASK',
+  UPDATE_TASK: 'TASK_MANAGEMENT_UPDATE_TASK',
 };
 
 export const MUTATION_SERVICE = {
@@ -27,6 +30,9 @@ export const MUTATION_SERVICE = {
     CREATE: 'createTaskGroup',
     UPDATE: 'updateTaskGroup',
     DELETE: 'deleteTaskGroup',
+  },
+  TASK: {
+    UPDATE: 'updateTask',
   },
 };
 
@@ -43,6 +49,10 @@ const STORE_STATE = {
   fetchingTaskGroup: false,
   errorTaskGroup: null,
   fetchedTaskGroup: false,
+  fetchingTask: false,
+  fetchedTask: false,
+  task: null,
+  errorTask: null,
 };
 
 function reducer(
@@ -55,6 +65,13 @@ function reducer(
         ...state,
         fetchingTaskGroups: true,
       };
+    case REQUEST(ACTION_TYPE.GET_TASK):
+      return {
+        ...state,
+        fetchingTask: true,
+        fetchedTask: false,
+        task: null,
+      };
     case SUCCESS(ACTION_TYPE.SEARCH_TASK_GROUPS):
       return {
         ...state,
@@ -65,11 +82,30 @@ function reducer(
         taskGroupsPageInfo: pageInfo(action.payload.data.taskGroup),
         taskGroupsTotalCount: action.payload.data.taskGroup?.totalCount ?? 0,
       };
+    case SUCCESS(ACTION_TYPE.GET_TASK):
+      return {
+        ...state,
+        fetchingTask: false,
+        fetchedTask: true,
+        task: parseData(action.payload.data.task)?.map((task) => ({
+          ...task,
+          id: decodeId(task.id),
+          currentEntityData: JSON.parse((JSON.parse(task.currentEntityData))),
+          data: JSON.parse(task.data),
+        }))?.[0],
+        errorTask: null,
+      };
     case ERROR(ACTION_TYPE.SEARCH_TASK_GROUPS):
       return {
         ...state,
         fetchingTaskGroups: false,
         errorTaskGroups: formatServerError(action.payload),
+      };
+    case ERROR(ACTION_TYPE.GET_TASK):
+      return {
+        ...state,
+        fetchingTask: false,
+        errorTask: formatServerError(action.payload),
       };
     case REQUEST(ACTION_TYPE.GET_TASK_GROUP):
       return {
@@ -106,6 +142,8 @@ function reducer(
       return dispatchMutationResp(state, MUTATION_SERVICE.TASK_GROUP.CREATE, action);
     case SUCCESS(ACTION_TYPE.UPDATE_TASK_GROUP):
       return dispatchMutationResp(state, MUTATION_SERVICE.TASK_GROUP.UPDATE, action);
+    case SUCCESS(ACTION_TYPE.UPDATE_TASK):
+      return dispatchMutationResp(state, MUTATION_SERVICE.TASK.UPDATE, action);
     case SUCCESS(ACTION_TYPE.DELETE_TASK_GROUP):
       return dispatchMutationResp(state, MUTATION_SERVICE.TASK_GROUP.DELETE, action);
     default:

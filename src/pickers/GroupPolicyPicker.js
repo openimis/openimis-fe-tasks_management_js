@@ -1,15 +1,16 @@
 import React from 'react';
 import { ConstantBasedPicker } from '@openimis/fe-core';
+import { GROUP_RESOLVE_POLICY_LIST } from '../constants';
 
-function StatusPicker(props) {
+function GroupPolicyPicker(props) {
   const {
-    required, withNull, readOnly, onChange, value, nullLabel, withLabel, label, constants,
+    required, withNull, readOnly, onChange, value, nullLabel, withLabel,
   } = props;
   return (
     <ConstantBasedPicker
       module="tasksManagement"
-      label={label}
-      constants={constants}
+      label="taskGroup.completionPolicy"
+      constants={GROUP_RESOLVE_POLICY_LIST}
       onChange={onChange}
       value={value}
       required={required}
@@ -21,4 +22,4 @@ function StatusPicker(props) {
   );
 }
 
-export default StatusPicker;
+export default GroupPolicyPicker;
