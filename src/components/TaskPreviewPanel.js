@@ -10,7 +10,8 @@ import {
 import { BENEFIT_PLAN_TASK_PREVIEW_TABLE_VALUE, TASKS_PREVIEW_CONTRIBUTION_KEY } from '../constants';
 
 const styles = (theme) => ({
-  page: theme.page,
+  paper: theme.paper.paper,
+  title: theme.paper.title,
 });
 
 function TaskPreviewPanel({
