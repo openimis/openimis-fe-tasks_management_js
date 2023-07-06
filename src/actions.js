@@ -108,7 +108,7 @@ export function deleteTaskGroup(taskGroup, clientMutationLabel) {
   return PERFORM_MUTATION(
     MUTATION_SERVICE.TASK_GROUP.DELETE,
     taskGroupsUuids,
-    'DELETE_TASK_GROUP',
+    ACTION_TYPE.DELETE_TASK_GROUP,
     clientMutationLabel,
   );
 }
@@ -117,7 +117,7 @@ export function createTaskGroup(taskGroup, clientMutationLabel) {
   return PERFORM_MUTATION(
     MUTATION_SERVICE.TASK_GROUP.CREATE,
     formatTaskGroupGQL(taskGroup),
-    'CREATE_TASK_GROUP',
+    ACTION_TYPE.CREATE_TASK_GROUP,
     clientMutationLabel,
   );
 }
@@ -126,7 +126,7 @@ export function updateTaskGroup(taskGroup, clientMutationLabel) {
   return PERFORM_MUTATION(
     MUTATION_SERVICE.TASK_GROUP.UPDATE,
     formatTaskGroupGQL(taskGroup),
-    'UPDATE_TASK_GROUP',
+    ACTION_TYPE.UPDATE_TASK_GROUP,
     clientMutationLabel,
   );
 }
@@ -135,7 +135,7 @@ export function updateTask(task, clientMutationLabel) {
   return PERFORM_MUTATION(
     MUTATION_SERVICE.TASK.UPDATE,
     formatTaskGQL(task),
-    'UPDATE_TASK',
+    ACTION_TYPE.UPDATE_TASK,
     clientMutationLabel,
   );
 }

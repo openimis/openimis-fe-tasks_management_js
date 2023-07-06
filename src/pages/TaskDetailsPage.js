@@ -1,33 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { injectIntl } from 'react-intl';
 import { bindActionCreators } from 'redux';
-import { withTheme, withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import {
   Form, Helmet,
-  withHistory,
-  withModulesManager,
-  formatMessage,
+  useHistory,
+  useModulesManager,
+  useTranslations,
 } from '@openimis/fe-core';
+import _ from 'lodash';
 import TaskHeadPanel from '../components/TaskHeadPanel';
 import TaskPreviewPanel from '../components/TaskPreviewPanel';
 import { fetchTask, updateTask } from '../actions';
 
-const styles = (theme) => ({
+const useStyles = makeStyles((theme) => ({
   page: theme.page,
-});
+}));
 
 function TaskDetailsPage({
-  intl,
   rights,
   taskUuid,
   task,
-  history,
-  modulesManager,
-  classes,
   fetchTask,
   updateTask,
 }) {
+  const modulesManager = useModulesManager();
+  const classes = useStyles();
+  const history = useHistory();
+  const { formatMessage } = useTranslations('tasksManagement', modulesManager);
   const [editedTask, setEditedTask] = useState({});
   const back = () => history.goBack();
 
@@ -43,9 +43,14 @@ function TaskDetailsPage({
     }
   }, [task]);
 
+  const doesTaskChange = () => {
+    if (_.isEqual(task, editedTask)) return false;
+    return true;
+  };
+
   const isMandatoryFieldsEmpty = () => !editedTask?.taskGroup;
 
-  const canSave = () => !isMandatoryFieldsEmpty();
+  const canSave = () => !isMandatoryFieldsEmpty() && doesTaskChange();
 
   const handleSave = () => {
     if (task?.id) {
@@ -58,10 +63,10 @@ function TaskDetailsPage({
 
   return (
     <div className={classes.page}>
-      <Helmet title={formatMessage(intl, 'tasksManagement', 'benefitPlanTask.detailsPage.triage.title')} />
+      <Helmet title={formatMessage('benefitPlanTask.detailsPage.triage.title')} />
       <Form
         module="tasksManagement"
-        title={formatMessage(intl, 'tasksManagement', 'benefitPlanTask.detailsPage.triage.title')}
+        title={formatMessage('benefitPlanTask.detailsPage.triage.title')}
         openDirty
         edited={editedTask}
         onEditedChanged={setEditedTask}
@@ -75,8 +80,6 @@ function TaskDetailsPage({
         Panels={[TaskPreviewPanel]}
         rights={rights}
         saveTooltip={formatMessage(
-          intl,
-          'socialProtection',
           `benefitPlan.saveButton.tooltip.${canSave() ? 'enabled' : 'disabled'}`,
         )}
       />
@@ -95,10 +98,4 @@ const mapStateToProps = (state, props) => ({
   task: state.tasksManagement.task,
 });
 
-export default withHistory(
-  withModulesManager(injectIntl(withTheme(withStyles(styles)(
-    connect(mapStateToProps, mapDispatchToProps)(
-      TaskDetailsPage,
-    ),
-  )))),
-);
+export default connect(mapStateToProps, mapDispatchToProps)(TaskDetailsPage);

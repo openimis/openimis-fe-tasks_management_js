@@ -81,7 +81,7 @@ class TaskHeadPanel extends FormPanel {
           <Grid item xs={3} className={classes.item}>
             <TaskGroupPicker
               module="tasksManagement"
-              mandatory
+              required
               withLabel
               readOnly={false}
               withNull
