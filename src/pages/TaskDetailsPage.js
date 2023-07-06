@@ -56,7 +56,7 @@ function TaskDetailsPage({
     if (task?.id) {
       updateTask(
         editedTask,
-        formatMessage(intl, 'tasksManagement', 'task.update.mutationLabel'),
+        formatMessage('task.update.mutationLabel'),
       );
     }
   };
