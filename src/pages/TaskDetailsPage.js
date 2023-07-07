@@ -11,6 +11,7 @@ import {
 import _ from 'lodash';
 import TaskHeadPanel from '../components/TaskHeadPanel';
 import TaskPreviewPanel from '../components/TaskPreviewPanel';
+import TaskApprovementPanel from '../components/TaskApprovementPanel';
 import { fetchTask, updateTask } from '../actions';
 
 const useStyles = makeStyles((theme) => ({
@@ -77,10 +78,10 @@ function TaskDetailsPage({
         readOnly
         HeadPanel={TaskHeadPanel}
         formatMessage={formatMessage}
-        Panels={[TaskPreviewPanel]}
+        Panels={[TaskPreviewPanel, TaskApprovementPanel]}
         rights={rights}
         saveTooltip={formatMessage(
-          `benefitPlan.saveButton.tooltip.${canSave() ? 'enabled' : 'disabled'}`,
+          `tasksManagement.saveButton.tooltip.${canSave() ? 'enabled' : 'disabled'}`,
         )}
       />
     </div>

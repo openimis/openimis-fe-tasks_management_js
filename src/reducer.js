@@ -23,6 +23,7 @@ export const ACTION_TYPE = {
   DELETE_TASK_GROUP: 'TASK_MANAGEMENT_DELETE_TASK_GROUP',
   GET_TASK: 'TASK_MANAGEMENT_TASK',
   UPDATE_TASK: 'TASK_MANAGEMENT_UPDATE_TASK',
+  RESOLVE_TASK: 'TASK_MANAGEMENT_RESOLVE_TASK',
 };
 
 export const MUTATION_SERVICE = {
@@ -33,6 +34,7 @@ export const MUTATION_SERVICE = {
   },
   TASK: {
     UPDATE: 'updateTask',
+    RESOLVE: 'resolveTask',
   },
 };
 
@@ -144,6 +146,8 @@ function reducer(
       return dispatchMutationResp(state, MUTATION_SERVICE.TASK_GROUP.UPDATE, action);
     case SUCCESS(ACTION_TYPE.UPDATE_TASK):
       return dispatchMutationResp(state, MUTATION_SERVICE.TASK.UPDATE, action);
+    case SUCCESS(ACTION_TYPE.RESOLVE_TASK):
+      return dispatchMutationResp(state, MUTATION_SERVICE.TASK.RESOLVE, action);
     case SUCCESS(ACTION_TYPE.DELETE_TASK_GROUP):
       return dispatchMutationResp(state, MUTATION_SERVICE.TASK_GROUP.DELETE, action);
     default:

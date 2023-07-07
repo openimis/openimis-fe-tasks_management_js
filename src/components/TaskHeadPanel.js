@@ -4,6 +4,7 @@ import {
   withModulesManager,
   FormPanel,
   TextInput,
+  TextAreaInput,
   FormattedMessage,
   formatMessage,
 } from '@openimis/fe-core';
@@ -90,7 +91,7 @@ class TaskHeadPanel extends FormPanel {
             />
           </Grid>
           <Grid item xs={3} className={classes.item}>
-            <TextInput
+            <TextAreaInput
               module="tasksManagement"
               label="benefitPlanTask.businessStatus"
               readOnly={readOnly}

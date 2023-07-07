@@ -58,3 +58,6 @@ export const TASKS_PREVIEW_CONTRIBUTION_KEY = 'tasksManagement.taskPreview';
 export const BENEFIT_PLAN_TASK_PREVIEW_TABLE_VALUE = 'BenefitPlanTaskPreviewTable';
 
 export const BENEFIT_PLAN_UPDATE_STRING = 'Benefit Plan Update';
+
+export const APPROVED = 'APPROVED';
+export const FAILED = 'FAILED';

@@ -22,6 +22,8 @@
   "tasksManagement.createButton.tooltip": "Create",
   "tasksManagement.deleteButton.tooltip": "Delete",
   "tasksManagement.saveButton.tooltip": "Save changes",
+  "tasksManagement.saveButton.tooltip.enabled": "Save changes",
+  "tasksManagement.saveButton.tooltip.disabled": "Disabled",
   "tasksManagement.viewDetailsButton.tooltip": "View details",
   "tasksManagement.groupsManagement.groupHelmet": "Task Group",
   "tasksManagement.taskGroup.detailsPage.title": "Task Group {code}",
@@ -41,5 +43,9 @@
   "tasksManagement.taskGroup.create.mutationLabel": "Create task group {code}",
   "tasksManagement.TaskExecutorsPicker.label": "Task Executors",
   "tasksManagement.TaskExecutorsPicker.placeholder": "Search for Task Executor...",
-  "tasksManagement.taskGroup.placeholder": "Not assigned"
+  "tasksManagement.taskGroup.placeholder": "Not assigned",
+  "tasksManagement.task.resolve.mutationLabel": "Resolving task",
+  "tasksManagement.task.resolve.confirm.title": "Resolve task",
+  "tasksManagement.task.resolve.confirm.approve.message": "Are you sure you want to approve this task?",
+  "tasksManagement.task.resolve.confirm.fail.message": "Are you sure you want to fail this task?"
 }

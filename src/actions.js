@@ -26,6 +26,7 @@ const TASK_FULL_PROJECTION = () => [
   'status',
   'executorActionEvent',
   'businessEvent',
+  'businessStatus',
   'dateCreated',
   'isDeleted',
   'taskGroup{id, code, completionPolicy}',
@@ -48,6 +49,11 @@ export const formatTaskGQL = (task) => `
   ${task?.id ? `id: "${task.id}"` : ''}
   ${task?.taskGroup?.id ? 'status: ACCEPTED' : ''}
   ${task?.taskGroup?.id ? `taskGroupId: "${decodeId(task.taskGroup.id)}"` : ''}
+  `;
+
+export const formatTaskResolveGQL = (task, user, approveOrFail) => `
+  ${task?.id ? `id: "${task.id}"` : ''}
+  ${user && approveOrFail ? `businessStatus: "{\\"${user.id}\\": \\"${approveOrFail}\\"}"` : ''}
   `;
 
 const PERFORM_MUTATION = (mutationType, mutationInput, ACTION, clientMutationLabel) => {
@@ -136,6 +142,15 @@ export function updateTask(task, clientMutationLabel) {
     MUTATION_SERVICE.TASK.UPDATE,
     formatTaskGQL(task),
     ACTION_TYPE.UPDATE_TASK,
+    clientMutationLabel,
+  );
+}
+
+export function resolveTask(task, clientMutationLabel, user, approveOrFail) {
+  return PERFORM_MUTATION(
+    MUTATION_SERVICE.TASK.RESOLVE,
+    formatTaskResolveGQL(task, user, approveOrFail),
+    ACTION_TYPE.RESOLVE_TASK,
     clientMutationLabel,
   );
 }
