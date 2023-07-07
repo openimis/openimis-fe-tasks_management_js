@@ -30,7 +30,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function TaskApprovementPanel({
-  rights,
   edited,
   user,
   resolveTask,
@@ -104,7 +103,7 @@ function TaskApprovementPanel({
           <Fab
             color="primary"
             disabled={task.status === TASK_STATUS.RECEIVED || disable}
-            onClick={(e) => handleButtonClick(APPROVED)}
+            onClick={() => handleButtonClick(APPROVED)}
           >
             <CheckIcon />
           </Fab>
@@ -113,7 +112,7 @@ function TaskApprovementPanel({
           <Fab
             color="primary"
             disabled={task.status === TASK_STATUS.RECEIVED || disable}
-            onClick={(e) => handleButtonClick(FAILED)}
+            onClick={() => handleButtonClick(FAILED)}
           >
             <ClearIcon />
           </Fab>
