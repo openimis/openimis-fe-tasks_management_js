@@ -33,6 +33,7 @@ function TaskGroupsSearcher({
   mutation,
   deleteTaskGroup,
   fetchTaskGroups,
+  fetchedTaskGroups,
   fetchingTaskGroups,
   errorTaskGroups,
   taskGroups,
@@ -159,7 +160,8 @@ function TaskGroupsSearcher({
       fetch={fetch}
       items={taskGroups}
       itemsPageInfo={taskGroupsPageInfo}
-      fetchedItems={fetchingTaskGroups}
+      fetchedItems={fetchedTaskGroups}
+      fetchingItems={fetchingTaskGroups}
       errorItems={errorTaskGroups}
       tableTitle={formatMessageWithValues('taskGroup.searcherResultsTitle', { taskGroupsTotalCount })}
       headers={headers}
@@ -179,6 +181,7 @@ function TaskGroupsSearcher({
 
 const mapStateToProps = (state) => ({
   fetchingTaskGroups: state.tasksManagement.fetchingTaskGroups,
+  fetchedTaskGroups: state.tasksManagement.fetchedTaskGroups,
   errorTaskGroups: state.tasksManagement.errorTaskGroups,
   taskGroups: state.tasksManagement.taskGroups,
   taskGroupsPageInfo: state.tasksManagement.taskGroupsPageInfo,

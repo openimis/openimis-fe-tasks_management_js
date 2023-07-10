@@ -41,12 +41,33 @@ function TaskGroupPage({
     }
   }, [taskGroupUuid]);
 
-  const mandatoryFieldsEmpty = () => !editedTaskGroup?.code
-  || !editedTaskGroup?.completionPolicy || !editedTaskGroup?.executors?.length;
+  const getNestedValues = (obj) => {
+    const values = [];
+
+    function extractValues(data) {
+      if (typeof data === 'object' && data !== null) {
+        Object.values(data).forEach((value) => {
+          extractValues(value);
+        });
+      } else {
+        values.push(data);
+      }
+    }
+
+    extractValues(obj);
+
+    return values;
+  };
+
+  const mandatoryFieldsEmpty = () => {
+    const code = editedTaskGroup?.code?.trim();
+    return !code || !editedTaskGroup?.completionPolicy || !editedTaskGroup?.executors?.length;
+  };
 
   const doesTaskGroupChange = () => {
-    if (_.isEqual(taskGroup, editedTaskGroup)) return false;
-    return true;
+    const taskGroupValues = getNestedValues(taskGroup);
+    const editedTaskGroupValues = getNestedValues(editedTaskGroup);
+    return !_.isEqual(taskGroupValues, editedTaskGroupValues);
   };
 
   const canSave = () => !mandatoryFieldsEmpty() && doesTaskGroupChange();
