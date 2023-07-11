@@ -35,13 +35,13 @@ const TASK_FULL_PROJECTION = () => [
 ];
 
 export const formatTaskGroupGQL = (taskGroup) => {
-  const executors = taskGroup?.executors?.map((executor) => decodeId(executor.id));
+  const executors = taskGroup?.taskexecutorSet?.map((executor) => decodeId(executor.id));
   const executorsString = executors ? `[${executors.map((executorUuid) => `"${executorUuid}"`).join(', ')}]` : '[]';
   return `
   ${taskGroup?.code ? `code: "${formatGQLString(taskGroup.code)}"` : ''}
   ${taskGroup?.completionPolicy ? `completionPolicy: ${taskGroup.completionPolicy}` : ''}
-  ${taskGroup?.id ? `id: "${decodeId(taskGroup.id)}"` : ''}
-  ${taskGroup?.executors ? `userIds: ${executorsString}` : 'userIds: []'}
+  ${taskGroup?.id ? `id: "${taskGroup.id}"` : ''}
+  ${taskGroup?.taskexecutorSet ? `userIds: ${executorsString}` : 'userIds: []'}
   `;
 };
 

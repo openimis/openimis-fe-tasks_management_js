@@ -41,34 +41,12 @@ function TaskGroupPage({
     }
   }, [taskGroupUuid]);
 
-  const getNestedValues = (obj) => {
-    const values = [];
-
-    function extractValues(data) {
-      if (typeof data === 'object' && data !== null) {
-        Object.values(data).forEach((value) => {
-          extractValues(value);
-        });
-      } else {
-        values.push(data);
-      }
-    }
-
-    extractValues(obj);
-
-    return values;
-  };
-
   const mandatoryFieldsEmpty = () => {
     const code = editedTaskGroup?.code?.trim();
-    return !code || !editedTaskGroup?.completionPolicy || !editedTaskGroup?.executors?.length;
+    return !code || !editedTaskGroup?.completionPolicy || !editedTaskGroup?.taskexecutorSet?.length;
   };
 
-  const doesTaskGroupChange = () => {
-    const taskGroupValues = getNestedValues(taskGroup);
-    const editedTaskGroupValues = getNestedValues(editedTaskGroup);
-    return !_.isEqual(taskGroupValues, editedTaskGroupValues);
-  };
+  const doesTaskGroupChange = () => !_.isEqual(taskGroup, editedTaskGroup);
 
   const canSave = () => !mandatoryFieldsEmpty() && doesTaskGroupChange();
 
@@ -126,14 +104,7 @@ function TaskGroupPage({
   });
 
   useEffect(() => {
-    const storedTaskGroup = { ...taskGroup };
-    const currentExecutors = storedTaskGroup?.taskexecutorSet?.edges?.map((executor) => executor.node.user);
-
-    delete storedTaskGroup.taskexecutorSet;
-
-    const formattedTaskGroup = { ...storedTaskGroup, executors: currentExecutors };
-
-    setEditedTaskGroup(formattedTaskGroup);
+    setEditedTaskGroup(taskGroup);
   }, [taskGroup]);
 
   useEffect(() => () => dispatch(clearTaskGroup()), []);

@@ -77,8 +77,8 @@ class TaskGroupHeadPanel extends FormPanel {
               required
               readOnly={readOnly}
               groupId={taskGroup?.uuid}
-              value={taskGroup?.executors}
-              onChange={(executors) => this.updateAttribute('executors', executors)}
+              value={taskGroup?.taskexecutorSet}
+              onChange={(executors) => this.updateAttribute('taskexecutorSet', executors)}
             />
           </Grid>
         </Grid>

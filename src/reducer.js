@@ -117,7 +117,11 @@ function reducer(
     case SUCCESS(ACTION_TYPE.GET_TASK_GROUP):
       return {
         ...state,
-        taskGroup: parseData(action.payload.data.taskGroup)?.[0],
+        taskGroup: parseData(action.payload.data.taskGroup)?.map((taskGroup) => ({
+          ...taskGroup,
+          id: decodeId(taskGroup.id),
+          taskexecutorSet: taskGroup?.taskexecutorSet?.edges?.map((executor) => executor.node.user),
+        }))?.[0],
         fetchingTaskGroup: false,
         errorTaskGroup: formatGraphQLError(action.payload),
         fetchedTaskGroup: true,
