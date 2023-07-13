@@ -64,9 +64,8 @@ class TaskGroupHeadPanel extends FormPanel {
             <GroupPolicyPicker
               label="taskGroup.completionPolicy"
               withLabel
-              nullLabel={formatMessage('defaultValue.any')}
               readOnly={readOnly}
-              withNull
+              withNull={false}
               value={taskGroup?.completionPolicy}
               onChange={(completionPolicy) => this.updateAttribute('completionPolicy', completionPolicy)}
               required
