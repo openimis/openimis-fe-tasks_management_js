@@ -42,7 +42,7 @@ const renderHeadPanelTitle = (classes) => (
 class TaskGroupHeadPanel extends FormPanel {
   render() {
     const {
-      edited, classes, formatMessage, readOnly,
+      edited, classes, readOnly,
     } = this.props;
     const taskGroup = { ...edited };
     return (
