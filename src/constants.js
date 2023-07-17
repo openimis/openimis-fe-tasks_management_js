@@ -53,6 +53,8 @@ export const TASK_GROUP_CREATE = 191002;
 export const TASK_GROUP_UPDATE = 191003;
 export const TASK_GROUP_DELETE = 191004;
 
+export const RIGHT_TASK_EXECUTIONER_GROUPS = 190001;
+
 export const TASKS_PREVIEW_CONTRIBUTION_KEY = 'tasksManagement.taskPreview';
 
 export const BENEFIT_PLAN_TASK_PREVIEW_TABLE_VALUE = 'BenefitPlanTaskPreviewTable';

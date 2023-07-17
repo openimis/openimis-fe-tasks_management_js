@@ -12,6 +12,7 @@ import TaskGroupPage from './pages/TaskGroupPage';
 import TaskStatusPicker from './pickers/TaskStatusPicker';
 import TaskPreviewCell from './components/TaskPreviewCell';
 import TaskGroupPicker from './pickers/TaskGroupPicker';
+import getAdminMainMenuContributions from './contributions/AdminMainMenuContributions';
 
 const ROUTE_TASKS_MANAGEMENT = 'tasks';
 const ROUTE_TASK_MANAGEMENT = 'tasks/task';
@@ -23,6 +24,7 @@ const DEFAULT_CONFIG = {
   translations: [{ key: 'en', messages: messages_en }],
   reducers: [{ key: 'tasksManagement', reducer }],
   'core.MainMenu': [TasksMainMenu],
+  'admin.MainMenu': [...getAdminMainMenuContributions()],
   'core.Router': [
     { path: ROUTE_TASKS_MANAGEMENT, component: TasksManagementPage },
     { path: `${ROUTE_TASK_MANAGEMENT}/:task_uuid?`, component: TaskDetailsPage },

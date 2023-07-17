@@ -42,7 +42,7 @@ const renderHeadPanelTitle = (classes) => (
 class TaskGroupHeadPanel extends FormPanel {
   render() {
     const {
-      edited, classes, formatMessage, readOnly,
+      edited, classes, readOnly,
     } = this.props;
     const taskGroup = { ...edited };
     return (
@@ -64,9 +64,8 @@ class TaskGroupHeadPanel extends FormPanel {
             <GroupPolicyPicker
               label="taskGroup.completionPolicy"
               withLabel
-              nullLabel={formatMessage('defaultValue.any')}
               readOnly={readOnly}
-              withNull
+              withNull={false}
               value={taskGroup?.completionPolicy}
               onChange={(completionPolicy) => this.updateAttribute('completionPolicy', completionPolicy)}
               required

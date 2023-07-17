@@ -57,13 +57,13 @@ export const formatTaskResolveGQL = (task, user, approveOrFail) => `
   `;
 
 const PERFORM_MUTATION = (mutationType, mutationInput, ACTION, clientMutationLabel) => {
-  const mutation = formatMutation(mutationType, mutationInput, ACTION);
+  const mutation = formatMutation(mutationType, mutationInput, clientMutationLabel);
   const requestedDateTime = new Date();
   return graphql(
     mutation.payload,
-    [REQUEST(ACTION_TYPE.MUTATION), SUCCESS(ACTION_TYPE[ACTION]), ERROR(ACTION_TYPE.MUTATION)],
+    [REQUEST(ACTION_TYPE.MUTATION), SUCCESS(ACTION), ERROR(ACTION_TYPE.MUTATION)],
     {
-      actionType: ACTION_TYPE[ACTION],
+      actionType: ACTION,
       clientMutationId: mutation.clientMutationId,
       clientMutationLabel,
       requestedDateTime,
