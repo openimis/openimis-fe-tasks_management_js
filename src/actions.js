@@ -29,7 +29,7 @@ const TASK_FULL_PROJECTION = () => [
   'businessStatus',
   'dateCreated',
   'isDeleted',
-  'taskGroup{id, code, completionPolicy}',
+  'taskGroup{id, code, completionPolicy, taskexecutorSet {edges{node{id, user{id}}}}}',
   'data',
   'currentEntityData',
 ];

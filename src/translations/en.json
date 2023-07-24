@@ -10,7 +10,7 @@
   "tasksManagement.benefitPlanTask.source": "Source",
   "tasksManagement.benefitPlanTask.type": "Type",
   "tasksManagement.benefitPlanTask.entity": "Entity",
-  "tasksManagement.benefitPlanTask.assignee": "Assignee",
+  "tasksManagement.benefitPlanTask.assignee": "Task Group",
   "tasksManagement.benefitPlanTask.businessStatus": "Business Status",
   "tasksManagement.benefitPlanTask.status": "Status",
   "tasksManagement.benefitPlanTask.status.RECEIVED": "RECEIVED",

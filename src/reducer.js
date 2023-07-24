@@ -93,7 +93,12 @@ function reducer(
           ...task,
           id: decodeId(task.id),
           currentEntityData: JSON.parse((JSON.parse(task.currentEntityData))),
-          data: JSON.parse(task.data),
+          data: JSON.parse(task.data, (key, value) => {
+            if (['date_valid_to', 'date_valid_from'].includes(key)) {
+              return `${value} 00:00:00`;
+            }
+            return value;
+          }),
         }))?.[0],
         errorTask: null,
       };

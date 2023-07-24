@@ -7,12 +7,14 @@ import {
   useHistory,
   useModulesManager,
   useTranslations,
+  decodeId,
 } from '@openimis/fe-core';
 import _ from 'lodash';
 import TaskHeadPanel from '../components/TaskHeadPanel';
 import TaskPreviewPanel from '../components/TaskPreviewPanel';
 import TaskApprovementPanel from '../components/TaskApprovementPanel';
 import { fetchTask, updateTask } from '../actions';
+import { TASK_STATUS as taskStatus } from "../constants";
 
 const useStyles = makeStyles((theme) => ({
   page: theme.page,
@@ -24,6 +26,7 @@ function TaskDetailsPage({
   task,
   fetchTask,
   updateTask,
+  currentUser,
 }) {
   const modulesManager = useModulesManager();
   const classes = useStyles();
@@ -62,6 +65,19 @@ function TaskDetailsPage({
     }
   };
 
+  const isCurrentUserInTaskGroup = () => {
+    const taskExecutors = task?.taskGroup?.taskexecutorSet?.edges.map((edge) => decodeId(edge.node.user.id)) ?? [];
+    return taskExecutors && taskExecutors.includes(currentUser?.id);
+  };
+
+  const panels = () => {
+    const panels = [TaskPreviewPanel];
+    if (task && isCurrentUserInTaskGroup() && task.status === taskStatus.ACCEPTED) {
+      panels.push(TaskApprovementPanel);
+    }
+    return panels;
+  };
+
   return (
     <div className={classes.page}>
       <Helmet title={formatMessage('benefitPlanTask.detailsPage.triage.title')} />
@@ -78,7 +94,7 @@ function TaskDetailsPage({
         readOnly
         HeadPanel={TaskHeadPanel}
         formatMessage={formatMessage}
-        Panels={[TaskPreviewPanel, TaskApprovementPanel]}
+        Panels={panels()}
         rights={rights}
         saveTooltip={formatMessage(
           `tasksManagement.saveButton.tooltip.${canSave() ? 'enabled' : 'disabled'}`,
@@ -95,6 +111,7 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
 
 const mapStateToProps = (state, props) => ({
   rights: !!state.core && !!state.core.user && !!state.core.user.i_user ? state.core.user.i_user.rights : [],
+  currentUser: !!state.core && !!state?.core?.user ? state.core.user : null,
   taskUuid: props.match.params.task_uuid,
   task: state.tasksManagement.task,
 });

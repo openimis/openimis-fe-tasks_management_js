@@ -12,6 +12,7 @@ import { injectIntl } from 'react-intl';
 import { withTheme, withStyles } from '@material-ui/core/styles';
 import TaskStatusPicker from '../pickers/TaskStatusPicker';
 import TaskGroupPicker from '../pickers/TaskGroupPicker';
+import { TASK_STATUS, TASK_UPDATE } from '../constants';
 
 const styles = (theme) => ({
   tableTitle: theme.table.title,
@@ -44,7 +45,7 @@ const renderHeadPanelTitle = (classes) => (
 class TaskHeadPanel extends FormPanel {
   render() {
     const {
-      intl, edited, classes, readOnly,
+      intl, edited, classes, readOnly, rights,
     } = this.props;
     const task = { ...edited };
     return (
@@ -84,7 +85,8 @@ class TaskHeadPanel extends FormPanel {
               module="tasksManagement"
               required
               withLabel
-              readOnly={false}
+              readOnly={!rights.includes(TASK_UPDATE)
+                || [TASK_STATUS.COMPLETED, TASK_STATUS.FAILED].includes(task.status)}
               withNull
               value={task?.taskGroup}
               onChange={(taskGroup) => this.updateAttribute('taskGroup', taskGroup)}

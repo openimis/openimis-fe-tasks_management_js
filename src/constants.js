@@ -47,10 +47,12 @@ export const RIGHT_TASKS_MANAGEMENT_SEARCH = 191001;
 
 export const TASKS_MANAGEMENT_ROUTE_GROUPS_GROUP = 'tasksManagement.route.group';
 
-export const TASK_GROUP_SEARCH = 191001;
-export const TASK_GROUP_CREATE = 191002;
-export const TASK_GROUP_UPDATE = 191003;
-export const TASK_GROUP_DELETE = 191004;
+export const TASK_GROUP_SEARCH = 190001;
+export const TASK_GROUP_CREATE = 190002;
+export const TASK_GROUP_UPDATE = 190003;
+export const TASK_GROUP_DELETE = 190004;
+
+export const TASK_UPDATE = 191003;
 
 export const RIGHT_TASK_EXECUTIONER_GROUPS = 190001;
 

@@ -37,6 +37,7 @@ function TaskApprovementPanel({
   coreConfirm,
   clearConfirm,
   mutation,
+  journalize,
   confirmed,
 }) {
   const modulesManager = useModulesManager();
