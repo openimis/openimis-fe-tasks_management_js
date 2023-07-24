@@ -54,25 +54,33 @@ function TaskGroupPage({
     if (taskGroup?.id) {
       dispatch(updateTaskGroup(
         editedTaskGroup,
-        formatMessageWithValues('taskGroup.update.mutationLabel', titleParams(editedTaskGroup)),
+        formatMessageWithValues('taskGroup.update.mutationLabel', {
+          id: editedTaskGroup?.id,
+        }),
       ));
     } else {
       dispatch(createTaskGroup(
         editedTaskGroup,
-        formatMessageWithValues('taskGroup.create.mutationLabel', titleParams(editedTaskGroup)),
+        formatMessageWithValues('taskGroup.create.mutationLabel', {
+          id: editedTaskGroup?.id,
+        }),
       ));
     }
   };
 
   const deleteTaskGroupCallback = () => dispatch(deleteTaskGroup(
     taskGroup,
-    formatMessageWithValues('taskGroup.delete.mutationLabel', titleParams(taskGroup)),
+    formatMessageWithValues('taskGroup.delete.mutationLabel', {
+      id: taskGroup?.id,
+    }),
   ));
 
   const openDeleteTaskGroupConfirmDialog = () => {
     setConfirmedAction(() => deleteTaskGroupCallback);
     coreConfirm(
-      formatMessageWithValues('taskGroup.delete.confirm.title', titleParams(editedTaskGroup)),
+      formatMessageWithValues('taskGroup.delete.confirm.title', {
+        id: taskGroup?.id,
+      }),
       formatMessage('taskGroup.delete.confirm.message'),
     );
   };

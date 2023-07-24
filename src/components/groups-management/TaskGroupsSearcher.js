@@ -62,7 +62,7 @@ function TaskGroupsSearcher({
       deleteTaskGroup(
         taskGroupToDelete,
         formatMessageWithValues('taskGroup.delete.mutationLabel', {
-          code: taskGroupToDelete.code,
+          id: taskGroupToDelete?.id,
         }),
       );
       setDeletedTaskGroupsUuids([...deletedTaskGroupsUuids, taskGroupToDelete.id]);
