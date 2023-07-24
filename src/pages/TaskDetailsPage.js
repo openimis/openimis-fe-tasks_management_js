@@ -14,7 +14,7 @@ import TaskHeadPanel from '../components/TaskHeadPanel';
 import TaskPreviewPanel from '../components/TaskPreviewPanel';
 import TaskApprovementPanel from '../components/TaskApprovementPanel';
 import { fetchTask, updateTask } from '../actions';
-import { TASK_STATUS as taskStatus } from "../constants";
+import { TASK_STATUS as taskStatus } from '../constants';
 
 const useStyles = makeStyles((theme) => ({
   page: theme.page,
