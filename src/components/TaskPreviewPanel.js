@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles, Paper, Typography } from '@material-ui/core';
 import {
-  Contributions, useTranslations,
+  PublishedComponent,
   useModulesManager,
 } from '@openimis/fe-core';
 import {
-  BENEFIT_PLAN_TASK_PREVIEW_TABLE_VALUE,
-  BENEFIT_PLAN_UPDATE_STRING, EMPTY_STRING,
+  EMPTY_STRING,
   TASKS_PREVIEW_CONTRIBUTION_KEY,
 } from '../constants';
 
@@ -21,30 +20,30 @@ function TaskPreviewPanel({
 }) {
   const modulesManager = useModulesManager();
   const classes = useStyles();
-  const { formatMessage } = useTranslations('tasksManagement', modulesManager);
-  const [taskTable, setTaskTable] = useState(EMPTY_STRING);
+  const [taskTableRef, setTaskTableRef] = useState(EMPTY_STRING);
+  const [header, setHeader] = useState(EMPTY_STRING);
   const task = { ...edited };
 
   useEffect(() => {
-    switch (task?.source) {
-      case BENEFIT_PLAN_UPDATE_STRING:
-        setTaskTable(BENEFIT_PLAN_TASK_PREVIEW_TABLE_VALUE);
-        break;
-      default:
-        setTaskTable(EMPTY_STRING);
+    if (task) {
+      const contrib = modulesManager
+        .getContribs(TASKS_PREVIEW_CONTRIBUTION_KEY)
+        .filter((c) => c.taskSource === task?.source)[0];
+      const ref = contrib?.pubRef;
+      const text = contrib?.text;
+      setTaskTableRef(ref || EMPTY_STRING);
+      setHeader(text);
     }
   }, [task]);
 
-  return taskTable && (
+  return taskTableRef && (
     <Paper className={classes.paper}>
       <Typography className={classes.title}>
-        {formatMessage('benefitPlanTask.detailsPage.triage.preview')}
+        {header}
       </Typography>
-      <Contributions
-        contributionKey={TASKS_PREVIEW_CONTRIBUTION_KEY}
+      <PublishedComponent
+        pubRef={taskTableRef}
         rights={rights}
-        value={taskTable}
-        formatMessage={formatMessage}
         previewItem={task}
       />
     </Paper>

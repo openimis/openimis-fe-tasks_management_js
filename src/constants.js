@@ -57,6 +57,7 @@ export const TASK_UPDATE = 191003;
 export const RIGHT_TASK_EXECUTIONER_GROUPS = 190001;
 
 export const TASKS_PREVIEW_CONTRIBUTION_KEY = 'tasksManagement.taskPreview';
+export const TASK_SEARCHER_CONTRIBUTION_KEY = 'tasksManagement.taskSearcher';
 
 export const BENEFIT_PLAN_TASK_PREVIEW_TABLE_VALUE = 'BenefitPlanTaskPreviewTable';
 

@@ -38,7 +38,6 @@ const DEFAULT_CONFIG = {
     { key: 'tasksManagement.taskPreviewCell', ref: TaskPreviewCell },
     { key: 'tasksManagement.taskGroupPicker', ref: TaskGroupPicker },
   ],
-  'tasksManagement.taskPreview': ['socialProtection.BenefitPlanTaskPreviewTable'],
 };
 
 export const TasksManagementModule = (cfg) => ({ ...DEFAULT_CONFIG, ...cfg });
