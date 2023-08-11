@@ -62,7 +62,7 @@ function BenefitPlanTaskPreviewTable({
         <TableHead>
           <TableRow>
             {tableHeaders.map((column) => (
-              <TableCell>{formatMessage(intl, 'socialProtection', column)}</TableCell>
+              <TableCell>{column}</TableCell>
             ))}
           </TableRow>
         </TableHead>
