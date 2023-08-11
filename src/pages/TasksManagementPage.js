@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 import {
-  PublishedComponent,
-  historyPush,
   useModulesManager,
-  useHistory,
 } from '@openimis/fe-core';
 import { useSelector } from 'react-redux';
 import {
@@ -15,7 +12,8 @@ import {
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import { makeStyles } from '@material-ui/core/styles';
-import { TASK_SEARCHER_CONTRIBUTION_KEY } from '../constants';
+import { TASK_CONTRIBUTION_KEY } from "../constants";
+import TaskSearcher from "../components/TaskSearcher";
 
 const useStyles = makeStyles((theme) => ({
   page: theme.page,
@@ -34,20 +32,9 @@ function TasksManagementPage() {
   const rights = useSelector((store) => store.core?.user?.i_user?.rights ?? []);
   const classes = useStyles();
   const modulesManager = useModulesManager();
-  const history = useHistory();
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const contributions = modulesManager.getContribs(TASK_SEARCHER_CONTRIBUTION_KEY);
-
-  const openTask = (task, newTab = false) => historyPush(
-    modulesManager,
-    history,
-    'tasksManagement.route.task',
-    [task?.id],
-    newTab,
-  );
-
-  const onDoubleClick = (task) => openTask(task);
+  const contributions = modulesManager.getContribs(TASK_CONTRIBUTION_KEY);
 
   const handleOpen = () => {
     setIsExpanded(!isExpanded);
@@ -66,12 +53,10 @@ function TasksManagementPage() {
             </div>
             <Collapse in={isExpanded} timeout="auto" unmountOnExit>
               <div className={classes.page}>
-                <PublishedComponent
-                  pubRef={contribution.pubRef}
+                <TaskSearcher
+                  contribution={contribution}
                   rights={rights}
                   classes={classes}
-                  openTask={openTask}
-                  onDoubleClick={onDoubleClick}
                 />
               </div>
             </Collapse>

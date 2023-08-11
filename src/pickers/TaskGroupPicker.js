@@ -50,7 +50,7 @@ function TaskGroupPicker(props) {
       multiple={multiple}
       required={required}
       placeholder={placeholder ?? formatMessage('tasksManagement.taskGroup.placeholder')}
-      label={label ?? formatMessage('tasksManagement.benefitPlanTask.assignee')}
+      label={label ?? formatMessage('tasksManagement.task.assignee')}
       error={error}
       withLabel={withLabel}
       withPlaceholder={withPlaceholder}

@@ -24,6 +24,7 @@ export const ACTION_TYPE = {
   GET_TASK: 'TASK_MANAGEMENT_TASK',
   UPDATE_TASK: 'TASK_MANAGEMENT_UPDATE_TASK',
   RESOLVE_TASK: 'TASK_MANAGEMENT_RESOLVE_TASK',
+  SEARCH_TASKS: 'TASK_MANAGEMENT_SEARCH_TASKS',
 };
 
 export const MUTATION_SERVICE = {
@@ -55,6 +56,12 @@ const STORE_STATE = {
   fetchedTask: false,
   task: null,
   errorTask: null,
+  fetchingTasks: false,
+  fetchedTasks: false,
+  errorTasks: null,
+  tasks: [],
+  tasksPageInfo: {},
+  tasksTotalCount: 0,
 };
 
 function reducer(
@@ -73,6 +80,16 @@ function reducer(
         fetchingTask: true,
         fetchedTask: false,
         task: null,
+      };
+    case REQUEST(ACTION_TYPE.SEARCH_TASKS):
+      return {
+        ...state,
+        fetchingTasks: true,
+        fetchedTasks: false,
+        tasks: [],
+        tasksPageInfo: {},
+        tasksTotalCount: 0,
+        errorTasks: null,
       };
     case SUCCESS(ACTION_TYPE.SEARCH_TASK_GROUPS):
       return {
@@ -102,6 +119,20 @@ function reducer(
         }))?.[0],
         errorTask: null,
       };
+    case SUCCESS(ACTION_TYPE.SEARCH_TASKS):
+      return {
+        ...state,
+        fetchingTasks: false,
+        fetchedTasks: true,
+        tasks: parseData(action.payload.data.task)?.map((task) => ({
+          ...task,
+          id: decodeId(task.id),
+        })),
+        tasksPageInfo: pageInfo(action.payload.data.task),
+        tasksTotalCount:
+          action.payload.data.task ? action.payload.data.task.totalCount : null,
+        errorTasks: formatGraphQLError(action.payload),
+      };
     case ERROR(ACTION_TYPE.SEARCH_TASK_GROUPS):
       return {
         ...state,
@@ -113,6 +144,12 @@ function reducer(
         ...state,
         fetchingTask: false,
         errorTask: formatServerError(action.payload),
+      };
+    case ERROR(ACTION_TYPE.SEARCH_TASKS):
+      return {
+        ...state,
+        fetchingTasks: false,
+        errorTasks: formatServerError(action.payload),
       };
     case REQUEST(ACTION_TYPE.GET_TASK_GROUP):
       return {

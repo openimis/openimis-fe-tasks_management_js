@@ -15,7 +15,7 @@ function TaskPreviewCell({
   return (
     <>
       <p>
-        {formatter(itemData, formatterIndex)}
+        {formatter(itemData, formatterIndex) ?? HYPHEN}
       </p>
       <p style={{ fontWeight: 'bold' }}>
         {showHistorical(incomingData)}

@@ -9,7 +9,7 @@ function TaskStatusPicker(props) {
   return (
     <ConstantBasedPicker
       module="tasksManagement"
-      label="benefitPlanTask.status"
+      label="task.status"
       constants={TASK_STATUS_LIST}
       onChange={onChange}
       value={value}

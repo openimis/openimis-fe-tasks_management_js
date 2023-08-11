@@ -34,6 +34,19 @@ const TASK_FULL_PROJECTION = () => [
   'currentEntityData',
 ];
 
+const TASKS_FULL_PROJECTION = () => [
+  'id',
+  'entityId',
+  'source',
+  'status',
+  'executorActionEvent',
+  'businessEvent',
+  'dateCreated',
+  'isDeleted',
+  'taskGroup{id, code, completionPolicy}',
+  'data',
+];
+
 export const formatTaskGroupGQL = (taskGroup) => {
   const executors = taskGroup?.taskexecutorSet?.map((executor) => decodeId(executor.id));
   const executorsString = executors ? `[${executors.map((executorUuid) => `"${executorUuid}"`).join(', ')}]` : '[]';
@@ -74,6 +87,11 @@ const PERFORM_MUTATION = (mutationType, mutationInput, ACTION, clientMutationLab
 export function fetchTaskGroups(modulesManager, params) {
   const payload = formatPageQueryWithCount('taskGroup', params, TASK_GROUP_PROJECTION());
   return graphql(payload, ACTION_TYPE.SEARCH_TASK_GROUPS);
+}
+
+export function fetchTasks(modulesManager, params) {
+  const payload = formatPageQueryWithCount('task', params, TASKS_FULL_PROJECTION());
+  return graphql(payload, ACTION_TYPE.SEARCH_TASKS);
 }
 
 export function fetchTask(modulesManager, params) {
