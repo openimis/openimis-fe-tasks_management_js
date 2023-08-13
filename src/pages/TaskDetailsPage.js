@@ -33,13 +33,15 @@ function TaskDetailsPage({
   const history = useHistory();
   const { formatMessage } = useTranslations('tasksManagement', modulesManager);
   const [editedTask, setEditedTask] = useState({});
+  const [hasSaved, setHasSaved] = useState(false);
   const back = () => history.goBack();
 
   useEffect(() => {
     if (taskUuid) {
       fetchTask(modulesManager, [`id: "${taskUuid}"`]);
+      setHasSaved(false);
     }
-  }, [taskUuid]);
+  }, [taskUuid, hasSaved]);
 
   useEffect(() => {
     if (task) {
@@ -62,6 +64,7 @@ function TaskDetailsPage({
         editedTask,
         formatMessage('task.update.mutationLabel'),
       );
+      setHasSaved(true);
     }
   };
 
@@ -80,10 +83,10 @@ function TaskDetailsPage({
 
   return (
     <div className={classes.page}>
-      <Helmet title={formatMessage('benefitPlanTask.detailsPage.triage.title')} />
+      <Helmet title={formatMessage('task.detailsPage.triage.title')} />
       <Form
         module="tasksManagement"
-        title={formatMessage('benefitPlanTask.detailsPage.triage.title')}
+        title={formatMessage('task.detailsPage.triage.title')}
         openDirty
         edited={editedTask}
         onEditedChanged={setEditedTask}
@@ -95,6 +98,7 @@ function TaskDetailsPage({
         HeadPanel={TaskHeadPanel}
         formatMessage={formatMessage}
         Panels={panels()}
+        setHasSaved={setHasSaved}
         rights={rights}
         saveTooltip={formatMessage(
           `tasksManagement.saveButton.tooltip.${canSave() ? 'enabled' : 'disabled'}`,

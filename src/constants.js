@@ -58,9 +58,7 @@ export const RIGHT_TASK_EXECUTIONER_GROUPS = 190001;
 
 export const TASK_CONTRIBUTION_KEY = 'tasksManagement.tasks';
 
-export const BENEFIT_PLAN_TASK_PREVIEW_TABLE_VALUE = 'BenefitPlanTaskPreviewTable';
-
-export const BENEFIT_PLAN_UPDATE_STRING = 'Benefit Plan Update';
-
 export const APPROVED = 'APPROVED';
 export const FAILED = 'FAILED';
+
+export const DOT = '.';

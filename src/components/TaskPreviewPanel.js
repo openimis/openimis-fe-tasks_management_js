@@ -20,7 +20,7 @@ function TaskPreviewPanel({ rights, edited }) {
   useEffect(() => {
     if (task.source) {
       const contrib = modulesManager.getContribs(TASK_CONTRIBUTION_KEY)
-        .find((c) => c.taskSource === task.source);
+        .find((c) => c.taskSource.includes(task.source));
 
       if (contrib) {
         const { tableHeaders, itemFormatters, text } = contrib;

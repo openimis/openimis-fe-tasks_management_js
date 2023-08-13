@@ -14,6 +14,7 @@ import {
 } from '../constants';
 import TaskFilter from './TaskFilter';
 import { fetchTasks } from '../actions';
+import trimBusinessEvent from "../utils/trimBusinessEvent";
 
 function TaskSearcher({
   rights, contribution,
@@ -28,7 +29,6 @@ function TaskSearcher({
   const errorTasks = useSelector((state) => state?.tasksManagement?.errorTasks);
   const tasks = useSelector((state) => state?.tasksManagement?.tasks);
   const tasksPageInfo = useSelector((state) => state?.tasksManagement?.tasksPageInfo);
-  const tasksTotalCount = useSelector((state) => state?.tasksManagement?.tasksTotalCount);
 
   const openTask = (task, newTab = false) => historyPush(
     modulesManager,
@@ -39,13 +39,13 @@ function TaskSearcher({
   );
 
   const onDoubleClick = (task) => openTask(task);
-  const fetch = (params) => dispatch(fetchTasks(params));
+  const fetch = (params) => dispatch(fetchTasks(modulesManager, params));
 
   const rowIdentifier = (task) => task.id;
 
   const isRowDisabled = (_, task) => task.status !== TASK_STATUS.ACCEPTED;
 
-  const filterTasks = (tasks) => tasks.filter((task) => task.source === contribution.taskSource);
+  const filterTasks = (tasks) => tasks.filter((task) => contribution.taskSource.includes(task.source));
 
   const headers = () => {
     const headers = [
@@ -73,8 +73,8 @@ function TaskSearcher({
 
   const itemFormatters = () => [
     (task) => task.source,
-    (task) => task.type,
-    (task) => task.entity,
+    (task) => trimBusinessEvent(task.businessEvent),
+    (task) => task.entityString,
     (task) => task?.taskGroup?.code,
     (task) => task.businessStatus,
     (task) => task.status,
@@ -98,6 +98,7 @@ function TaskSearcher({
 
   const taskFilter = (props) => (
     <TaskFilter
+      intl={props.intl}
       classes={props.classes}
       filters={props.filters}
       onChangeFilters={props.onChangeFilters}

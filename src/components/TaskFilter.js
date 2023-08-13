@@ -55,7 +55,7 @@ function TaskFilter({
           module="tasksManagement"
           label="task.type"
           value={filterTextFieldValue('type')}
-          onChange={onChangeStringFilter('type', CONTAINS_LOOKUP)}
+          onChange={onChangeStringFilter('businessEvent', CONTAINS_LOOKUP)}
         />
       </Grid>
       <Grid item xs={3} className={classes.item}>

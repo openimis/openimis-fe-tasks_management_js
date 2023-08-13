@@ -22,6 +22,7 @@ const TASK_GROUP_PROJECTION = () => [
 const TASK_FULL_PROJECTION = () => [
   'id',
   'entityId',
+  'entityString',
   'source',
   'status',
   'executorActionEvent',
@@ -32,11 +33,13 @@ const TASK_FULL_PROJECTION = () => [
   'taskGroup{id, code, completionPolicy, taskexecutorSet {edges{node{id, user{id}}}}}',
   'data',
   'currentEntityData',
+  'jsonExt',
 ];
 
 const TASKS_FULL_PROJECTION = () => [
   'id',
   'entityId',
+  'entityString',
   'source',
   'status',
   'executorActionEvent',
@@ -45,6 +48,7 @@ const TASKS_FULL_PROJECTION = () => [
   'isDeleted',
   'taskGroup{id, code, completionPolicy}',
   'data',
+  'jsonExt',
 ];
 
 export const formatTaskGroupGQL = (taskGroup) => {

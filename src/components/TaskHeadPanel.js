@@ -13,6 +13,7 @@ import { withTheme, withStyles } from '@material-ui/core/styles';
 import TaskStatusPicker from '../pickers/TaskStatusPicker';
 import TaskGroupPicker from '../pickers/TaskGroupPicker';
 import { TASK_STATUS, TASK_UPDATE } from '../constants';
+import trimBusinessEvent from "../utils/trimBusinessEvent";
 
 const styles = (theme) => ({
   tableTitle: theme.table.title,
@@ -34,7 +35,7 @@ const renderHeadPanelTitle = (classes) => (
       >
         <Grid item>
           <Typography>
-            <FormattedMessage module="tasksManagement" id="benefitPlanTask.detailsPage.triage.headPanelTitle" />
+            <FormattedMessage module="tasksManagement" id="task.detailsPage.triage.headPanelTitle" />
           </Typography>
         </Grid>
       </Grid>
@@ -56,7 +57,7 @@ class TaskHeadPanel extends FormPanel {
           <Grid item xs={3} className={classes.item}>
             <TextInput
               module="tasksManagement"
-              label="benefitPlanTask.source"
+              label="task.source"
               readOnly={readOnly}
               value={task?.source}
               onChange={(source) => this.updateAttribute('source', source)}
@@ -65,18 +66,18 @@ class TaskHeadPanel extends FormPanel {
           <Grid item xs={3} className={classes.item}>
             <TextInput
               module="tasksManagement"
-              label="benefitPlanTask.type"
+              label="task.type"
               readOnly={readOnly}
-              value={task?.type}
+              value={trimBusinessEvent(task?.businessEvent)}
               onChange={(type) => this.updateAttribute('type', type)}
             />
           </Grid>
           <Grid item xs={3} className={classes.item}>
             <TextInput
               module="tasksManagement"
-              label="benefitPlanTask.entity"
+              label="task.entity"
               readOnly={readOnly}
-              value={task?.entity}
+              value={task?.entityString}
               onChange={(entity) => this.updateAttribute('entity', entity)}
             />
           </Grid>
@@ -95,7 +96,7 @@ class TaskHeadPanel extends FormPanel {
           <Grid item xs={3} className={classes.item}>
             <TextAreaInput
               module="tasksManagement"
-              label="benefitPlanTask.businessStatus"
+              label="task.businessStatus"
               readOnly={readOnly}
               value={task?.businessStatus}
               onChange={(businessStatus) => this.updateAttribute('businessStatus', businessStatus)}
@@ -103,7 +104,7 @@ class TaskHeadPanel extends FormPanel {
           </Grid>
           <Grid item xs={3} className={classes.item}>
             <TaskStatusPicker
-              label="benefitPlanTask.status"
+              label="task.status"
               withLabel
               nullLabel={formatMessage(intl, 'tasksManagement', 'defaultValue.any')}
               readOnly={readOnly}

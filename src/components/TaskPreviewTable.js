@@ -6,7 +6,7 @@ import { withStyles, withTheme } from '@material-ui/core/styles';
 import {
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
 } from '@material-ui/core';
-import { formatMessage, ProgressOrError } from '@openimis/fe-core';
+import { ProgressOrError } from '@openimis/fe-core';
 import { useSelector } from 'react-redux';
 import TaskPreviewCell from './TaskPreviewCell';
 
@@ -47,16 +47,15 @@ const styles = (theme) => ({
   },
 });
 
-function BenefitPlanTaskPreviewTable({
-  intl,
+function TaskPreviewTable({
   classes,
   previewItem,
   itemFormatters,
   tableHeaders,
 }) {
-  const { fetchingBenefitPlanTasks, errorBenefitPlanTasks } = useSelector((state) => state?.socialProtection);
+  const { fetchingTasks, errorTasks } = useSelector((state) => state?.socialProtection);
 
-  return (
+  return previewItem && (
     <TableContainer>
       <Table size="small" className={classes.table}>
         <TableHead>
@@ -69,8 +68,8 @@ function BenefitPlanTaskPreviewTable({
         <TableBody>
           <ProgressOrError
             className={classes.center}
-            progress={fetchingBenefitPlanTasks}
-            error={errorBenefitPlanTasks}
+            progress={fetchingTasks}
+            error={errorTasks}
           />
           <TableRow
             className={classes.tableRow}
@@ -82,6 +81,7 @@ function BenefitPlanTaskPreviewTable({
                 <TaskPreviewCell
                   formatter={formatter}
                   formatterIndex={formatterIndex}
+                  jsonExt={!previewItem?.jsonExt || JSON.parse(previewItem.jsonExt)}
                   itemData={previewItem.currentEntityData}
                   incomingData={previewItem.data}
                 />
@@ -94,4 +94,4 @@ function BenefitPlanTaskPreviewTable({
   );
 }
 
-export default injectIntl(withTheme(withStyles(styles)(BenefitPlanTaskPreviewTable)));
+export default injectIntl(withTheme(withStyles(styles)(TaskPreviewTable)));

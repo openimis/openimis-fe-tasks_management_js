@@ -39,6 +39,7 @@ function TaskApprovementPanel({
   mutation,
   journalize,
   confirmed,
+  setHasSaved,
 }) {
   const modulesManager = useModulesManager();
   const classes = useStyles();
@@ -79,6 +80,7 @@ function TaskApprovementPanel({
           user,
           approveOrFail,
         );
+        setHasSaved(true);
       }
     }
     return () => confirmed && clearConfirm(false);

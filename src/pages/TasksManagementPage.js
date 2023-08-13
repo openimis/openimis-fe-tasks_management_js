@@ -25,33 +25,33 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-
 }));
 
 function TasksManagementPage() {
   const rights = useSelector((store) => store.core?.user?.i_user?.rights ?? []);
   const classes = useStyles();
   const modulesManager = useModulesManager();
-  const [isExpanded, setIsExpanded] = useState(false);
 
   const contributions = modulesManager.getContribs(TASK_CONTRIBUTION_KEY);
 
-  const handleOpen = () => {
-    setIsExpanded(!isExpanded);
+  const [expandedContributionId, setExpandedContributionId] = useState(null);
+
+  const handleOpen = (contributionId) => {
+    setExpandedContributionId(contributionId === expandedContributionId ? null : contributionId);
   };
 
   return (
     contributions && (
       contributions.map((contribution) => (
-        <Box key={contribution.id}>
+        <Box key={contribution.text}>
           <Paper className={classes.paper}>
             <div className={classes.titleContainer}>
-              <Typography className={classes.title} button onClick={handleOpen}>
+              <Typography className={classes.title} button onClick={() => handleOpen(contribution.text)}>
                 {contribution.text}
-                {isExpanded ? <ExpandLess /> : <ExpandMore />}
+                {expandedContributionId === contribution.text ? <ExpandLess /> : <ExpandMore />}
               </Typography>
             </div>
-            <Collapse in={isExpanded} timeout="auto" unmountOnExit>
+            <Collapse in={expandedContributionId === contribution.text} timeout="auto" unmountOnExit>
               <div className={classes.page}>
                 <TaskSearcher
                   contribution={contribution}
