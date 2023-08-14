@@ -13,7 +13,7 @@ import TaskStatusPicker from './pickers/TaskStatusPicker';
 import TaskPreviewCell from './components/TaskPreviewCell';
 import TaskGroupPicker from './pickers/TaskGroupPicker';
 import getAdminMainMenuContributions from './contributions/AdminMainMenuContributions';
-import { TASK_ROUTE } from "./constants";
+import { TASK_ROUTE } from './constants';
 
 const ROUTE_TASKS_MANAGEMENT = 'tasks';
 const ROUTE_TASK_MANAGEMENT = 'tasks/task';
