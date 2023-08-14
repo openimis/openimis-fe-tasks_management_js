@@ -62,3 +62,5 @@ export const APPROVED = 'APPROVED';
 export const FAILED = 'FAILED';
 
 export const DOT = '.';
+
+export const TASK_ROUTE = 'tasksManagement.route.task';

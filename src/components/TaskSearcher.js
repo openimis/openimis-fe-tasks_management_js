@@ -10,8 +10,8 @@ import {
 import { IconButton, Tooltip } from '@material-ui/core';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import {
-  RIGHT_TASKS_MANAGEMENT_SEARCH, DEFAULT_PAGE_SIZE, ROWS_PER_PAGE_OPTIONS, TASK_STATUS,
-} from '../constants';
+  RIGHT_TASKS_MANAGEMENT_SEARCH, DEFAULT_PAGE_SIZE, ROWS_PER_PAGE_OPTIONS, TASK_STATUS, TASK_ROUTE
+} from "../constants";
 import TaskFilter from './TaskFilter';
 import { fetchTasks } from '../actions';
 import trimBusinessEvent from '../utils/trimBusinessEvent';
@@ -33,7 +33,7 @@ function TaskSearcher({
   const openTask = (task, newTab = false) => historyPush(
     modulesManager,
     history,
-    'tasksManagement.route.task',
+    TASK_ROUTE,
     [task?.id],
     newTab,
   );

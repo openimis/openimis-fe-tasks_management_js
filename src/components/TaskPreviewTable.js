@@ -53,7 +53,7 @@ function TaskPreviewTable({
   itemFormatters,
   tableHeaders,
 }) {
-  const { fetchingTasks, errorTasks } = useSelector((state) => state?.socialProtection);
+  const { fetchingTasks, errorTasks } = useSelector((state) => state?.tasksManagement);
 
   return previewItem && (
     <TableContainer>
