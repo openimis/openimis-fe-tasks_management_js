@@ -14,7 +14,7 @@ import {
 } from '../constants';
 import TaskFilter from './TaskFilter';
 import { fetchTasks } from '../actions';
-import trimBusinessEvent from "../utils/trimBusinessEvent";
+import trimBusinessEvent from '../utils/trimBusinessEvent';
 
 function TaskSearcher({
   rights, contribution,

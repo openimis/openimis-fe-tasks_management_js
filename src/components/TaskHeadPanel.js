@@ -13,7 +13,7 @@ import { withTheme, withStyles } from '@material-ui/core/styles';
 import TaskStatusPicker from '../pickers/TaskStatusPicker';
 import TaskGroupPicker from '../pickers/TaskGroupPicker';
 import { TASK_STATUS, TASK_UPDATE } from '../constants';
-import trimBusinessEvent from "../utils/trimBusinessEvent";
+import trimBusinessEvent from '../utils/trimBusinessEvent';
 
 const styles = (theme) => ({
   tableTitle: theme.table.title,

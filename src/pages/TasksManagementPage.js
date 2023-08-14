@@ -12,8 +12,8 @@ import {
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import { makeStyles } from '@material-ui/core/styles';
-import { TASK_CONTRIBUTION_KEY } from "../constants";
-import TaskSearcher from "../components/TaskSearcher";
+import { TASK_CONTRIBUTION_KEY } from '../constants';
+import TaskSearcher from '../components/TaskSearcher';
 
 const useStyles = makeStyles((theme) => ({
   page: theme.page,
