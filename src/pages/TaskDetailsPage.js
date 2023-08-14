@@ -33,15 +33,15 @@ function TaskDetailsPage({
   const history = useHistory();
   const { formatMessage } = useTranslations('tasksManagement', modulesManager);
   const [editedTask, setEditedTask] = useState({});
-  const [hasSaved, setHasSaved] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
   const back = () => history.goBack();
 
   useEffect(() => {
     if (taskUuid) {
       fetchTask(modulesManager, [`id: "${taskUuid}"`]);
-      setHasSaved(false);
+      setIsSaved(false);
     }
-  }, [taskUuid, hasSaved]);
+  }, [taskUuid, isSaved]);
 
   useEffect(() => {
     if (task) {
@@ -64,7 +64,7 @@ function TaskDetailsPage({
         editedTask,
         formatMessage('task.update.mutationLabel'),
       );
-      setHasSaved(true);
+      setIsSaved(true);
     }
   };
 
@@ -98,7 +98,7 @@ function TaskDetailsPage({
         HeadPanel={TaskHeadPanel}
         formatMessage={formatMessage}
         Panels={panels()}
-        setHasSaved={setHasSaved}
+        setIsSaved={setIsSaved}
         rights={rights}
         saveTooltip={formatMessage(
           `tasksManagement.saveButton.tooltip.${canSave() ? 'enabled' : 'disabled'}`,
