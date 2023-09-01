@@ -44,6 +44,7 @@ const TASKS_FULL_PROJECTION = () => [
   'status',
   'executorActionEvent',
   'businessEvent',
+  'businessStatus',
   'dateCreated',
   'isDeleted',
   'taskGroup{id, code, completionPolicy}',
