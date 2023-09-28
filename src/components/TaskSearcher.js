@@ -119,7 +119,7 @@ function TaskSearcher({
       fetchedItems={fetchedTasks}
       errorItems={errorTasks}
       tableTitle={formatMessageWithValues('task.searcherResultsTitle', {
-        tasksTotalCount: tasksTotalCount,
+        tasksTotalCount,
       })}
       headers={headers}
       itemFormatters={itemFormatters}
