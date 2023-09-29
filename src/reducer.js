@@ -182,6 +182,14 @@ function reducer(
         errorTaskGroup: null,
         fetchedTaskGroup: false,
       };
+    case CLEAR(ACTION_TYPE.GET_TASK):
+      return {
+        ...state,
+        task: null,
+        fetchingTask: false,
+        errorTask: null,
+        fetchedTask: false,
+      };
     case REQUEST(ACTION_TYPE.MUTATION):
       return dispatchMutationReq(state, action);
     case ERROR(ACTION_TYPE.MUTATION):

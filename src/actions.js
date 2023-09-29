@@ -132,6 +132,12 @@ export const clearTaskGroup = () => (dispatch) => {
   });
 };
 
+export const clearTask = () => (dispatch) => {
+  dispatch({
+    type: CLEAR(ACTION_TYPE.GET_TASK),
+  });
+};
+
 export function deleteTaskGroup(taskGroup, clientMutationLabel) {
   const taskGroupsUuids = `ids: ["${decodeId(taskGroup?.id)}"]`;
   return PERFORM_MUTATION(
