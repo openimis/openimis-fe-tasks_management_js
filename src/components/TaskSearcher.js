@@ -29,6 +29,7 @@ function TaskSearcher({
   const errorTasks = useSelector((state) => state?.tasksManagement?.errorTasks);
   const tasks = useSelector((state) => state?.tasksManagement?.tasks);
   const tasksPageInfo = useSelector((state) => state?.tasksManagement?.tasksPageInfo);
+  const tasksTotalCount = useSelector((state) => state?.tasksManagement?.tasksTotalCount);
 
   const openTask = (task, newTab = false) => historyPush(
     modulesManager,
@@ -44,8 +45,6 @@ function TaskSearcher({
   const rowIdentifier = (task) => task.id;
 
   const isRowDisabled = (_, task) => task.status !== TASK_STATUS.ACCEPTED;
-
-  const filterTasks = (tasks) => tasks.filter((task) => contribution.taskSource.includes(task.source));
 
   const headers = () => {
     const headers = [
@@ -94,6 +93,10 @@ function TaskSearcher({
       value: false,
       filter: 'isDeleted: false',
     },
+    source: {
+      value: contribution.taskSource,
+      filter: `source: "${contribution.taskSource}"`,
+    },
   });
 
   const taskFilter = (props) => (
@@ -110,13 +113,13 @@ function TaskSearcher({
       module="tasksManagement"
       FilterPane={taskFilter}
       fetch={fetch}
-      items={filterTasks(tasks)}
+      items={tasks}
       itemsPageInfo={tasksPageInfo}
       fetchingItems={fetchingTasks}
       fetchedItems={fetchedTasks}
       errorItems={errorTasks}
       tableTitle={formatMessageWithValues('task.searcherResultsTitle', {
-        tasksTotalCount: filterTasks(tasks).length,
+        tasksTotalCount,
       })}
       headers={headers}
       itemFormatters={itemFormatters}
