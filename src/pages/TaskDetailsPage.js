@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { makeStyles } from '@material-ui/core/styles';
@@ -36,6 +36,7 @@ function TaskDetailsPage({
   const history = useHistory();
   const { formatMessage } = useTranslations('tasksManagement', modulesManager);
   const [editedTask, setEditedTask] = useState({});
+  const submittingMutationRef = useRef();
   const back = () => history.goBack();
 
   useEffect(() => {
@@ -45,9 +46,10 @@ function TaskDetailsPage({
   }, [taskUuid]);
 
   useEffect(() => {
-    if (submittingMutation && mutation?.clientMutationId) {
-      fetchTask(modulesManager, [`clientMutationId: "${mutation?.clientMutationId}"`]);
+    if (submittingMutationRef.current && !submittingMutation && mutation?.clientMutationId) {
+      fetchTask(modulesManager, [`clientMutationId: "${mutation.clientMutationId}"`]);
     }
+    submittingMutationRef.current = submittingMutation;
   }, [submittingMutation]);
 
   useEffect(() => {
