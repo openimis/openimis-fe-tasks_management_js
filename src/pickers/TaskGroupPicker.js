@@ -29,7 +29,7 @@ function TaskGroupPicker(props) {
   const { isLoading, data, error } = useGraphqlQuery(
     `
       query TaskGroupPicker ($search: String) {
-          taskGroup(search: $search, first: 20) {
+          taskGroup(search: $search, first: 20, isDeleted: false) {
               edges {
                   node {
                       id
