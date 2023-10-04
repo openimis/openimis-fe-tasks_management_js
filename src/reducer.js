@@ -14,6 +14,12 @@ import {
   CLEAR, ERROR, REQUEST, SUCCESS,
 } from './utils/action-type';
 
+function parseTaskData(object) {
+  if (object?.beneficiary_data_schema) {
+    return { ...object, beneficiary_data_schema: JSON.stringify(object.beneficiary_data_schema) };
+  }
+  return object;
+}
 export const ACTION_TYPE = {
   MUTATION: 'TASK_MANAGEMENT_MUTATION',
   SEARCH_TASK_GROUPS: 'TASK_MANAGEMENT_TASK_GROUPS',
@@ -109,13 +115,13 @@ function reducer(
         task: parseData(action.payload.data.task)?.map((task) => ({
           ...task,
           id: decodeId(task.id),
-          currentEntityData: JSON.parse((JSON.parse(task.currentEntityData))),
-          data: JSON.parse(task.data, (key, value) => {
+          currentEntityData: parseTaskData(JSON.parse((JSON.parse(task.currentEntityData)))),
+          data: parseTaskData(JSON.parse(task.data, (key, value) => {
             if (['date_valid_to', 'date_valid_from'].includes(key)) {
               return `${value} 00:00:00`;
             }
             return value;
-          }),
+          })),
         }))?.[0],
         errorTask: null,
       };
