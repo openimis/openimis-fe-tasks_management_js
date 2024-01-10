@@ -82,8 +82,8 @@ function TaskPreviewTable({
                   formatter={formatter}
                   formatterIndex={formatterIndex}
                   jsonExt={!previewItem?.jsonExt || JSON.parse(previewItem.jsonExt)}
-                  itemData={previewItem.currentEntityData}
-                  incomingData={previewItem.data}
+                  itemData={previewItem.data?.current_data}
+                  incomingData={previewItem.data?.incoming_data}
                 />
               </TableCell>
             ))}
