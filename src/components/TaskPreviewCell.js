@@ -2,20 +2,20 @@ import React from 'react';
 import { HYPHEN } from '../constants';
 
 function TaskPreviewCell({
-  formatterIndex, itemData, incomingData, formatter, jsonExt,
+  formatterIndex, itemData, incomingData, formatter,
 }) {
   const showHistorical = (itemIncomingData) => {
-    if (formatter(itemData, jsonExt, formatterIndex) === formatter(itemIncomingData, jsonExt, formatterIndex)
-        || !formatter(itemIncomingData, jsonExt, formatterIndex)) {
+    if (formatter(itemData, formatterIndex) === formatter(itemIncomingData, formatterIndex)
+        || !formatter(itemIncomingData, formatterIndex)) {
       return HYPHEN;
     }
-    return formatter(itemIncomingData, jsonExt, formatterIndex);
+    return formatter(itemIncomingData, formatterIndex);
   };
 
   return (
     <>
       <p>
-        {formatter(itemData, jsonExt, formatterIndex) ?? HYPHEN}
+        {formatter(itemData, formatterIndex) ?? HYPHEN}
       </p>
       <p style={{ fontWeight: 'bold' }}>
         {showHistorical(incomingData)}

@@ -32,7 +32,7 @@ const TASK_FULL_PROJECTION = () => [
   'isDeleted',
   'taskGroup{id, code, completionPolicy, taskexecutorSet {edges{node{id, user{id}}}}}',
   'data',
-  'currentEntityData',
+  'businessData',
   'jsonExt',
 ];
 

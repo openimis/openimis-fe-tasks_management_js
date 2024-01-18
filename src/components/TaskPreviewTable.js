@@ -81,9 +81,8 @@ function TaskPreviewTable({
                 <TaskPreviewCell
                   formatter={formatter}
                   formatterIndex={formatterIndex}
-                  jsonExt={!previewItem?.jsonExt || JSON.parse(previewItem.jsonExt)}
-                  itemData={previewItem.data?.current_data}
-                  incomingData={previewItem.data?.incoming_data}
+                  itemData={previewItem.businessData?.current_data}
+                  incomingData={previewItem.businessData?.incoming_data}
                 />
               </TableCell>
             ))}
