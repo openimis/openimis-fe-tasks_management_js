@@ -9,7 +9,7 @@ function TaskPreviewCell({
         || !formatter(itemIncomingData, jsonExt, formatterIndex)) {
       return HYPHEN;
     }
-    return formatter(itemIncomingData, formatterIndex);
+    return formatter(itemIncomingData, jsonExt, formatterIndex);
   };
 
   return (
