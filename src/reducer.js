@@ -116,7 +116,6 @@ function reducer(
           ...task,
           id: decodeId(task.id),
           businessData: parseTaskData(JSON.parse(task.businessData, (key, value) => {
-            console.log(task.businessData)
             if (['date_valid_to', 'date_valid_from'].includes(key)) {
               return `${value} 00:00:00`;
             }
