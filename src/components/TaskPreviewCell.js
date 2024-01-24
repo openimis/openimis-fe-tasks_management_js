@@ -14,12 +14,16 @@ function TaskPreviewCell({
 
   return (
     <>
+      {itemData && (
       <p>
         {formatter(itemData, jsonExt, formatterIndex) ?? HYPHEN}
       </p>
+      )}
+      {incomingData && (
       <p style={{ fontWeight: 'bold' }}>
         {showHistorical(incomingData)}
       </p>
+      )}
     </>
   );
 }
