@@ -12,17 +12,22 @@ function TaskPreviewCell({
     return formatter(itemIncomingData, jsonExt, formatterIndex);
   };
 
+  const shouldDisplay = (value) => {
+    if (!value) return false;
+    return Object.keys(value).length !== 0;
+  };
+
   return (
     <>
-      {itemData && (
-      <p>
-        {formatter(itemData, jsonExt, formatterIndex) ?? HYPHEN}
-      </p>
+      {(shouldDisplay(itemData) || shouldDisplay(jsonExt)) && (
+        <p>
+          {formatter(itemData, jsonExt, formatterIndex) ?? HYPHEN}
+        </p>
       )}
-      {incomingData && (
-      <p style={{ fontWeight: 'bold' }}>
-        {showHistorical(incomingData)}
-      </p>
+      {shouldDisplay(incomingData) && (
+        <p style={{ fontWeight: 'bold' }}>
+          {showHistorical(incomingData)}
+        </p>
       )}
     </>
   );
