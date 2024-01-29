@@ -176,7 +176,7 @@ export function updateTask(task, clientMutationLabel) {
   );
 }
 
-export function resolveTask(task, clientMutationLabel, user, approveOrFail, additionalData) {
+export function resolveTask(task, clientMutationLabel, user, approveOrFail, additionalData = null) {
   return PERFORM_MUTATION(
     MUTATION_SERVICE.TASK.RESOLVE,
     formatTaskResolveGQL(task, user, approveOrFail, additionalData),

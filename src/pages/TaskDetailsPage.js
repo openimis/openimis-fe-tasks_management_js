@@ -36,7 +36,7 @@ function TaskDetailsPage({
   const history = useHistory();
   const { formatMessage } = useTranslations('tasksManagement', modulesManager);
   const [editedTask, setEditedTask] = useState({});
-  const [additionalData, setAdditionalData] = useState({});
+  const [additionalData, setAdditionalData] = useState(null);
   const submittingMutationRef = useRef();
   const back = () => history.goBack();
 
