@@ -69,9 +69,10 @@ export const formatTaskGQL = (task) => `
   ${task?.taskGroup?.id ? `taskGroupId: "${decodeId(task.taskGroup.id)}"` : ''}
   `;
 
-export const formatTaskResolveGQL = (task, user, approveOrFail) => `
+export const formatTaskResolveGQL = (task, user, approveOrFail, additionalData) => `
   ${task?.id ? `id: "${task.id}"` : ''}
   ${user && approveOrFail ? `businessStatus: "{\\"${user.id}\\": \\"${approveOrFail}\\"}"` : ''}
+  ${additionalData ? `additionalData: "${additionalData}"` : ''}
   `;
 
 const PERFORM_MUTATION = (mutationType, mutationInput, ACTION, clientMutationLabel) => {
@@ -175,10 +176,10 @@ export function updateTask(task, clientMutationLabel) {
   );
 }
 
-export function resolveTask(task, clientMutationLabel, user, approveOrFail) {
+export function resolveTask(task, clientMutationLabel, user, approveOrFail, additionalData) {
   return PERFORM_MUTATION(
     MUTATION_SERVICE.TASK.RESOLVE,
-    formatTaskResolveGQL(task, user, approveOrFail),
+    formatTaskResolveGQL(task, user, approveOrFail, additionalData),
     ACTION_TYPE.RESOLVE_TASK,
     clientMutationLabel,
   );

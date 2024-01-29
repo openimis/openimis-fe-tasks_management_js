@@ -39,6 +39,7 @@ function TaskApprovementPanel({
   mutation,
   journalize,
   confirmed,
+  additionalData,
 }) {
   const modulesManager = useModulesManager();
   const classes = useStyles();
@@ -78,6 +79,7 @@ function TaskApprovementPanel({
           formatMessage('task.resolve.mutationLabel'),
           user,
           approveOrFail,
+          additionalData,
         );
       }
     }

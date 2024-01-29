@@ -36,6 +36,7 @@ function TaskDetailsPage({
   const history = useHistory();
   const { formatMessage } = useTranslations('tasksManagement', modulesManager);
   const [editedTask, setEditedTask] = useState({});
+  const [additionalData, setAdditionalData] = useState({});
   const submittingMutationRef = useRef();
   const back = () => history.goBack();
 
@@ -111,6 +112,8 @@ function TaskDetailsPage({
         formatMessage={formatMessage}
         Panels={panels()}
         rights={rights}
+        additionalData={additionalData}
+        setAdditionalData={setAdditionalData}
         saveTooltip={formatMessage(
           `tasksManagement.saveButton.tooltip.${canSave() ? 'enabled' : 'disabled'}`,
         )}

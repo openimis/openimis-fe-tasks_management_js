@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
   title: theme.paper.title,
 }));
 
-function TaskPreviewPanel({ rights, edited }) {
+function TaskPreviewPanel({ rights, edited, setAdditionalData }) {
   const modulesManager = useModulesManager();
   const classes = useStyles();
   const [header, setHeader] = useState(EMPTY_STRING);
@@ -41,6 +41,7 @@ function TaskPreviewPanel({ rights, edited }) {
         previewItem={task}
         tableHeaders={tableTaskHeaders}
         itemFormatters={taskItemFormatters}
+        setAdditionalData={setAdditionalData}
       />
     </Paper>
   );

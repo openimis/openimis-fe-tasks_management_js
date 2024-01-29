@@ -2,27 +2,33 @@ import React from 'react';
 import { HYPHEN } from '../constants';
 
 function TaskPreviewCell({
-  formatterIndex, itemData, incomingData, formatter, jsonExt,
+  formatterIndex, itemData, incomingData, formatter, jsonExt, setAdditionalData,
 }) {
   const showHistorical = (itemIncomingData) => {
-    if (formatter(itemData, jsonExt, formatterIndex) === formatter(itemIncomingData, jsonExt, formatterIndex)
-        || !formatter(itemIncomingData, jsonExt, formatterIndex)) {
+    if (formatter(itemData, jsonExt, formatterIndex, setAdditionalData)
+        === formatter(itemIncomingData, jsonExt, formatterIndex, setAdditionalData)
+        || !formatter(itemIncomingData, jsonExt, formatterIndex, setAdditionalData)) {
       return HYPHEN;
     }
-    return formatter(itemIncomingData, jsonExt, formatterIndex);
+    return formatter(itemIncomingData, jsonExt, formatterIndex, setAdditionalData);
+  };
+
+  const shouldDisplay = (value) => {
+    if (!value) return false;
+    return Object.keys(value).length !== 0;
   };
 
   return (
     <>
-      {itemData && (
-      <p>
-        {formatter(itemData, jsonExt, formatterIndex) ?? HYPHEN}
-      </p>
+      {(shouldDisplay(itemData) || shouldDisplay(jsonExt)) && (
+        <p>
+          {formatter(itemData, jsonExt, formatterIndex, setAdditionalData) ?? HYPHEN}
+        </p>
       )}
-      {incomingData && (
-      <p style={{ fontWeight: 'bold' }}>
-        {showHistorical(incomingData)}
-      </p>
+      {shouldDisplay(incomingData) && (
+        <p style={{ fontWeight: 'bold' }}>
+          {showHistorical(incomingData)}
+        </p>
       )}
     </>
   );

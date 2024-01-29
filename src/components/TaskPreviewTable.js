@@ -52,6 +52,7 @@ function TaskPreviewTable({
   previewItem,
   itemFormatters,
   tableHeaders,
+  setAdditionalData,
 }) {
   const { fetchingTasks, errorTasks } = useSelector((state) => state?.tasksManagement);
 
@@ -71,9 +72,7 @@ function TaskPreviewTable({
             progress={fetchingTasks}
             error={errorTasks}
           />
-          <TableRow
-            className={classes.tableRow}
-          >
+          <TableRow>
             {itemFormatters.map((formatter, formatterIndex) => (
               <TableCell
                 key={formatterIndex}
@@ -84,6 +83,7 @@ function TaskPreviewTable({
                   jsonExt={!previewItem?.jsonExt || JSON.parse(previewItem.jsonExt)}
                   itemData={previewItem.businessData?.current_data}
                   incomingData={previewItem.businessData?.incoming_data || previewItem.businessData}
+                  setAdditionalData={setAdditionalData}
                 />
               </TableCell>
             ))}
