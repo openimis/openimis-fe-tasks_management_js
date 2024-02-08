@@ -15,6 +15,7 @@ import TaskGroupPicker from './pickers/TaskGroupPicker';
 import TaskSearcher from './components/TaskSearcher';
 import getAdminMainMenuContributions from './contributions/AdminMainMenuContributions';
 import { TASK_ROUTE } from './constants';
+import { fetchTask } from './actions';
 
 const ROUTE_TASKS_MANAGEMENT = 'tasks';
 const ROUTE_TASK_MANAGEMENT = 'tasks/task';
@@ -40,6 +41,8 @@ const DEFAULT_CONFIG = {
     { key: 'tasksManagement.taskPreviewCell', ref: TaskPreviewCell },
     { key: 'tasksManagement.taskGroupPicker', ref: TaskGroupPicker },
     { key: 'tasksManagement.taskSearcher', ref: TaskSearcher },
+    { key: 'tasksManagement.taskDetailsPage', ref: TaskDetailsPage },
+    { key: 'tasksManagement.fetchTask', ref: fetchTask },
   ],
 };
 

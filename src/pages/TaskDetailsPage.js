@@ -30,6 +30,7 @@ function TaskDetailsPage({
   submittingMutation,
   mutation,
   clearTask,
+  hideBody = false,
 }) {
   const modulesManager = useModulesManager();
   const classes = useStyles();
@@ -87,7 +88,10 @@ function TaskDetailsPage({
   };
 
   const panels = () => {
-    const panels = [TaskPreviewPanel];
+    const panels = [];
+    if (!hideBody) {
+      panels.push(TaskPreviewPanel);
+    }
     if (task && isCurrentUserInTaskGroup() && task.status === taskStatus.ACCEPTED) {
       panels.push(TaskApprovementPanel);
     }
@@ -131,7 +135,7 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
 const mapStateToProps = (state, props) => ({
   rights: !!state.core && !!state.core.user && !!state.core.user.i_user ? state.core.user.i_user.rights : [],
   currentUser: !!state.core && !!state?.core?.user ? state.core.user : null,
-  taskUuid: props.match.params.task_uuid,
+  taskUuid: props?.match?.params?.task_uuid,
   submittingMutation: state.tasksManagement.submittingMutation,
   mutation: state.tasksManagement.mutation,
   task: state.tasksManagement.task,
