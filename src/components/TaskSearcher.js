@@ -17,7 +17,7 @@ import { fetchTasks } from '../actions';
 import trimBusinessEvent from '../utils/trimBusinessEvent';
 
 function TaskSearcher({
-  rights, contribution, entityId,
+  rights, contribution, entityId, showFilters = true,
 }) {
   const history = useHistory();
   const modulesManager = useModulesManager();
@@ -94,12 +94,14 @@ function TaskSearcher({
         value: false,
         filter: 'isDeleted: false',
       },
-      source: {
+    };
+    if (contribution?.taskSource) {
+      filters.source = {
         value: contribution.taskSource,
         filter: `source: "${contribution.taskSource}"`,
-      },
-    };
-    if (entityId !== null && entityId !== undefined) {
+      };
+    }
+    if (entityId) {
       filters.entityId = {
         value: entityId,
         filter: `entityId: "${entityId}"`,
@@ -120,7 +122,7 @@ function TaskSearcher({
   return (
     <Searcher
       module="tasksManagement"
-      FilterPane={taskFilter}
+      FilterPane={showFilters && taskFilter}
       fetch={fetch}
       items={tasks}
       itemsPageInfo={tasksPageInfo}
