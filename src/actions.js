@@ -54,12 +54,17 @@ const TASKS_FULL_PROJECTION = () => [
 
 export const formatTaskGroupGQL = (taskGroup) => {
   const executors = taskGroup?.taskexecutorSet?.map((executor) => decodeId(executor.id));
+  const taskSources = taskGroup?.taskSources?.map((taskSource) => taskSource.name);
   const executorsString = executors ? `[${executors.map((executorUuid) => `"${executorUuid}"`).join(', ')}]` : '[]';
+  const taskSourcesString = taskSources
+    ? `[${taskSources.map((taskSourceName) => `"${taskSourceName}"`).join(', ')}]`
+    : '[]';
   return `
   ${taskGroup?.code ? `code: "${formatGQLString(taskGroup.code)}"` : ''}
   ${taskGroup?.completionPolicy ? `completionPolicy: ${taskGroup.completionPolicy}` : ''}
   ${taskGroup?.id ? `id: "${taskGroup.id}"` : ''}
   ${taskGroup?.taskexecutorSet ? `userIds: ${executorsString}` : 'userIds: []'}
+  ${taskGroup?.taskSources ? `taskSources: ${taskSourcesString}` : 'taskSources: []'}
   `;
 };
 
@@ -116,6 +121,7 @@ export function fetchTaskGroup(modulesManager, variables) {
               uuid
               code
               completionPolicy
+              jsonExt
               taskexecutorSet { edges { node { user { id username lastName } } } },
             }
           }

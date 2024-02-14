@@ -10,6 +10,7 @@ import { injectIntl } from 'react-intl';
 import { withTheme, withStyles } from '@material-ui/core/styles';
 import TaskExecutorsPicker from '../../pickers/TaskExecutorsPicker';
 import GroupPolicyPicker from '../../pickers/GroupPolicyPicker';
+import TaskSourcePicker from "../../pickers/TaskSourcePicker";
 
 const styles = (theme) => ({
   tableTitle: theme.table.title,
@@ -78,6 +79,13 @@ class TaskGroupHeadPanel extends FormPanel {
               groupId={taskGroup?.uuid}
               value={taskGroup?.taskexecutorSet}
               onChange={(executors) => this.updateAttribute('taskexecutorSet', executors)}
+            />
+          </Grid>
+          <Grid item xs={6} className={classes.item}>
+            <TaskSourcePicker
+              readOnly={readOnly}
+              value={taskGroup?.taskSources}
+              onChange={(sources) => this.updateAttribute('taskSources', sources)}
             />
           </Grid>
         </Grid>

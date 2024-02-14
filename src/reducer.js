@@ -168,6 +168,9 @@ function reducer(
           ...taskGroup,
           id: decodeId(taskGroup.id),
           taskexecutorSet: taskGroup?.taskexecutorSet?.edges?.map((executor) => executor.node.user),
+          taskSources: taskGroup?.jsonExt
+            ? JSON.parse(taskGroup.jsonExt).task_sources.map((source) => ({ id: source, name: source }))
+            : null,
         }))?.[0],
         fetchingTaskGroup: false,
         errorTaskGroup: formatGraphQLError(action.payload),
