@@ -48,6 +48,7 @@ function TaskFilter({
           label="task.source"
           value={filterTextFieldValue('source')}
           onChange={onChangeStringFilter('source', CONTAINS_LOOKUP)}
+          readOnly
         />
       </Grid>
       <Grid item xs={3} className={classes.item}>
