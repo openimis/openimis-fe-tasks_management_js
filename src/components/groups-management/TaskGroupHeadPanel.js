@@ -10,7 +10,7 @@ import { injectIntl } from 'react-intl';
 import { withTheme, withStyles } from '@material-ui/core/styles';
 import TaskExecutorsPicker from '../../pickers/TaskExecutorsPicker';
 import GroupPolicyPicker from '../../pickers/GroupPolicyPicker';
-import TaskSourcePicker from "../../pickers/TaskSourcePicker";
+import TaskSourcePicker from '../../pickers/TaskSourcePicker';
 
 const styles = (theme) => ({
   tableTitle: theme.table.title,
