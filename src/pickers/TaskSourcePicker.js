@@ -1,6 +1,8 @@
 import React from 'react';
 import {
-  Autocomplete, useTranslations, useModulesManager,
+  Autocomplete,
+  useTranslations,
+  useModulesManager,
 } from '@openimis/fe-core';
 import { TASK_CONTRIBUTION_KEY } from '../constants';
 
@@ -16,7 +18,7 @@ function TaskSourcePicker({
   const contributions = modulesManager.getContribs(TASK_CONTRIBUTION_KEY);
   const sources = contributions.flatMap((contribution) => {
     const source = contribution.taskSource;
-    return source ? [{ id: source, name: source }] : [];
+    return source ? source.map((item) => ({ id: item, name: item })) : [];
   });
 
   return (
