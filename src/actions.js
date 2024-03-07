@@ -36,7 +36,7 @@ const TASK_FULL_PROJECTION = () => [
   'jsonExt',
 ];
 
-const TASKS_FULL_PROJECTION = () => [
+const TASK_PROJECTION = () => [ 
   'id',
   'entityId',
   'entityString',
@@ -44,12 +44,15 @@ const TASKS_FULL_PROJECTION = () => [
   'status',
   'executorActionEvent',
   'businessEvent',
-  'businessStatus',
   'dateCreated',
   'isDeleted',
   'taskGroup{id, code, completionPolicy}',
   'data',
   'jsonExt',
+];
+
+const TASKS_FULL_PROJECTION = () => [
+  ...TASK_PROJECTION, 'businessEvent'
 ];
 
 export const formatTaskGroupGQL = (taskGroup) => {
@@ -101,7 +104,7 @@ export function fetchTaskGroups(modulesManager, params) {
 }
 
 export function fetchTasks(modulesManager, params) {
-  const payload = formatPageQueryWithCount('task', params, TASKS_FULL_PROJECTION());
+  const payload = formatPageQueryWithCount('task', params, TASK_PROJECTION());
   return graphql(payload, ACTION_TYPE.SEARCH_TASKS);
 }
 

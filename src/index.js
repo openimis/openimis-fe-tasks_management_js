@@ -15,7 +15,7 @@ import TaskGroupPicker from './pickers/TaskGroupPicker';
 import TaskSearcher from './components/TaskSearcher';
 import getAdminMainMenuContributions from './contributions/AdminMainMenuContributions';
 import { TASK_ROUTE } from './constants';
-import { fetchTask } from './actions';
+import { fetchTask, resolveTask } from './actions';
 
 const ROUTE_TASKS_MANAGEMENT = 'tasks';
 const ROUTE_TASK_MANAGEMENT = 'tasks/task';
@@ -47,3 +47,5 @@ const DEFAULT_CONFIG = {
 };
 
 export const TasksManagementModule = (cfg) => ({ ...DEFAULT_CONFIG, ...cfg });
+
+export { resolveTask };

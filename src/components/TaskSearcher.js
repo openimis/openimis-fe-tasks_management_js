@@ -52,7 +52,6 @@ function TaskSearcher({
       'task.type',
       'task.entity',
       'task.assignee',
-      'task.businessStatus',
       'task.status',
     ];
     if (rights.includes(RIGHT_TASKS_MANAGEMENT_SEARCH)) {
@@ -66,7 +65,6 @@ function TaskSearcher({
     ['type', true],
     ['entity', true],
     ['assignee', true],
-    ['businessStatus', true],
     ['status', true],
   ];
 
@@ -75,7 +73,6 @@ function TaskSearcher({
     (task) => trimBusinessEvent(task.businessEvent),
     (task) => task.entityString,
     (task) => task?.taskGroup?.code,
-    (task) => task.businessStatus,
     (task) => task.status,
     (task) => (
       <Tooltip title={formatMessage('viewDetailsButton.tooltip')}>
