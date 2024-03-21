@@ -64,7 +64,7 @@ function TaskFilter({
           module="tasksManagement"
           label="task.entity"
           value={filterTextFieldValue('entity')}
-          onChange={onChangeStringFilter('entity', CONTAINS_LOOKUP)}
+          onChange={onChangeStringFilter('entityString', CONTAINS_LOOKUP)}
         />
       </Grid>
       <Grid item xs={3} className={classes.item}>
@@ -82,14 +82,6 @@ function TaskFilter({
         />
       </Grid>
       <Grid item xs={3} className={classes.item}>
-        <TextInput
-          module="tasksManagement"
-          label="task.businessStatus"
-          value={filterTextFieldValue('businessStatus')}
-          onChange={onChangeStringFilter('businessStatus', CONTAINS_LOOKUP)}
-        />
-      </Grid>
-      <Grid item xs={3} className={classes.item}>
         <PublishedComponent
           pubRef="tasksManagement.taskStatusPicker"
           module="tasksManagement"
@@ -101,7 +93,7 @@ function TaskFilter({
             {
               id: 'status',
               value,
-              filter: `status: ${value}`,
+              filter: value ? `status: ${value}` : EMPTY_STRING,
             },
           ])}
         />
