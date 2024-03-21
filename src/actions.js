@@ -51,10 +51,6 @@ const TASK_PROJECTION = () => [
   'jsonExt',
 ];
 
-const TASKS_FULL_PROJECTION = () => [
-  ...TASK_PROJECTION, 'businessEvent',
-];
-
 export const formatTaskGroupGQL = (taskGroup) => {
   const executors = taskGroup?.taskexecutorSet?.map((executor) => decodeId(executor.id));
   const taskSources = taskGroup?.taskSources?.map((taskSource) => taskSource.name);
