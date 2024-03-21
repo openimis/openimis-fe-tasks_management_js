@@ -13,7 +13,7 @@ import CheckIcon from '@material-ui/icons/Check';
 import {
   APPROVED, EMPTY_STRING,
   FAILED, TASK_STATUS,
-  TASK_CONTRIBUTION_KEY
+  TASK_CONTRIBUTION_KEY,
 } from '../constants';
 import { resolveTask } from '../actions';
 
@@ -49,7 +49,6 @@ function TaskApprovementPanel({
   const [approveOrFail, setApproveOrFail] = useState(EMPTY_STRING);
   const [disable, setDisable] = useState(false);
   const task = { ...edited };
-
 
   useEffect(() => {
     if (task?.businessStatus && user) {
@@ -106,11 +105,13 @@ function TaskApprovementPanel({
       .find((c) => c.taskSource.includes(task.source));
 
     if (contrib?.confirmationPanel) {
-      return <contrib.confirmationPanel 
-        task
-        defaultAction={handleButtonClick}
-        defaultDisabled={disable}
-      />
+      return (
+        <contrib.confirmationPanel
+          task
+          defaultAction={handleButtonClick}
+          defaultDisabled={disable}
+        />
+      );
     }
   }
 

@@ -36,7 +36,7 @@ const TASK_FULL_PROJECTION = () => [
   'jsonExt',
 ];
 
-const TASK_PROJECTION = () => [ 
+const TASK_PROJECTION = () => [
   'id',
   'entityId',
   'entityString',
@@ -52,7 +52,7 @@ const TASK_PROJECTION = () => [
 ];
 
 const TASKS_FULL_PROJECTION = () => [
-  ...TASK_PROJECTION, 'businessEvent'
+  ...TASK_PROJECTION, 'businessEvent',
 ];
 
 export const formatTaskGroupGQL = (taskGroup) => {

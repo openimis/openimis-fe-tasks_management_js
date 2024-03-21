@@ -140,7 +140,7 @@ function TaskSearcher({
       sorts={sorts}
       rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
       defaultPageSize={DEFAULT_PAGE_SIZE}
-      defaultOrderBy="source"
+      defaultOrderBy="-dateCreated"
       rowIdentifier={rowIdentifier}
       onDoubleClick={onDoubleClick}
       defaultFilters={defaultFilters()}
