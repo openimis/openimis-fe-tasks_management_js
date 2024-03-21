@@ -107,7 +107,7 @@ function TaskSearcher({
     if (entityIds) {
       filters.entityIds = {
         value: entityIds,
-        filter: `entityIds: "${entityIds}"`,
+        filter: `entityIds: [${entityIds.map((id) => `"${id}"`)}]`,
       };
     }
     return filters;
