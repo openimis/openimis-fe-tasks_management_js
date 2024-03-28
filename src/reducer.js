@@ -115,12 +115,7 @@ function reducer(
         task: parseData(action.payload.data.task)?.map((task) => ({
           ...task,
           id: decodeId(task.id),
-          businessData: parseTaskData(JSON.parse(task.businessData, (key, value) => {
-            if (['date_valid_to', 'date_valid_from'].includes(key)) {
-              return `${value} 00:00:00`;
-            }
-            return value;
-          })),
+          businessData: parseTaskData(JSON.parse(task.businessData)),
         }))?.[0],
         errorTask: null,
       };
