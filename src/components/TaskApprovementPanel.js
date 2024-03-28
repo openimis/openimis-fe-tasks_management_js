@@ -13,6 +13,7 @@ import CheckIcon from '@material-ui/icons/Check';
 import {
   APPROVED, EMPTY_STRING,
   FAILED, TASK_STATUS,
+  TASK_CONTRIBUTION_KEY,
 } from '../constants';
 import { resolveTask } from '../actions';
 
@@ -98,6 +99,21 @@ function TaskApprovementPanel({
       setApproveOrFail(choiceString);
     }
   };
+
+  if (task.source) {
+    const contrib = modulesManager.getContribs(TASK_CONTRIBUTION_KEY)
+      .find((c) => c.taskSource.includes(task.source));
+
+    if (contrib?.confirmationPanel) {
+      return (
+        <contrib.confirmationPanel
+          task
+          defaultAction={handleButtonClick}
+          defaultDisabled={disable}
+        />
+      );
+    }
+  }
 
   return (
     <Paper className={classes.paper}>
