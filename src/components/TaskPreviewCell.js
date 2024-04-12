@@ -5,9 +5,7 @@ function TaskPreviewCell({
   formatterIndex, itemData, incomingData, formatter, jsonExt, setAdditionalData,
 }) {
   const showHistorical = (itemIncomingData) => {
-    if (formatter(itemData, jsonExt, formatterIndex, setAdditionalData)
-        === formatter(itemIncomingData, jsonExt, formatterIndex, setAdditionalData)
-        || !formatter(itemIncomingData, jsonExt, formatterIndex, setAdditionalData)) {
+    if (!formatter(itemIncomingData, jsonExt, formatterIndex, setAdditionalData)) {
       return HYPHEN;
     }
     return formatter(itemIncomingData, jsonExt, formatterIndex, setAdditionalData);
