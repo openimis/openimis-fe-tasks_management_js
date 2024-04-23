@@ -1,4 +1,5 @@
 export const TASKS_MANAGEMENT_MAIN_MENU_CONTRIBUTION_KEY = 'tasksManagement.MainMenu';
+export const MODULE_NAME = 'tasksManagement';
 
 export const DEFAULT_DEBOUNCE_TIME = 500;
 export const DEFAULT_PAGE_SIZE = 10;

@@ -22,7 +22,11 @@ function TaskSearcher({
   const history = useHistory();
   const modulesManager = useModulesManager();
   const dispatch = useDispatch();
-  const { formatMessage, formatMessageWithValues } = useTranslations('tasksManagement', modulesManager);
+  const {
+    formatMessage,
+    formatMessageWithValues,
+    formatDateTimeFromISO,
+  } = useTranslations('tasksManagement', modulesManager);
 
   const fetchingTasks = useSelector((state) => state?.tasksManagement?.fetchingTasks);
   const fetchedTasks = useSelector((state) => state?.tasksManagement?.fetchedTasks);
@@ -52,6 +56,7 @@ function TaskSearcher({
       'task.type',
       'task.entity',
       'task.assignee',
+      'task.dateCreated',
       'task.status',
     ];
     if (rights.includes(RIGHT_TASKS_MANAGEMENT_SEARCH)) {
@@ -65,6 +70,7 @@ function TaskSearcher({
     ['type', true],
     ['entity', true],
     ['assignee', true],
+    ['date_created', true],
     ['status', true],
   ];
 
@@ -73,6 +79,7 @@ function TaskSearcher({
     (task) => trimBusinessEvent(task.businessEvent),
     (task) => task.entityString,
     (task) => task?.taskGroup?.code,
+    (task) => formatDateTimeFromISO(task?.dateCreated),
     (task) => task.status,
     (task) => (
       <Tooltip title={formatMessage('viewDetailsButton.tooltip')}>
