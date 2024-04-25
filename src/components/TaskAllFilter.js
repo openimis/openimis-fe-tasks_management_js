@@ -11,7 +11,7 @@ import {
   CONTAINS_LOOKUP, DEFAULT_DEBOUNCE_TIME, EMPTY_STRING, MODULE_NAME,
 } from '../constants';
 
-function TaskFilter({
+function TaskAllFilter({
   intl, classes, filters, onChangeFilters,
 }) {
   const debouncedOnChangeFilters = _debounce(onChangeFilters, DEFAULT_DEBOUNCE_TIME);
@@ -43,19 +43,30 @@ function TaskFilter({
   return (
     <Grid container className={classes.form}>
       <Grid item xs={3} className={classes.item}>
-        <TextInput
+        <PublishedComponent
+          pubRef="tasksManagement.taskSourcesPicker"
           module={MODULE_NAME}
-          label="task.source"
-          value={filterTextFieldValue('source')}
-          onChange={onChangeStringFilter('source', CONTAINS_LOOKUP)}
-          readOnly
+          withLabel
+          nullLabel={formatMessage(intl, MODULE_NAME, 'any')}
+          withNull
+          value={filterValue('source')}
+          onChange={(value) => onChangeFilters([
+            {
+              id: 'source',
+              value,
+              filter: value ? `source: "${value}"` : EMPTY_STRING,
+            },
+          ])}
         />
       </Grid>
       <Grid item xs={3} className={classes.item}>
-        <TextInput
+        <PublishedComponent
+          pubRef="tasksManagement.taskTypesPicker"
           module={MODULE_NAME}
-          label="task.type"
-          value={filterTextFieldValue('type')}
+          withLabel
+          nullLabel={formatMessage(intl, MODULE_NAME, 'any')}
+          withNull
+          value={filterValue('businessEvent')}
           onChange={onChangeStringFilter('businessEvent', CONTAINS_LOOKUP)}
         />
       </Grid>
@@ -63,7 +74,7 @@ function TaskFilter({
         <TextInput
           module={MODULE_NAME}
           label="task.entity"
-          value={filterTextFieldValue('entity')}
+          value={filterTextFieldValue('entityString')}
           onChange={onChangeStringFilter('entityString', CONTAINS_LOOKUP)}
         />
       </Grid>
@@ -98,7 +109,7 @@ function TaskFilter({
           ])}
         />
       </Grid>
-      <Grid item xs={2} className={classes.item}>
+      <Grid item xs={3} className={classes.item}>
         <PublishedComponent
           pubRef="core.DatePicker"
           module={MODULE_NAME}
@@ -113,7 +124,7 @@ function TaskFilter({
           ])}
         />
       </Grid>
-      <Grid item xs={2} className={classes.item}>
+      <Grid item xs={3} className={classes.item}>
         <PublishedComponent
           pubRef="core.DatePicker"
           module={MODULE_NAME}
@@ -132,4 +143,4 @@ function TaskFilter({
   );
 }
 
-export default injectIntl(withTheme(withStyles(defaultFilterStyles)(TaskFilter)));
+export default injectIntl(withTheme(withStyles(defaultFilterStyles)(TaskAllFilter)));

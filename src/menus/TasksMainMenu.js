@@ -7,7 +7,10 @@ import { useSelector } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import { formatMessage, MainMenuContribution, withModulesManager } from '@openimis/fe-core';
-import { TASKS_MANAGEMENT_MAIN_MENU_CONTRIBUTION_KEY } from '../constants';
+import {
+  RIGHT_TASKS_MANAGEMENT_SEARCH_ALL,
+  TASKS_MANAGEMENT_MAIN_MENU_CONTRIBUTION_KEY,
+} from '../constants';
 
 function TasksMainMenu(props) {
   const rights = useSelector((store) => store.core?.user?.i_user?.rights ?? []);
@@ -16,6 +19,12 @@ function TasksMainMenu(props) {
       text: formatMessage(props.intl, 'tasksManagement', 'entries.tasksManagementView'),
       icon: <AssignmentIcon />,
       route: '/tasks',
+    },
+    {
+      text: formatMessage(props.intl, 'tasksManagement', 'entries.tasksManagementAllView'),
+      icon: <AssignmentIcon />,
+      route: '/AllTasks',
+      filter: (rights) => rights.includes(RIGHT_TASKS_MANAGEMENT_SEARCH_ALL),
     },
   ];
   entries.push(

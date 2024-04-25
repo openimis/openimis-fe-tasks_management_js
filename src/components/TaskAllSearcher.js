@@ -12,12 +12,12 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import {
   RIGHT_TASKS_MANAGEMENT_SEARCH, DEFAULT_PAGE_SIZE, ROWS_PER_PAGE_OPTIONS, TASK_STATUS, TASK_ROUTE,
 } from '../constants';
-import TaskFilter from './TaskFilter';
+import TaskAllFilter from './TaskAllFilter';
 import { fetchTasks } from '../actions';
 import trimBusinessEvent from '../utils/trimBusinessEvent';
 
-function TaskSearcher({
-  rights, contribution, entityId, entityIds, showFilters = true,
+function TaskAllSearcher({
+  rights, showFilters = true,
 }) {
   const history = useHistory();
   const modulesManager = useModulesManager();
@@ -99,29 +99,11 @@ function TaskSearcher({
         filter: 'isDeleted: false',
       },
     };
-    if (contribution?.taskSource) {
-      filters.source = {
-        value: contribution.taskSource,
-        filter: `source: "${contribution.taskSource}"`,
-      };
-    }
-    if (entityId) {
-      filters.entityId = {
-        value: entityId,
-        filter: `entityId: "${entityId}"`,
-      };
-    }
-    if (entityIds) {
-      filters.entityIds = {
-        value: entityIds,
-        filter: `entityIds: [${entityIds.map((id) => `"${id}"`)}]`,
-      };
-    }
     return filters;
   };
 
   const taskFilter = (props) => (
-    <TaskFilter
+    <TaskAllFilter
       intl={props.intl}
       classes={props.classes}
       filters={props.filters}
@@ -157,4 +139,4 @@ function TaskSearcher({
   );
 }
 
-export default TaskSearcher;
+export default TaskAllSearcher;

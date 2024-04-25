@@ -16,9 +16,13 @@ import TaskSearcher from './components/TaskSearcher';
 import getAdminMainMenuContributions from './contributions/AdminMainMenuContributions';
 import { TASK_ROUTE } from './constants';
 import { fetchTask, resolveTask } from './actions';
+import TasksAllPage from './pages/TasksAllPage';
+import TaskTypesPicker from './pickers/TaskTypesPicker';
+import TaskSourcesPicker from './pickers/TaskSourcesPicker';
 
 const ROUTE_TASKS_MANAGEMENT = 'tasks';
 const ROUTE_TASK_MANAGEMENT = 'tasks/task';
+const ROUTE_TASKS_ALL_MANAGEMENT = 'allTasks';
 
 const ROUTE_GROUPS_MANAGEMENT = 'tasks/groups';
 const ROUTE_GROUP_MANAGEMENT = 'tasks/groups/group';
@@ -30,6 +34,7 @@ const DEFAULT_CONFIG = {
   'admin.MainMenu': [...getAdminMainMenuContributions()],
   'core.Router': [
     { path: ROUTE_TASKS_MANAGEMENT, component: TasksManagementPage },
+    { path: ROUTE_TASKS_ALL_MANAGEMENT, component: TasksAllPage },
     { path: `${ROUTE_TASK_MANAGEMENT}/:task_uuid?`, component: TaskDetailsPage },
     { path: ROUTE_GROUPS_MANAGEMENT, component: GroupsManagementPage },
     { path: `${ROUTE_GROUP_MANAGEMENT}/:task_group_uuid?`, component: TaskGroupPage },
@@ -38,6 +43,8 @@ const DEFAULT_CONFIG = {
     { key: TASK_ROUTE, ref: ROUTE_TASK_MANAGEMENT },
     { key: 'tasksManagement.route.group', ref: ROUTE_GROUP_MANAGEMENT },
     { key: 'tasksManagement.taskStatusPicker', ref: TaskStatusPicker },
+    { key: 'tasksManagement.taskTypesPicker', ref: TaskTypesPicker },
+    { key: 'tasksManagement.taskSourcesPicker', ref: TaskSourcesPicker },
     { key: 'tasksManagement.taskPreviewCell', ref: TaskPreviewCell },
     { key: 'tasksManagement.taskGroupPicker', ref: TaskGroupPicker },
     { key: 'tasksManagement.taskSearcher', ref: TaskSearcher },
