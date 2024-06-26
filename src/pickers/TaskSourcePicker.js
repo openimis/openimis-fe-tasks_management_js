@@ -12,7 +12,6 @@ function TaskSourcePicker({
   required,
   withLabel,
   value,
-  filterOptions,
 }) {
   const modulesManager = useModulesManager();
   const { formatMessage } = useTranslations('tasksManagement');
@@ -35,7 +34,7 @@ function TaskSourcePicker({
       value={value}
       getOptionLabel={(source) => `${source.name}`}
       onChange={onChange}
-      filterOptions={filterOptions}
+      filterSelectedOptions
       onInputChange={() => {}}
     />
   );

@@ -53,8 +53,6 @@
   "tasksManagement.menu.taskExecutionerGroups": "Task Executioner Groups",
   "tasksManagement.TaskSourcePicker.label": "Task Sources",
   "tasksManagement.TaskSourcePicker.placeholder": "Search for task sources...",
-  "tasksManagement.TaskSourceAllowedPicker.label": "Allowed Task Sources",
-  "tasksManagement.TaskSourceAllowedPicker.placeholder": "Search for allowed task sources...",
   "tasksManagement.entries.tasksManagementAllView": "All Tasks",
   "tasksManagement.task.source.mutationLabel": "Resolving task",
   "tasksManagement.task.source.IndividualService": "Individual Service",

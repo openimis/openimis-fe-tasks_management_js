@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 
 import {
-  useModulesManager, useTranslations, Autocomplete, useGraphqlQuery,
+  useModulesManager,
+  useTranslations,
+  Autocomplete,
+  useGraphqlQuery,
 } from '@openimis/fe-core';
 
 function TaskGroupPicker(props) {
@@ -13,7 +16,6 @@ function TaskGroupPicker(props) {
     withPlaceholder,
     value,
     label,
-    source = null,
     filterOptions,
     filterSelectedOptions,
     placeholder,
@@ -33,7 +35,6 @@ function TaskGroupPicker(props) {
                       id
                       code
                       completionPolicy
-                      taskAllowedSources
                     }
                 }
             }
@@ -43,16 +44,6 @@ function TaskGroupPicker(props) {
       search: searchString,
     },
   );
-
-  const options = data?.taskGroup?.edges.map((edge) => edge.node) ?? [];
-
-  const filteredOptionsWithAllowedSources = options.filter((option) => {
-    const parsedResponse = JSON.parse(option.taskAllowedSources);
-    const allowedSources = typeof parsedResponse === 'object' ? [parsedResponse] : parsedResponse;
-    const usersAllowedSources = allowedSources.flatMap((source) => source.task_allowed_sources);
-
-    return usersAllowedSources.includes(source);
-  });
 
   return (
     <Autocomplete
@@ -64,7 +55,7 @@ function TaskGroupPicker(props) {
       withLabel={withLabel}
       withPlaceholder={withPlaceholder}
       readOnly={readOnly}
-      options={filteredOptionsWithAllowedSources}
+      options={data?.taskGroup?.edges.map((edge) => edge.node) ?? []}
       isLoading={isLoading}
       value={value}
       getOptionLabel={(option) => `${option.code}`}

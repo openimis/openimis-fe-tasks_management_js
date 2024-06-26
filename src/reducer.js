@@ -166,10 +166,6 @@ function reducer(
           taskSources: taskGroup?.jsonExt
             ? JSON.parse(taskGroup.jsonExt).task_sources.map((source) => ({ id: source, name: source }))
             : [],
-          taskAllowedSources: taskGroup?.taskAllowedSources
-            ? JSON.parse(taskGroup?.taskAllowedSources).task_allowed_sources.map(
-              (source) => ({ id: source, name: source }),
-            ) : [],
         }))?.[0],
         fetchingTaskGroup: false,
         errorTaskGroup: formatGraphQLError(action.payload),

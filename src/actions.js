@@ -17,7 +17,6 @@ const TASK_GROUP_PROJECTION = () => [
   'code',
   'completionPolicy',
   'taskexecutorSet { edges { node { user { id username lastName } } } }',
-  'taskAllowedSources',
 ];
 
 const TASK_FULL_PROJECTION = () => [
@@ -65,7 +64,6 @@ export const formatTaskGroupGQL = (taskGroup) => {
   ${taskGroup?.id ? `id: "${taskGroup.id}"` : ''}
   ${taskGroup?.taskexecutorSet ? `userIds: ${executorsString}` : 'userIds: []'}
   ${taskGroup?.taskSources ? `taskSources: ${taskSourcesString}` : 'taskSources: []'}
-  ${taskGroup?.taskAllowedSources ? `taskAllowedSources: ${taskSourcesString}` : 'taskAllowedSources: []'}
   `;
 };
 
@@ -124,7 +122,6 @@ export function fetchTaskGroup(modulesManager, variables) {
               completionPolicy
               jsonExt
               taskexecutorSet { edges { node { user { id username lastName } } } },
-              taskAllowedSources
             }
           }
         }

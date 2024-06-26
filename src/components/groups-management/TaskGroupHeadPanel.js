@@ -11,8 +11,6 @@ import { withTheme, withStyles } from '@material-ui/core/styles';
 import TaskExecutorsPicker from '../../pickers/TaskExecutorsPicker';
 import GroupPolicyPicker from '../../pickers/GroupPolicyPicker';
 import TaskSourcePicker from '../../pickers/TaskSourcePicker';
-import TaskSourceAllowedPicker from '../../pickers/TaskSourceAllowedPicker';
-import { TASK_GROUP_UPDATE, TASK_GROUP_CREATE } from '../../constants';
 
 const styles = (theme) => ({
   tableTitle: theme.table.title,
@@ -45,16 +43,9 @@ const renderHeadPanelTitle = (classes) => (
 class TaskGroupHeadPanel extends FormPanel {
   render() {
     const {
-      edited, classes, readOnly, rights,
+      edited, classes, readOnly,
     } = this.props;
     const taskGroup = { ...edited };
-    const filterAllowedSources = (options) => {
-      if (!taskGroup?.taskAllowedSources?.length) {
-        return options;
-      }
-      const sourcesIds = taskGroup.taskAllowedSources.map((source) => source.id);
-      return options.filter((option) => sourcesIds.includes(option.id));
-    };
     return (
       <>
         {renderHeadPanelTitle(classes)}
@@ -95,14 +86,6 @@ class TaskGroupHeadPanel extends FormPanel {
               readOnly={readOnly}
               value={taskGroup?.taskSources}
               onChange={(sources) => this.updateAttribute('taskSources', sources)}
-              filterOptions={filterAllowedSources}
-            />
-          </Grid>
-          <Grid item xs={6} className={classes.item}>
-            <TaskSourceAllowedPicker
-              readOnly={!(rights.includes(TASK_GROUP_CREATE) || rights.includes(TASK_GROUP_UPDATE))}
-              value={taskGroup?.taskAllowedSources}
-              onChange={(allowedSources) => this.updateAttribute('taskAllowedSources', allowedSources)}
             />
           </Grid>
         </Grid>
