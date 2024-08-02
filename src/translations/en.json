@@ -10,11 +10,13 @@
   "tasksManagement.task.type": "Type",
   "tasksManagement.task.entity": "Entity",
   "tasksManagement.task.dateCreated": "Date Created",
+  "tasksManagement.task.dateUpdated": "Date Updated",
   "tasksManagement.task.dateCreated.after": "Date Created From",
   "tasksManagement.task.dateCreated.before": "Date Created To",
   "tasksManagement.task.assignee": "Task Group",
   "tasksManagement.task.businessStatus": "Business Status",
   "tasksManagement.task.status": "Status",
+  "tasksManagement.task.version": "Version",
   "tasksManagement.task.status.RECEIVED": "RECEIVED",
   "tasksManagement.task.status.ACCEPTED": "ACCEPTED",
   "tasksManagement.task.status.COMPLETED": "COMPLETED",
@@ -74,5 +76,9 @@
   "tasksManagement.task.type.accept_payroll": "Accept Payroll",
   "tasksManagement.task.type.payroll_reconciliation": "Payroll Reconciliation",
   "tasksManagement.task.type.payroll_reject": "Reject Payroll",
-  "tasksManagement.task.type.payroll_delete": "Delete Payroll"
+  "tasksManagement.task.type.payroll_delete": "Delete Payroll",
+  "tasksManagement.tasks.changelog": "Task Changelog",
+  "tasksManagement.tasks.changelog.showChangelog": "Show Changelog",
+  "tasksManagement.tasks.changelog.close": "Close",
+  "tasksManagement.taskHistory.searcherResultsTitle": "{taskHistoryTotalCount} Historical Tasks Found"
 }

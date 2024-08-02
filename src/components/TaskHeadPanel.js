@@ -14,6 +14,7 @@ import TaskStatusPicker from '../pickers/TaskStatusPicker';
 import TaskGroupPicker from '../pickers/TaskGroupPicker';
 import { TASK_STATUS, TASK_UPDATE } from '../constants';
 import trimBusinessEvent from '../utils/trimBusinessEvent';
+import TaskHistoryDialog from './dialogs/TaskHistoryDialog';
 
 const styles = (theme) => ({
   tableTitle: theme.table.title,
@@ -23,21 +24,26 @@ const styles = (theme) => ({
   },
 });
 
-const renderHeadPanelTitle = (classes) => (
+const renderHeadPanelTitle = (classes, rights, task) => (
   <Grid container className={classes.tableTitle}>
-    <Grid item>
-      <Grid
-        container
-        align="center"
-        justify="center"
-        direction="column"
-        className={classes.fullHeight}
-      >
-        <Grid item>
-          <Typography>
-            <FormattedMessage module="tasksManagement" id="task.detailsPage.triage.headPanelTitle" />
-          </Typography>
-        </Grid>
+    <Grid
+      container
+      align="center"
+      justify="space-between"
+      direction="row"
+      className={classes.fullHeight}
+    >
+      <Grid item>
+        <Typography>
+          <FormattedMessage module="tasksManagement" id="task.detailsPage.triage.headPanelTitle" />
+        </Typography>
+      </Grid>
+      <Grid item>
+        <TaskHistoryDialog
+          classes={classes}
+          rights={rights}
+          taskId={task.id}
+        />
       </Grid>
     </Grid>
   </Grid>
@@ -51,7 +57,7 @@ class TaskHeadPanel extends FormPanel {
     const task = { ...edited };
     return (
       <>
-        {renderHeadPanelTitle(classes)}
+        {renderHeadPanelTitle(classes, rights, task)}
         <Divider />
         <Grid container className={classes.item}>
           <Grid item xs={3} className={classes.item}>

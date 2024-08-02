@@ -51,6 +51,24 @@ const TASK_PROJECTION = () => [
   'jsonExt',
 ];
 
+const TASK_HISTORY_FULL_PROJECTION = () => [
+  'id',
+  'entityId',
+  'source',
+  'status',
+  'executorActionEvent',
+  'businessEvent',
+  'businessStatus',
+  'dateCreated',
+  'isDeleted',
+  'taskGroup{id, code, completionPolicy, taskexecutorSet {edges{node{id, user{id}}}}}',
+  'data',
+  'businessData',
+  'jsonExt',
+  'version',
+  'dateUpdated',
+];
+
 export const formatTaskGroupGQL = (taskGroup) => {
   const executors = taskGroup?.taskexecutorSet?.map((executor) => decodeId(executor.id));
   const taskSources = taskGroup?.taskSources?.map((taskSource) => taskSource.name);
@@ -102,6 +120,11 @@ export function fetchTaskGroups(modulesManager, params) {
 export function fetchTasks(modulesManager, params) {
   const payload = formatPageQueryWithCount('task', params, TASK_PROJECTION());
   return graphql(payload, ACTION_TYPE.SEARCH_TASKS);
+}
+
+export function fetchTaskHistory(modulesManager, params) {
+  const payload = formatPageQueryWithCount('taskHistory', params, TASK_HISTORY_FULL_PROJECTION());
+  return graphql(payload, ACTION_TYPE.SEARCH_TASK_HISTORY);
 }
 
 export function fetchTask(modulesManager, params) {

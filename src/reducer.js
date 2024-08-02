@@ -31,6 +31,7 @@ export const ACTION_TYPE = {
   UPDATE_TASK: 'TASK_MANAGEMENT_UPDATE_TASK',
   RESOLVE_TASK: 'TASK_MANAGEMENT_RESOLVE_TASK',
   SEARCH_TASKS: 'TASK_MANAGEMENT_SEARCH_TASKS',
+  SEARCH_TASK_HISTORY: 'TASK_MANAGEMENT_SEARCH_TASK_HISTORY',
 };
 
 export const MUTATION_SERVICE = {
@@ -68,6 +69,12 @@ const STORE_STATE = {
   tasks: [],
   tasksPageInfo: {},
   tasksTotalCount: 0,
+  fetchingTaskHistory: false,
+  fetchedTaskHistory: false,
+  errorTaskHistory: null,
+  taskHistory: [],
+  taskHistoryPageInfo: {},
+  taskHistoryTotalCount: 0,
 };
 
 function reducer(
@@ -96,6 +103,16 @@ function reducer(
         tasksPageInfo: {},
         tasksTotalCount: 0,
         errorTasks: null,
+      };
+    case REQUEST(ACTION_TYPE.SEARCH_TASK_HISTORY):
+      return {
+        ...state,
+        fetchingTaskHistory: true,
+        fetchedTaskHistory: false,
+        taskHistory: [],
+        taskHistoryPageInfo: {},
+        taskHistoryTotalCount: 0,
+        errorTaskHistory: null,
       };
     case SUCCESS(ACTION_TYPE.SEARCH_TASK_GROUPS):
       return {
@@ -133,6 +150,20 @@ function reducer(
           action.payload.data.task ? action.payload.data.task.totalCount : null,
         errorTasks: formatGraphQLError(action.payload),
       };
+    case SUCCESS(ACTION_TYPE.SEARCH_TASK_HISTORY):
+      return {
+        ...state,
+        fetchingTaskHistory: false,
+        fetchedTaskHistory: true,
+        taskHistory: parseData(action.payload.data.taskHistory)?.map((task) => ({
+          ...task,
+          id: decodeId(task.id),
+        })),
+        taskHistoryPageInfo: pageInfo(action.payload.data.taskHistory),
+        taskHistoryTotalCount:
+            action.payload.data.taskHistory ? action.payload.data.taskHistory.totalCount : null,
+        errorTaskHistory: formatGraphQLError(action.payload),
+      };
     case ERROR(ACTION_TYPE.SEARCH_TASK_GROUPS):
       return {
         ...state,
@@ -150,6 +181,12 @@ function reducer(
         ...state,
         fetchingTasks: false,
         errorTasks: formatServerError(action.payload),
+      };
+    case ERROR(ACTION_TYPE.SEARCH_TASK_HISTORY):
+      return {
+        ...state,
+        fetchingTaskHistory: false,
+        errorTaskHistory: formatServerError(action.payload),
       };
     case REQUEST(ACTION_TYPE.GET_TASK_GROUP):
       return {
