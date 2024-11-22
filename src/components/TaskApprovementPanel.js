@@ -87,15 +87,15 @@ function TaskApprovementPanel({
     return () => confirmed && clearConfirm(false);
   }, [confirmed]);
 
-  const openResolveTaskConfirmDialog = () => coreConfirm(
+  const openResolveTaskConfirmDialog = (choiceString) => coreConfirm(
     formatMessage('task.resolve.confirm.title'),
-    approveOrFail === APPROVED ? formatMessage('task.resolve.confirm.fail.message')
-      : formatMessage('task.resolve.confirm.approve.message'),
+    choiceString === APPROVED ? formatMessage('task.resolve.confirm.approve.message')
+      : formatMessage('task.resolve.confirm.fail.message'),
   );
 
   const handleButtonClick = (choiceString) => {
     if (task?.id && user?.id) {
-      openResolveTaskConfirmDialog(approveOrFail);
+      openResolveTaskConfirmDialog(choiceString);
       setApproveOrFail(choiceString);
     }
   };
