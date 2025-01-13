@@ -30,7 +30,7 @@ const ROUTE_GROUP_MANAGEMENT = 'tasks/groups/group';
 const DEFAULT_CONFIG = {
   translations: [{ key: 'en', messages: messages_en }],
   reducers: [{ key: 'tasksManagement', reducer }],
-  'core.MainMenu': [TasksMainMenu],
+  'core.MainMenu': [{ name: 'TasksMainMenu', component: TasksMainMenu }],
   'admin.MainMenu': [...getAdminMainMenuContributions()],
   'core.Router': [
     { path: ROUTE_TASKS_MANAGEMENT, component: TasksManagementPage },
