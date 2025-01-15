@@ -19,12 +19,14 @@ function TasksMainMenu(props) {
       text: formatMessage(props.intl, 'tasksManagement', 'entries.tasksManagementView'),
       icon: <AssignmentIcon />,
       route: '/tasks',
+      id: 'task.tasks',
     },
     {
       text: formatMessage(props.intl, 'tasksManagement', 'entries.tasksManagementAllView'),
       icon: <AssignmentIcon />,
       route: '/AllTasks',
       filter: (rights) => rights.includes(RIGHT_TASKS_MANAGEMENT_SEARCH_ALL),
+      id: 'task.allTasks',
     },
   ];
   entries.push(
