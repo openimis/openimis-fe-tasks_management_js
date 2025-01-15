@@ -40,6 +40,7 @@ function TasksMainMenu(props) {
       {...props}
       header={formatMessage(props.intl, 'tasksManagement', 'tasksMainMenu')}
       entries={entries}
+      menuId="TasksMainMenu"
     />
   );
 }
