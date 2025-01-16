@@ -1,7 +1,9 @@
 // Disable due to core architecture
 /* eslint-disable camelcase */
 /* eslint-disable import/prefer-default-export */
-
+import React from 'react';
+import { FormattedMessage } from '@openimis/fe-core';
+import AssignmentIcon from '@material-ui/icons/Assignment';
 import messages_en from './translations/en.json';
 import reducer from './reducer';
 import TasksMainMenu from './menus/TasksMainMenu';
@@ -14,7 +16,7 @@ import TaskPreviewCell from './components/TaskPreviewCell';
 import TaskGroupPicker from './pickers/TaskGroupPicker';
 import TaskSearcher from './components/TaskSearcher';
 import getAdminMainMenuContributions from './contributions/AdminMainMenuContributions';
-import { TASK_ROUTE } from './constants';
+import { TASK_ROUTE, RIGHT_TASKS_MANAGEMENT_SEARCH_ALL } from './constants';
 import { fetchTask, resolveTask } from './actions';
 import TasksAllPage from './pages/TasksAllPage';
 import TaskTypesPicker from './pickers/TaskTypesPicker';
@@ -51,6 +53,23 @@ const DEFAULT_CONFIG = {
     { key: 'tasksManagement.taskDetailsPage', ref: TaskDetailsPage },
     { key: 'tasksManagement.fetchTask', ref: fetchTask },
   ],
+  'Tasks.MainMenu': [
+    {
+      text: <FormattedMessage module="tasksManagement" id="entries.tasksManagementView" />,
+      icon: <AssignmentIcon />,
+      route: '/tasks',
+      id: 'task.tasks',
+      filter: (rights) => rights.includes(RIGHT_TASKS_MANAGEMENT_SEARCH_ALL),
+    },
+    {
+      text: <FormattedMessage module="tasksManagement" id="entries.tasksManagementAllView" />,
+      icon: <AssignmentIcon />,
+      route: '/AllTasks',
+      id: 'task.allTasks',
+      filter: (rights) => rights.includes(RIGHT_TASKS_MANAGEMENT_SEARCH_ALL),
+    },
+  ],
+
 };
 
 export const TasksManagementModule = (cfg) => ({ ...DEFAULT_CONFIG, ...cfg });

@@ -3,7 +3,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import { formatMessage, MainMenuContribution, withModulesManager } from '@openimis/fe-core';
@@ -13,7 +13,7 @@ import {
 } from '../constants';
 
 function TasksMainMenu(props) {
-  const rights = useSelector((store) => store.core?.user?.i_user?.rights ?? []);
+  const { rights } = props;
   const entries = [
     {
       text: formatMessage(props.intl, 'tasksManagement', 'entries.tasksManagementView'),
@@ -45,4 +45,8 @@ function TasksMainMenu(props) {
   );
 }
 
-export default withModulesManager(injectIntl(TasksMainMenu));
+const mapStateToProps = (state) => ({
+  rights: !!state.core && !!state.core.user && !!state.core.user.i_user ? state.core.user.i_user.rights : [],
+});
+
+export default withModulesManager(injectIntl(connect(mapStateToProps)(TasksMainMenu)));
