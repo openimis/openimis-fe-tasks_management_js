@@ -16,15 +16,9 @@ function TasksMainMenu(props) {
   const rights = useSelector((store) => store.core?.user?.i_user?.rights ?? []);
   const entries = [
     {
-      text: formatMessage(props.intl, 'tasksManagement', 'entries.tasksManagementView'),
-      icon: <AssignmentIcon />,
-      route: '/tasks',
-    },
-    {
       text: formatMessage(props.intl, 'tasksManagement', 'entries.tasksManagementAllView'),
       icon: <AssignmentIcon />,
       route: '/AllTasks',
-      filter: (rights) => rights.includes(RIGHT_TASKS_MANAGEMENT_SEARCH_ALL),
     },
   ];
   entries.push(
