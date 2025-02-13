@@ -3,7 +3,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import { formatMessage, MainMenuContribution, withModulesManager } from '@openimis/fe-core';
@@ -13,18 +13,20 @@ import {
 } from '../constants';
 
 function TasksMainMenu(props) {
-  const rights = useSelector((store) => store.core?.user?.i_user?.rights ?? []);
+  const { rights } = props;
   const entries = [
     {
       text: formatMessage(props.intl, 'tasksManagement', 'entries.tasksManagementView'),
       icon: <AssignmentIcon />,
       route: '/tasks',
+      id: 'task.tasks',
     },
     {
       text: formatMessage(props.intl, 'tasksManagement', 'entries.tasksManagementAllView'),
       icon: <AssignmentIcon />,
       route: '/AllTasks',
       filter: (rights) => rights.includes(RIGHT_TASKS_MANAGEMENT_SEARCH_ALL),
+      id: 'task.allTasks',
     },
   ];
   entries.push(
@@ -38,8 +40,13 @@ function TasksMainMenu(props) {
       {...props}
       header={formatMessage(props.intl, 'tasksManagement', 'tasksMainMenu')}
       entries={entries}
+      menuId="TasksMainMenu"
     />
   );
 }
 
-export default withModulesManager(injectIntl(TasksMainMenu));
+const mapStateToProps = (state) => ({
+  rights: !!state.core && !!state.core.user && !!state.core.user.i_user ? state.core.user.i_user.rights : [],
+});
+
+export default withModulesManager(injectIntl(connect(mapStateToProps)(TasksMainMenu)));

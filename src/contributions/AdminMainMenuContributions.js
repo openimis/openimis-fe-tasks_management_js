@@ -15,6 +15,7 @@ function getAdminMainMenuContributions() {
     icon: <People />,
     route: '/tasks/groups',
     filter: (rights) => rights.includes(RIGHT_TASK_EXECUTIONER_GROUPS),
+    id: 'admin.taskExecutionerGroups',
   }];
 }
 
