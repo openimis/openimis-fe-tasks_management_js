@@ -80,5 +80,14 @@
   "tasksManagement.tasks.changelog": "Task Changelog",
   "tasksManagement.tasks.changelog.showChangelog": "Show Changelog",
   "tasksManagement.tasks.changelog.close": "Close",
-  "tasksManagement.taskHistory.searcherResultsTitle": "{taskHistoryTotalCount} Historical Tasks Found"
+  "tasksManagement.taskHistory.searcherResultsTitle": "{taskHistoryTotalCount} Historical Tasks Found",
+  "tasks_management.gql_task_group_search_perms": "Tasks Management | Task Group Search",
+  "tasks_management.gql_task_group_create_perms": "Tasks Management | Task Group Create",
+  "tasks_management.gql_task_group_update_perms": "Tasks Management | Task Group Update",
+  "tasks_management.gql_task_group_delete_perms": "Tasks Management | Task Group Delete",
+  "tasks_management.gql_task_search_perms": "Tasks Management | Task Search",
+  "tasks_management.gql_task_create_perms": "Tasks Management | Task Create",
+  "tasks_management.gql_task_update_perms": "Tasks Management | Task Update",
+  "tasks_management.gql_task_delete_perms": "Tasks Management | Task Delete",
+  "tasks_management.gql_task_search_all_perms": "Tasks Management | Task Search All"
 }
