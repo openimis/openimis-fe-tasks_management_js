@@ -145,8 +145,8 @@ const mapStateToProps = (state) => ({
   rights: !!state.core && !!state.core.user && !!state.core.user.i_user ? state.core.user.i_user.rights : [],
   user: !!state.core && !!state.core.user ? state.core.user : null,
   confirmed: state.core.confirmed,
-  submittingMutation: state.socialProtection.submittingMutation,
-  mutation: state.socialProtection.mutation,
+  submittingMutation: state.tasksManagement.submittingMutation,
+  mutation: state.tasksManagement.mutation,
 });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
