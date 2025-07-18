@@ -5,7 +5,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import AssignmentIcon from '@material-ui/icons/Assignment';
+import AssignmentIcon from '@mui/icons-material/Assignment';
 import { formatMessage, MainMenuContribution, withModulesManager } from '@openimis/fe-core';
 import {
   RIGHT_TASKS_MANAGEMENT_SEARCH_ALL,

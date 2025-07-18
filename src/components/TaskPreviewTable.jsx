@@ -2,10 +2,10 @@
 import React from 'react';
 
 import { injectIntl } from 'react-intl';
-import { withStyles, withTheme } from '@material-ui/core/styles';
+import { withStyles, withTheme } from '@mui/material/styles';
 import {
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
-} from '@material-ui/core';
+} from '@mui/material';
 import { ProgressOrError } from '@openimis/fe-core';
 import { useSelector } from 'react-redux';
 import TaskPreviewCell from './TaskPreviewCell';

@@ -8,10 +8,10 @@ import {
   Paper,
   Typography,
   Collapse,
-} from '@material-ui/core';
-import ExpandLess from '@material-ui/icons/ExpandLess';
-import ExpandMore from '@material-ui/icons/ExpandMore';
-import { makeStyles } from '@material-ui/core/styles';
+} from '@mui/material';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import { makeStyles } from '@mui/material/styles';
 import { TASK_CONTRIBUTION_KEY } from '../constants';
 import TaskSearcher from '../components/TaskSearcher';
 

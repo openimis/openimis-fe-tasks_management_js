@@ -1,6 +1,6 @@
 import React from 'react';
-import { Grid } from '@material-ui/core';
-import { makeStyles } from '@material-ui/styles';
+import { Grid } from '@mui/material';
+import { makeStyles } from '@mui/material/styles';
 import _debounce from 'lodash/debounce';
 import { TextInput } from '@openimis/fe-core';
 import {

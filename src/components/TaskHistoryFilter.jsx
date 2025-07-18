@@ -1,7 +1,7 @@
 import React from 'react';
 import { injectIntl } from 'react-intl';
-import { Grid } from '@material-ui/core';
-import { withTheme, withStyles } from '@material-ui/core/styles';
+import { Grid } from '@mui/material';
+import { withTheme, withStyles } from '@mui/material/styles';
 import _debounce from 'lodash/debounce';
 import {
   TextInput, PublishedComponent, formatMessage, decodeId, toISODateTime,

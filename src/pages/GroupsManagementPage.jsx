@@ -2,10 +2,10 @@ import React from 'react';
 import {
   Helmet, withTooltip, useTranslations, useModulesManager, useHistory,
 } from '@openimis/fe-core';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@mui/material/styles';
 import { useSelector } from 'react-redux';
-import { Fab } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
+import { Fab } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
 import {
   TASK_GROUP_CREATE,
   TASK_GROUP_SEARCH,

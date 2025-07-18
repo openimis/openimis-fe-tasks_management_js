@@ -3,13 +3,13 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import {
   makeStyles, Paper, Fab,
-} from '@material-ui/core';
+} from '@mui/material';
+import ClearIcon from '@mui/icons-material/Clear';
+import CheckIcon from '@mui/icons-material/Check';
 import {
   useTranslations,
   useModulesManager, coreConfirm, clearConfirm, journalize,
 } from '@openimis/fe-core';
-import ClearIcon from '@material-ui/icons/Clear';
-import CheckIcon from '@material-ui/icons/Check';
 import {
   APPROVED, EMPTY_STRING,
   FAILED, TASK_STATUS,

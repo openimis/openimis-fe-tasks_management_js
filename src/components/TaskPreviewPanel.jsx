@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { makeStyles, Paper, Typography } from '@material-ui/core';
+import { makeStyles } from '@mui/material/styles';
+import { Paper, Typography } from '@mui/material';
 import { useModulesManager } from '@openimis/fe-core';
 import { EMPTY_STRING, TASK_CONTRIBUTION_KEY } from '../constants';
 import TaskPreviewTable from './TaskPreviewTable';

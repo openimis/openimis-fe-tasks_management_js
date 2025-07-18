@@ -3,7 +3,7 @@
 /* eslint-disable import/prefer-default-export */
 import React from 'react';
 import { FormattedMessage } from '@openimis/fe-core';
-import AssignmentIcon from '@material-ui/icons/Assignment';
+import AssignmentIcon from '@mui/icons-material/Assignment';
 import messages_en from './translations/en.json';
 import reducer from './reducer';
 import TasksMainMenu from './menus/TasksMainMenu';
