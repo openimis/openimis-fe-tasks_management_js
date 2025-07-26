@@ -1,6 +1,3 @@
-# This workflow will run tests using node and then publish a package to GitHub Packages when a release is created
-# For more information see: https://help.github.com/actions/language-and-framework-guides/publishing-nodejs-packages
-
 name: Publish Node.js Package
 
 on:
@@ -24,17 +21,15 @@ on:
         description: 'Access level for npm package'
         required: false
         default: 'public'
-      tab:
-        required: true
+      tag:
+        required: false
+        description: 'Optional tag for the published package (e.g., latest, beta)'
 
 jobs:
   call-npm-publish-workflow:
     uses: openimis/openimis-fe_js/.github/workflows/module-npmpublish.yml@develop
     with:
       registry_url: 'https://registry.npmjs.org/'
-      node_version: ${{ github.event.inputs.node_version }}
-      access: ${{ github.event.inputs.access }}
-      scope: ${{ github.event.inputs.scope }}
       tag:  ${{ github.event.inputs.tag }}
     secrets:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -42,9 +37,6 @@ jobs:
     uses: openimis/openimis-fe_js/.github/workflows/module-npmpublish.yml@develop
     with:
       registry_url: 'https://npm.pkg.github.com/'
-      node_version: ${{ github.event.inputs.node_version }}
-      access: ${{ github.event.inputs.access }}
-      scope: ${{ github.event.inputs.scope }}
       tag:  ${{ github.event.inputs.tag }}
     secrets:
       NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
