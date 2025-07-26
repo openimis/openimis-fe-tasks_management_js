@@ -2,7 +2,7 @@ import React from 'react';
 
 import {
   People,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 
 import { FormattedMessage } from '@openimis/fe-core';
 import {

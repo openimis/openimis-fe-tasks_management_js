@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-import { makeStyles } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import { TASK_CONTRIBUTION_KEY } from '../constants';
 import TaskSearcher from '../components/TaskSearcher';
 

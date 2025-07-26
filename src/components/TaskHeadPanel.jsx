@@ -9,7 +9,7 @@ import {
   formatMessage,
 } from '@openimis/fe-core';
 import { injectIntl } from 'react-intl';
-import { withTheme, withStyles } from '@mui/material/styles';
+import { withTheme, withStyles } from '@mui/styles';
 import TaskStatusPicker from '../pickers/TaskStatusPicker';
 import TaskGroupPicker from '../pickers/TaskGroupPicker';
 import { TASK_STATUS, TASK_UPDATE } from '../constants';

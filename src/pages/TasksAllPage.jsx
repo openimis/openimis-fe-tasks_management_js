@@ -1,7 +1,7 @@
 /* eslint-disable react/destructuring-assignment */
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { makeStyles } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import TaskAllSearcher from '../components/TaskAllSearcher';
 
 import {

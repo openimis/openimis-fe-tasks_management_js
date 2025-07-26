@@ -2,7 +2,7 @@ import React from 'react';
 import {
   Helmet, withTooltip, useTranslations, useModulesManager, useHistory,
 } from '@openimis/fe-core';
-import { makeStyles } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import { useSelector } from 'react-redux';
 import { Fab } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
@@ -29,19 +29,19 @@ function GroupsManagementPage() {
 
   return (
     rights.includes(TASK_GROUP_SEARCH) && (
-    <div className={classes.page}>
-      <Helmet title={formatMessage('groupsManagement.groupHelmet')} />
-      <TaskGroupsSearcher rights={rights} />
-      {rights.includes(TASK_GROUP_CREATE)
-        && withTooltip(
-          <div className={classes.fab}>
-            <Fab color="primary" onClick={onTaskGroupAdd}>
-              <AddIcon />
-            </Fab>
-          </div>,
-          formatMessage('createButton.tooltip'),
-        )}
-    </div>
+      <div className={classes.page}>
+        <Helmet title={formatMessage('groupsManagement.groupHelmet')} />
+        <TaskGroupsSearcher rights={rights} />
+        {rights.includes(TASK_GROUP_CREATE)
+          && withTooltip(
+            <div className={classes.fab}>
+              <Fab color="primary" onClick={onTaskGroupAdd}>
+                <AddIcon />
+              </Fab>
+            </div>,
+            formatMessage('createButton.tooltip'),
+          )}
+      </div>
     )
   );
 }

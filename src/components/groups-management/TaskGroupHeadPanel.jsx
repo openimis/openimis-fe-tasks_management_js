@@ -7,7 +7,7 @@ import {
   FormattedMessage,
 } from '@openimis/fe-core';
 import { injectIntl } from 'react-intl';
-import { withTheme, withStyles } from '@mui/material/styles';
+import { withTheme, withStyles } from '@mui/styles';
 import TaskExecutorsPicker from '../../pickers/TaskExecutorsPicker';
 import GroupPolicyPicker from '../../pickers/GroupPolicyPicker';
 import TaskSourcePicker from '../../pickers/TaskSourcePicker';

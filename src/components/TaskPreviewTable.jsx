@@ -2,7 +2,7 @@
 import React from 'react';
 
 import { injectIntl } from 'react-intl';
-import { withStyles, withTheme } from '@mui/material/styles';
+import { withStyles, withTheme } from '@mui/styles';
 import {
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
 } from '@mui/material';

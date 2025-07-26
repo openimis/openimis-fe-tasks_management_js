@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { makeStyles } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import {
   Form, Helmet,
   useHistory,
