@@ -2,8 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import {
-  makeStyles, Paper, Fab,
+  Paper, Fab,
 } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import ClearIcon from '@mui/icons-material/Clear';
 import CheckIcon from '@mui/icons-material/Check';
 import {
@@ -17,17 +18,25 @@ import {
 } from '../constants';
 import { resolveTask } from '../actions';
 
-const useStyles = makeStyles((theme) => ({
-  paper: theme.paper.paper,
-  title: theme.paper.title,
-  button: theme.paper.button,
-  fabContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-  },
-  fab: {
-    margin: theme.spacing(1),
-  },
+const StyledPaper = styled('div')(({ theme }) => ({
+  ...theme.paper.paper,
+}));
+
+const StyledTitle = styled('div')(({ theme }) => ({
+  ...theme.paper.title,
+}));
+
+const StyledButton = styled('div')(({ theme }) => ({
+  ...theme.paper.button,
+}));
+
+const StyledFabContainer = styled('div')(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'center',
+}));
+
+const StyledFab = styled('div')(({ theme }) => ({
+  margin: theme.spacing(1),
 }));
 
 function TaskApprovementPanel({
@@ -43,7 +52,6 @@ function TaskApprovementPanel({
   additionalData,
 }) {
   const modulesManager = useModulesManager();
-  const classes = useStyles();
   const { formatMessage } = useTranslations('tasksManagement', modulesManager);
   const prevSubmittingMutationRef = useRef();
   const [approveOrFail, setApproveOrFail] = useState(EMPTY_STRING);
@@ -116,9 +124,9 @@ function TaskApprovementPanel({
   }
 
   return (
-    <Paper className={classes.paper}>
-      <div className={classes.fabContainer}>
-        <div className={classes.fab}>
+    <Paper component={StyledPaper}>
+      <StyledFabContainer>
+        <StyledFab>
           <Fab
             color="primary"
             disabled={task.status === TASK_STATUS.RECEIVED || disable}
@@ -126,8 +134,8 @@ function TaskApprovementPanel({
           >
             <CheckIcon />
           </Fab>
-        </div>
-        <div className={classes.fab}>
+        </StyledFab>
+        <StyledFab>
           <Fab
             color="primary"
             disabled={task.status === TASK_STATUS.RECEIVED || disable}
@@ -135,8 +143,8 @@ function TaskApprovementPanel({
           >
             <ClearIcon />
           </Fab>
-        </div>
-      </div>
+        </StyledFab>
+      </StyledFabContainer>
     </Paper>
   );
 }

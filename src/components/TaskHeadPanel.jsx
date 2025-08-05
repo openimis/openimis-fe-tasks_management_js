@@ -1,5 +1,6 @@
 import React from 'react';
 import { Grid, Divider, Typography } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import {
   withModulesManager,
   FormPanel,
@@ -9,29 +10,32 @@ import {
   formatMessage,
 } from '@openimis/fe-core';
 import { injectIntl } from 'react-intl';
-import { withTheme, withStyles } from '@mui/styles';
 import TaskStatusPicker from '../pickers/TaskStatusPicker';
 import TaskGroupPicker from '../pickers/TaskGroupPicker';
 import { TASK_STATUS, TASK_UPDATE } from '../constants';
 import trimBusinessEvent from '../utils/trimBusinessEvent';
 import TaskHistoryDialog from './dialogs/TaskHistoryDialog';
 
-const styles = (theme) => ({
-  tableTitle: theme.table.title,
-  item: theme.paper.item,
-  fullHeight: {
-    height: '100%',
-  },
-});
+const StyledTableTitle = styled('div')(({ theme }) => ({
+  ...theme.table.title,
+}));
 
-const renderHeadPanelTitle = (classes, rights, task) => (
-  <Grid container className={classes.tableTitle}>
+const StyledItem = styled('div')(({ theme }) => ({
+  ...theme.paper.item,
+}));
+
+const StyledFullHeight = styled('div')(({ theme }) => ({
+  height: '100%',
+}));
+
+const renderHeadPanelTitle = (rights, task) => (
+  <Grid container component={StyledTableTitle}>
     <Grid
       container
       align="center"
       justify="space-between"
       direction="row"
-      className={classes.fullHeight}
+      component={StyledFullHeight}
     >
       <Grid item>
         <Typography>
@@ -40,7 +44,6 @@ const renderHeadPanelTitle = (classes, rights, task) => (
       </Grid>
       <Grid item>
         <TaskHistoryDialog
-          classes={classes}
           rights={rights}
           taskId={task.id}
         />
@@ -52,15 +55,15 @@ const renderHeadPanelTitle = (classes, rights, task) => (
 class TaskHeadPanel extends FormPanel {
   render() {
     const {
-      intl, edited, classes, readOnly, rights,
+      intl, edited, readOnly, rights,
     } = this.props;
     const task = { ...edited };
     return (
       <>
-        {renderHeadPanelTitle(classes, rights, task)}
+        {renderHeadPanelTitle(rights, task)}
         <Divider />
-        <Grid container className={classes.item}>
-          <Grid item xs={3} className={classes.item}>
+        <Grid container component={StyledItem}>
+          <Grid item xs={3} component={StyledItem}>
             <TextInput
               module="tasksManagement"
               label="task.source"
@@ -69,7 +72,7 @@ class TaskHeadPanel extends FormPanel {
               onChange={(source) => this.updateAttribute('source', source)}
             />
           </Grid>
-          <Grid item xs={3} className={classes.item}>
+          <Grid item xs={3} component={StyledItem}>
             <TextInput
               module="tasksManagement"
               label="task.type"
@@ -78,7 +81,7 @@ class TaskHeadPanel extends FormPanel {
               onChange={(type) => this.updateAttribute('type', type)}
             />
           </Grid>
-          <Grid item xs={3} className={classes.item}>
+          <Grid item xs={3} component={StyledItem}>
             <TextInput
               module="tasksManagement"
               label="task.entity"
@@ -87,7 +90,7 @@ class TaskHeadPanel extends FormPanel {
               onChange={(entity) => this.updateAttribute('entity', entity)}
             />
           </Grid>
-          <Grid item xs={3} className={classes.item}>
+          <Grid item xs={3} component={StyledItem}>
             <TaskGroupPicker
               module="tasksManagement"
               required
@@ -99,7 +102,7 @@ class TaskHeadPanel extends FormPanel {
               onChange={(taskGroup) => this.updateAttribute('taskGroup', taskGroup)}
             />
           </Grid>
-          <Grid item xs={3} className={classes.item}>
+          <Grid item xs={3} component={StyledItem}>
             <TextAreaInput
               module="tasksManagement"
               label="task.businessStatus"
@@ -108,7 +111,7 @@ class TaskHeadPanel extends FormPanel {
               onChange={(businessStatus) => this.updateAttribute('businessStatus', businessStatus)}
             />
           </Grid>
-          <Grid item xs={3} className={classes.item}>
+          <Grid item xs={3} component={StyledItem}>
             <TaskStatusPicker
               label="task.status"
               withLabel
@@ -125,4 +128,4 @@ class TaskHeadPanel extends FormPanel {
   }
 }
 
-export default withModulesManager(injectIntl(withTheme(withStyles(styles)(TaskHeadPanel))));
+export default withModulesManager(injectIntl(TaskHeadPanel));

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { makeStyles } from '@mui/styles';
+import { styled } from '@mui/material/styles';
 import { connect, useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
@@ -14,14 +14,13 @@ import {
 } from '../actions';
 import { ACTION_TYPE } from '../reducer';
 
-const useStyles = makeStyles((theme) => ({
-  page: theme.page,
+const StyledPage = styled('div')(({ theme }) => ({
+  ...theme.page,
 }));
 
 function TaskGroupPage({
   rights, taskGroup, taskGroupUuid, confirmed, journalize, mutation, submittingMutation, coreConfirm,
 }) {
-  const classes = useStyles();
   const dispatch = useDispatch();
   const modulesManager = useModulesManager();
   const history = useHistory();
@@ -118,7 +117,7 @@ function TaskGroupPage({
   useEffect(() => () => dispatch(clearTaskGroup()), []);
 
   return (
-    <div className={classes.page}>
+    <StyledPage>
       <Helmet title={formatMessageWithValues('taskGroup.detailsPage.title', titleParams(editedTaskGroup))} />
       <Form
         module="tasksManagement"
@@ -138,7 +137,7 @@ function TaskGroupPage({
         setConfirmedAction={setConfirmedAction}
         saveTooltip={formatMessage('saveButton.tooltip')}
       />
-    </div>
+    </StyledPage>
   );
 }
 

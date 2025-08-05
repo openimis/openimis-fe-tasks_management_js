@@ -2,7 +2,7 @@
 import React from 'react';
 
 import { injectIntl } from 'react-intl';
-import { withStyles, withTheme } from '@mui/styles';
+import { styled } from '@mui/material/styles';
 import {
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
 } from '@mui/material';
@@ -10,45 +10,88 @@ import { ProgressOrError } from '@openimis/fe-core';
 import { useSelector } from 'react-redux';
 import TaskPreviewCell from './TaskPreviewCell';
 
-const styles = (theme) => ({
-  table: theme.table,
-  tableTitle: theme.table.title,
-  tableHeader: theme.table.header,
-  tableRow: theme.table.row,
-  tableLockedRow: theme.table.lockedRow,
-  tableLockedCell: theme.table.lockedCell,
-  tableHighlightedRow: theme.table.highlightedRow,
-  tableHighlightedCell: theme.table.highlightedCell,
-  tableHighlightedAltRow: theme.table.highlightedAltRow,
-  tableHighlightedAltCell: theme.table.highlightedAltCell,
-  tableDisabledRow: theme.table.disabledRow,
-  tableDisabledCell: theme.table.disabledCell,
-  tableFooter: theme.table.footer,
-  pager: theme.table.pager,
-  left: {
-    textAlign: 'left',
-  },
-  right: {
-    textAlign: 'right',
-  },
-  center: {
-    textAlign: 'center',
-  },
-  clickable: {
-    cursor: 'pointer',
-  },
-  loader: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    background: 'rgba(0, 0, 0, 0.12)',
-  },
-});
+const StyledTable = styled('div')(({ theme }) => ({
+  ...theme.table,
+}));
+
+const StyledTableTitle = styled('div')(({ theme }) => ({
+  ...theme.table.title,
+}));
+
+const StyledTableHeader = styled('div')(({ theme }) => ({
+  ...theme.table.header,
+}));
+
+const StyledTableRow = styled('div')(({ theme }) => ({
+  ...theme.table.row,
+}));
+
+const StyledTableLockedRow = styled('div')(({ theme }) => ({
+  ...theme.table.lockedRow,
+}));
+
+const StyledTableLockedCell = styled('div')(({ theme }) => ({
+  ...theme.table.lockedCell,
+}));
+
+const StyledTableHighlightedRow = styled('div')(({ theme }) => ({
+  ...theme.table.highlightedRow,
+}));
+
+const StyledTableHighlightedCell = styled('div')(({ theme }) => ({
+  ...theme.table.highlightedCell,
+}));
+
+const StyledTableHighlightedAltRow = styled('div')(({ theme }) => ({
+  ...theme.table.highlightedAltRow,
+}));
+
+const StyledTableHighlightedAltCell = styled('div')(({ theme }) => ({
+  ...theme.table.highlightedAltCell,
+}));
+
+const StyledTableDisabledRow = styled('div')(({ theme }) => ({
+  ...theme.table.disabledRow,
+}));
+
+const StyledTableDisabledCell = styled('div')(({ theme }) => ({
+  ...theme.table.disabledCell,
+}));
+
+const StyledTableFooter = styled('div')(({ theme }) => ({
+  ...theme.table.footer,
+}));
+
+const StyledPager = styled('div')(({ theme }) => ({
+  ...theme.table.pager,
+}));
+
+const StyledLeft = styled('div')(({ theme }) => ({
+  textAlign: 'left',
+}));
+
+const StyledRight = styled('div')(({ theme }) => ({
+  textAlign: 'right',
+}));
+
+const StyledCenter = styled('div')(({ theme }) => ({
+  textAlign: 'center',
+}));
+
+const StyledClickable = styled('div')(({ theme }) => ({
+  cursor: 'pointer',
+}));
+
+const StyledLoader = styled('div')(({ theme }) => ({
+  position: 'absolute',
+  top: 0,
+  bottom: 0,
+  left: 0,
+  right: 0,
+  background: 'rgba(0, 0, 0, 0.12)',
+}));
 
 function TaskPreviewTable({
-  classes,
   previewItem,
   itemFormatters,
   tableHeaders,
@@ -58,7 +101,7 @@ function TaskPreviewTable({
 
   return previewItem && (
     <TableContainer>
-      <Table size="small" className={classes.table}>
+      <Table size="small" component={StyledTable}>
         <TableHead>
           <TableRow>
             {tableHeaders.map((column) => (
@@ -68,7 +111,7 @@ function TaskPreviewTable({
         </TableHead>
         <TableBody>
           <ProgressOrError
-            className={classes.center}
+            className={StyledCenter}
             progress={fetchingTasks}
             error={errorTasks}
           />
@@ -94,4 +137,4 @@ function TaskPreviewTable({
   );
 }
 
-export default injectIntl(withTheme(withStyles(styles)(TaskPreviewTable)));
+export default injectIntl(TaskPreviewTable);

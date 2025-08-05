@@ -11,25 +11,28 @@ import {
 } from '@mui/material';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-import { makeStyles } from '@mui/styles';
+import { styled } from '@mui/material/styles';
 import { TASK_CONTRIBUTION_KEY } from '../constants';
 import TaskSearcher from '../components/TaskSearcher';
 
-const useStyles = makeStyles((theme) => ({
-  page: theme.page,
-  paper: theme.paper.paper,
-  title: {
-    ...theme.paper.title,
-    cursor: 'pointer',
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
+const StyledPage = styled('div')(({ theme }) => ({
+  ...theme.page,
+}));
+
+const StyledPaper = styled('div')(({ theme }) => ({
+  ...theme.paper.paper,
+}));
+
+const StyledTitle = styled('div')(({ theme }) => ({
+  ...theme.paper.title,
+  cursor: 'pointer',
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
 }));
 
 function TasksManagementPage() {
   const rights = useSelector((store) => store.core?.user?.i_user?.rights ?? []);
-  const classes = useStyles();
   const modulesManager = useModulesManager();
 
   const contributions = modulesManager.getContribs(TASK_CONTRIBUTION_KEY);
@@ -44,21 +47,20 @@ function TasksManagementPage() {
     contributions && (
       contributions.map((contribution) => (
         <Box key={contribution.text}>
-          <Paper className={classes.paper}>
-            <div className={classes.titleContainer}>
-              <Typography className={classes.title} button onClick={() => handleOpen(contribution.text)}>
+          <Paper component={StyledPaper}>
+            <div>
+              <Typography component={StyledTitle} button onClick={() => handleOpen(contribution.text)}>
                 {contribution.text}
                 {expandedContributionId === contribution.text ? <ExpandLess /> : <ExpandMore />}
               </Typography>
             </div>
             <Collapse in={expandedContributionId === contribution.text} timeout="auto" unmountOnExit>
-              <div className={classes.page}>
+              <StyledPage>
                 <TaskSearcher
                   contribution={contribution}
                   rights={rights}
-                  classes={classes}
                 />
-              </div>
+              </StyledPage>
             </Collapse>
           </Paper>
         </Box>

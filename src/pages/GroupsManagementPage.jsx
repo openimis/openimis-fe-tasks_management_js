@@ -2,7 +2,7 @@ import React from 'react';
 import {
   Helmet, withTooltip, useTranslations, useModulesManager, useHistory,
 } from '@openimis/fe-core';
-import { makeStyles } from '@mui/styles';
+import { styled } from '@mui/material/styles';
 import { useSelector } from 'react-redux';
 import { Fab } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
@@ -13,14 +13,16 @@ import {
 } from '../constants';
 import TaskGroupsSearcher from '../components/groups-management/TaskGroupsSearcher';
 
-const useStyles = makeStyles((theme) => ({
-  page: theme.page,
-  fab: theme.fab,
+const StyledPage = styled('div')(({ theme }) => ({
+  ...theme.page,
+}));
+
+const StyledFab = styled('div')(({ theme }) => ({
+  ...theme.fab,
 }));
 
 function GroupsManagementPage() {
   const modulesManager = useModulesManager();
-  const classes = useStyles();
   const history = useHistory();
   const rights = useSelector((store) => store.core.user.i_user.rights ?? []);
   const { formatMessage } = useTranslations('tasksManagement', modulesManager);
@@ -29,19 +31,19 @@ function GroupsManagementPage() {
 
   return (
     rights.includes(TASK_GROUP_SEARCH) && (
-      <div className={classes.page}>
+      <StyledPage>
         <Helmet title={formatMessage('groupsManagement.groupHelmet')} />
         <TaskGroupsSearcher rights={rights} />
         {rights.includes(TASK_GROUP_CREATE)
           && withTooltip(
-            <div className={classes.fab}>
+            <StyledFab>
               <Fab color="primary" onClick={onTaskGroupAdd}>
                 <AddIcon />
               </Fab>
-            </div>,
+            </StyledFab>,
             formatMessage('createButton.tooltip'),
           )}
-      </div>
+      </StyledPage>
     )
   );
 }

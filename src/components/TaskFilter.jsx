@@ -1,18 +1,27 @@
 import React from 'react';
 import { injectIntl } from 'react-intl';
 import { Grid } from '@mui/material';
-import { withTheme, withStyles } from '@mui/styles';
+import { styled } from '@mui/material/styles';
 import _debounce from 'lodash/debounce';
 import {
   TextInput, PublishedComponent, formatMessage, decodeId, toISODateTime,
 } from '@openimis/fe-core';
+
 import { defaultFilterStyles } from '../utils/styles';
 import {
   CONTAINS_LOOKUP, DEFAULT_DEBOUNCE_TIME, EMPTY_STRING, MODULE_NAME,
 } from '../constants';
 
+const StyledForm = styled('div')(({ theme }) => ({
+  ...defaultFilterStyles(theme).form,
+}));
+
+const StyledItem = styled('div')(({ theme }) => ({
+  ...defaultFilterStyles(theme).item,
+}));
+
 function TaskFilter({
-  intl, classes, filters, onChangeFilters,
+  intl, filters, onChangeFilters,
 }) {
   const debouncedOnChangeFilters = _debounce(onChangeFilters, DEFAULT_DEBOUNCE_TIME);
 
@@ -41,8 +50,8 @@ function TaskFilter({
   };
 
   return (
-    <Grid container className={classes.form}>
-      <Grid item xs={3} className={classes.item}>
+    <Grid container component={StyledForm}>
+      <Grid item xs={3} component={StyledItem}>
         <TextInput
           module={MODULE_NAME}
           label="task.source"
@@ -51,85 +60,85 @@ function TaskFilter({
           readOnly
         />
       </Grid>
-      <Grid item xs={3} className={classes.item}>
-        <TextInput
-          module={MODULE_NAME}
-          label="task.type"
-          value={filterTextFieldValue('type')}
-          onChange={onChangeStringFilter('businessEvent', CONTAINS_LOOKUP)}
-        />
-      </Grid>
-      <Grid item xs={3} className={classes.item}>
-        <TextInput
-          module={MODULE_NAME}
-          label="task.entity"
-          value={filterTextFieldValue('entity')}
-          onChange={onChangeStringFilter('entityString', CONTAINS_LOOKUP)}
-        />
-      </Grid>
-      <Grid item xs={3} className={classes.item}>
-        <PublishedComponent
-          pubRef="tasksManagement.taskGroupPicker"
-          module={MODULE_NAME}
-          value={filterValue('taskGroupId')}
-          onChange={(value) => onChangeFilters([
-            {
-              id: 'taskGroupId',
-              value,
-              filter: value?.id ? `taskGroupId: "${decodeId(value.id)}"` : '',
-            },
-          ])}
-        />
-      </Grid>
-      <Grid item xs={3} className={classes.item}>
-        <PublishedComponent
-          pubRef="tasksManagement.taskStatusPicker"
-          module={MODULE_NAME}
-          withLabel
-          nullLabel={formatMessage(intl, MODULE_NAME, 'any')}
-          withNull
-          value={filterValue('status')}
-          onChange={(value) => onChangeFilters([
-            {
-              id: 'status',
-              value,
-              filter: value ? `status: ${value}` : EMPTY_STRING,
-            },
-          ])}
-        />
-      </Grid>
-      <Grid item xs={2} className={classes.item}>
-        <PublishedComponent
-          pubRef="core.DatePicker"
-          module={MODULE_NAME}
-          label={formatMessage(intl, MODULE_NAME, 'task.dateCreated.after')}
-          value={filterValue('dateCreated_Gte')}
-          onChange={(v) => onChangeFilters([
-            {
-              id: 'dateCreated_Gte',
-              value: v,
-              filter: `dateCreated_Gte: "${toISODateTime(v)}"`,
-            },
-          ])}
-        />
-      </Grid>
-      <Grid item xs={2} className={classes.item}>
-        <PublishedComponent
-          pubRef="core.DatePicker"
-          module={MODULE_NAME}
-          label={formatMessage(intl, MODULE_NAME, 'task.dateCreated.before')}
-          value={filterValue('dateCreated_Lte')}
-          onChange={(v) => onChangeFilters([
-            {
-              id: 'dateCreated_Lte',
-              value: v,
-              filter: `dateCreated_Lte: "${toISODateTime(v)}"`,
-            },
-          ])}
-        />
-      </Grid>
+             <Grid item xs={3} component={StyledItem}>
+         <TextInput
+           module={MODULE_NAME}
+           label="task.type"
+           value={filterTextFieldValue('type')}
+           onChange={onChangeStringFilter('businessEvent', CONTAINS_LOOKUP)}
+         />
+       </Grid>
+             <Grid item xs={3} component={StyledItem}>
+         <TextInput
+           module={MODULE_NAME}
+           label="task.entity"
+           value={filterTextFieldValue('entity')}
+           onChange={onChangeStringFilter('entityString', CONTAINS_LOOKUP)}
+         />
+       </Grid>
+             <Grid item xs={3} component={StyledItem}>
+         <PublishedComponent
+           pubRef="tasksManagement.taskGroupPicker"
+           module={MODULE_NAME}
+           value={filterValue('taskGroupId')}
+           onChange={(value) => onChangeFilters([
+             {
+               id: 'taskGroupId',
+               value,
+               filter: value?.id ? `taskGroupId: "${decodeId(value.id)}"` : '',
+             },
+           ])}
+         />
+       </Grid>
+             <Grid item xs={3} component={StyledItem}>
+         <PublishedComponent
+           pubRef="tasksManagement.taskStatusPicker"
+           module={MODULE_NAME}
+           withLabel
+           nullLabel={formatMessage(intl, MODULE_NAME, 'any')}
+           withNull
+           value={filterValue('status')}
+           onChange={(value) => onChangeFilters([
+             {
+               id: 'status',
+               value,
+               filter: value ? `status: ${value}` : EMPTY_STRING,
+             },
+           ])}
+         />
+       </Grid>
+             <Grid item xs={2} component={StyledItem}>
+         <PublishedComponent
+           pubRef="core.DatePicker"
+           module={MODULE_NAME}
+           label={formatMessage(intl, MODULE_NAME, 'task.dateCreated.after')}
+           value={filterValue('dateCreated_Gte')}
+           onChange={(v) => onChangeFilters([
+             {
+               id: 'dateCreated_Gte',
+               value: v,
+               filter: `dateCreated_Gte: "${toISODateTime(v)}"`,
+             },
+           ])}
+         />
+       </Grid>
+             <Grid item xs={2} component={StyledItem}>
+         <PublishedComponent
+           pubRef="core.DatePicker"
+           module={MODULE_NAME}
+           label={formatMessage(intl, MODULE_NAME, 'task.dateCreated.before')}
+           value={filterValue('dateCreated_Lte')}
+           onChange={(v) => onChangeFilters([
+             {
+               id: 'dateCreated_Lte',
+               value: v,
+               filter: `dateCreated_Lte: "${toISODateTime(v)}"`,
+             },
+           ])}
+         />
+       </Grid>
     </Grid>
   );
 }
 
-export default injectIntl(withTheme(withStyles(defaultFilterStyles)(TaskFilter)));
+export default injectIntl(TaskFilter);

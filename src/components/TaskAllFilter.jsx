@@ -1,18 +1,28 @@
 import React from 'react';
 import { injectIntl } from 'react-intl';
 import { Grid } from '@mui/material';
-import { withTheme, withStyles } from '@mui/styles';
+import { styled } from '@mui/material/styles';
 import _debounce from 'lodash/debounce';
 import {
   TextInput, PublishedComponent, formatMessage, decodeId, toISODateTime,
 } from '@openimis/fe-core';
 import { defaultFilterStyles } from '../utils/styles';
+
 import {
   CONTAINS_LOOKUP, DEFAULT_DEBOUNCE_TIME, EMPTY_STRING, MODULE_NAME,
 } from '../constants';
 
+const StyledForm = styled('div')(({ theme }) => ({
+  padding: '0 0 10px 0',
+  width: '100%',
+}));
+
+const StyledItem = styled('div')(({ theme }) => ({
+  padding: theme.spacing(1),
+}));
+
 function TaskAllFilter({
-  intl, classes, filters, onChangeFilters,
+  intl, filters, onChangeFilters,
 }) {
   const debouncedOnChangeFilters = _debounce(onChangeFilters, DEFAULT_DEBOUNCE_TIME);
 
@@ -41,8 +51,8 @@ function TaskAllFilter({
   };
 
   return (
-    <Grid container className={classes.form}>
-      <Grid item xs={3} className={classes.item}>
+    <Grid container component={StyledForm}>
+      <Grid item xs={3} component={StyledItem}>
         <PublishedComponent
           pubRef="tasksManagement.taskSourcesPicker"
           module={MODULE_NAME}
@@ -59,7 +69,7 @@ function TaskAllFilter({
           ])}
         />
       </Grid>
-      <Grid item xs={3} className={classes.item}>
+      <Grid item xs={3} component={StyledItem}>
         <PublishedComponent
           pubRef="tasksManagement.taskTypesPicker"
           module={MODULE_NAME}
@@ -70,7 +80,7 @@ function TaskAllFilter({
           onChange={onChangeStringFilter('businessEvent', CONTAINS_LOOKUP)}
         />
       </Grid>
-      <Grid item xs={3} className={classes.item}>
+      <Grid item xs={3} component={StyledItem}>
         <TextInput
           module={MODULE_NAME}
           label="task.entity"
@@ -78,7 +88,7 @@ function TaskAllFilter({
           onChange={onChangeStringFilter('entityString', CONTAINS_LOOKUP)}
         />
       </Grid>
-      <Grid item xs={3} className={classes.item}>
+      <Grid item xs={3} component={StyledItem}>
         <PublishedComponent
           pubRef="tasksManagement.taskGroupPicker"
           module={MODULE_NAME}
@@ -92,7 +102,7 @@ function TaskAllFilter({
           ])}
         />
       </Grid>
-      <Grid item xs={3} className={classes.item}>
+      <Grid item xs={3} component={StyledItem}>
         <PublishedComponent
           pubRef="tasksManagement.taskStatusPicker"
           module={MODULE_NAME}
@@ -109,7 +119,7 @@ function TaskAllFilter({
           ])}
         />
       </Grid>
-      <Grid item xs={3} className={classes.item}>
+      <Grid item xs={3} component={StyledItem}>
         <PublishedComponent
           pubRef="core.DatePicker"
           module={MODULE_NAME}
@@ -124,7 +134,7 @@ function TaskAllFilter({
           ])}
         />
       </Grid>
-      <Grid item xs={3} className={classes.item}>
+      <Grid item xs={3} component={StyledItem}>
         <PublishedComponent
           pubRef="core.DatePicker"
           module={MODULE_NAME}
@@ -143,4 +153,4 @@ function TaskAllFilter({
   );
 }
 
-export default injectIntl(withTheme(withStyles(defaultFilterStyles)(TaskAllFilter)));
+export default injectIntl(TaskAllFilter);

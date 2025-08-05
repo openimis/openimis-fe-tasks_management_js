@@ -1,7 +1,7 @@
 import React from 'react';
 import { injectIntl } from 'react-intl';
 import { Grid } from '@mui/material';
-import { withTheme, withStyles } from '@mui/styles';
+import { styled } from '@mui/material/styles';
 import _debounce from 'lodash/debounce';
 import {
   TextInput, PublishedComponent, formatMessage, decodeId, toISODateTime,
@@ -11,8 +11,16 @@ import {
   CONTAINS_LOOKUP, DEFAULT_DEBOUNCE_TIME, EMPTY_STRING, MODULE_NAME,
 } from '../constants';
 
+const StyledForm = styled('div')(({ theme }) => ({
+  ...defaultFilterStyles(theme).form,
+}));
+
+const StyledItem = styled('div')(({ theme }) => ({
+  ...defaultFilterStyles(theme).item,
+}));
+
 function TaskHistoryFilter({
-  intl, classes, filters, onChangeFilters,
+  intl, filters, onChangeFilters,
 }) {
   const debouncedOnChangeFilters = _debounce(onChangeFilters, DEFAULT_DEBOUNCE_TIME);
 
@@ -41,8 +49,8 @@ function TaskHistoryFilter({
   };
 
   return (
-    <Grid container className={classes.form}>
-      <Grid item xs={3} className={classes.item}>
+    <Grid container component={StyledForm}>
+      <Grid item xs={3} component={StyledItem}>
         <PublishedComponent
           pubRef="tasksManagement.taskSourcesPicker"
           module={MODULE_NAME}
@@ -59,7 +67,7 @@ function TaskHistoryFilter({
           ])}
         />
       </Grid>
-      <Grid item xs={3} className={classes.item}>
+      <Grid item xs={3} component={StyledItem}>
         <PublishedComponent
           pubRef="tasksManagement.taskTypesPicker"
           module={MODULE_NAME}
@@ -70,7 +78,7 @@ function TaskHistoryFilter({
           onChange={onChangeStringFilter('businessEvent', CONTAINS_LOOKUP)}
         />
       </Grid>
-      <Grid item xs={3} className={classes.item}>
+      <Grid item xs={3} component={StyledItem}>
         <TextInput
           module={MODULE_NAME}
           label="task.entity"
@@ -78,7 +86,7 @@ function TaskHistoryFilter({
           onChange={onChangeStringFilter('entityString', CONTAINS_LOOKUP)}
         />
       </Grid>
-      <Grid item xs={3} className={classes.item}>
+      <Grid item xs={3} component={StyledItem}>
         <PublishedComponent
           pubRef="tasksManagement.taskGroupPicker"
           module={MODULE_NAME}
@@ -92,7 +100,7 @@ function TaskHistoryFilter({
           ])}
         />
       </Grid>
-      <Grid item xs={3} className={classes.item}>
+      <Grid item xs={3} component={StyledItem}>
         <PublishedComponent
           pubRef="tasksManagement.taskStatusPicker"
           module={MODULE_NAME}
@@ -109,7 +117,7 @@ function TaskHistoryFilter({
           ])}
         />
       </Grid>
-      <Grid item xs={3} className={classes.item}>
+      <Grid item xs={3} component={StyledItem}>
         <PublishedComponent
           pubRef="core.DatePicker"
           module={MODULE_NAME}
@@ -124,7 +132,7 @@ function TaskHistoryFilter({
           ])}
         />
       </Grid>
-      <Grid item xs={3} className={classes.item}>
+      <Grid item xs={3} component={StyledItem}>
         <PublishedComponent
           pubRef="core.DatePicker"
           module={MODULE_NAME}
@@ -143,4 +151,4 @@ function TaskHistoryFilter({
   );
 }
 
-export default injectIntl(withTheme(withStyles(defaultFilterStyles)(TaskHistoryFilter)));
+export default injectIntl(TaskHistoryFilter);
