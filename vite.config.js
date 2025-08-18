@@ -56,7 +56,7 @@ export default defineConfig({
     lib: {
       entry: path.resolve(__dirname, 'src/index.jsx'),
       name: 'TasksManagement',
-      fileName: (format) => `index.${format}.js`,
+      fileName: (format) => `index.${format === 'es' ? 'es' : 'cjs'}.js`,
       formats: ['es', 'cjs'],
     },
     rollupOptions: {
