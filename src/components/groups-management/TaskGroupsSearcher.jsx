@@ -70,7 +70,6 @@ function TaskGroupsSearcher({
     if (taskGroupToDelete && confirmed !== null) {
       setTaskGroupToDelete(null);
     }
-    return () => confirmed && clearConfirm(false);
   }, [confirmed]);
 
   useEffect(() => {

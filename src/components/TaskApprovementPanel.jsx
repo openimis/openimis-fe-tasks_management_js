@@ -92,7 +92,6 @@ function TaskApprovementPanel({
         );
       }
     }
-    return () => confirmed && clearConfirm(false);
   }, [confirmed]);
 
   const openResolveTaskConfirmDialog = (choiceString) => coreConfirm(
