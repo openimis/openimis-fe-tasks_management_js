@@ -87,8 +87,7 @@ export default defineConfig({
         '@mui/system',
         /^@babel.*/,
         /^@date-io\/.*/,
-       
-        
+        'react/jsx-runtime',
         /^@openimis.*/,
       ],
       output: {
