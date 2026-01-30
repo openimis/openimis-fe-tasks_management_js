@@ -51,7 +51,7 @@ function TaskFilter({
 
   return (
     <Grid container component={StyledForm}>
-      <Grid item xs={3} component={StyledItem}>
+      <Grid size={3} component={StyledItem}>
         <TextInput
           module={MODULE_NAME}
           label="task.source"
@@ -60,7 +60,7 @@ function TaskFilter({
           readOnly
         />
       </Grid>
-             <Grid item xs={3} component={StyledItem}>
+             <Grid size={3} component={StyledItem}>
          <TextInput
            module={MODULE_NAME}
            label="task.type"
@@ -68,7 +68,7 @@ function TaskFilter({
            onChange={onChangeStringFilter('businessEvent', CONTAINS_LOOKUP)}
          />
        </Grid>
-             <Grid item xs={3} component={StyledItem}>
+             <Grid size={3} component={StyledItem}>
          <TextInput
            module={MODULE_NAME}
            label="task.entity"
@@ -76,7 +76,7 @@ function TaskFilter({
            onChange={onChangeStringFilter('entityString', CONTAINS_LOOKUP)}
          />
        </Grid>
-             <Grid item xs={3} component={StyledItem}>
+             <Grid size={3} component={StyledItem}>
          <PublishedComponent
            pubRef="tasksManagement.taskGroupPicker"
            module={MODULE_NAME}
@@ -90,7 +90,7 @@ function TaskFilter({
            ])}
          />
        </Grid>
-             <Grid item xs={3} component={StyledItem}>
+             <Grid size={3} component={StyledItem}>
          <PublishedComponent
            pubRef="tasksManagement.taskStatusPicker"
            module={MODULE_NAME}
@@ -107,7 +107,7 @@ function TaskFilter({
            ])}
          />
        </Grid>
-             <Grid item xs={2} component={StyledItem}>
+             <Grid size={2} component={StyledItem}>
          <PublishedComponent
            pubRef="core.DatePicker"
            module={MODULE_NAME}
@@ -122,7 +122,7 @@ function TaskFilter({
            ])}
          />
        </Grid>
-             <Grid item xs={2} component={StyledItem}>
+             <Grid size={2} component={StyledItem}>
          <PublishedComponent
            pubRef="core.DatePicker"
            module={MODULE_NAME}
@@ -141,4 +141,5 @@ function TaskFilter({
   );
 }
 
+export { StyledForm };
 export default injectIntl(TaskFilter);

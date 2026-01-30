@@ -55,7 +55,11 @@ function TaskGroupsSearcher({
     formatMessage('taskGroup.delete.confirm.message'),
   );
 
-  useEffect(() => taskGroupToDelete && openDeleteTaskGroupConfirmDialog(), [taskGroupToDelete]);
+  useEffect(() => {
+    if (taskGroupToDelete) {
+      openDeleteTaskGroupConfirmDialog();
+    }
+  }, [taskGroupToDelete]);
 
   useEffect(() => {
     if (taskGroupToDelete && confirmed) {
@@ -201,4 +205,5 @@ const mapDispatchToProps = (dispatch) => bindActionCreators(
   dispatch,
 );
 
+export { TaskGroupsSearcher };
 export default connect(mapStateToProps, mapDispatchToProps)(TaskGroupsSearcher);

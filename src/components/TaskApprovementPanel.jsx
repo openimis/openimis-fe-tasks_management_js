@@ -163,4 +163,5 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
   journalize,
 }, dispatch);
 
+export { StyledPaper };
 export default connect(mapStateToProps, mapDispatchToProps)(TaskApprovementPanel);

@@ -137,4 +137,5 @@ function TaskPreviewTable({
   );
 }
 
+export { StyledTable };
 export default injectIntl(TaskPreviewTable);

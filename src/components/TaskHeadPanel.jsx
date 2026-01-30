@@ -37,12 +37,12 @@ const renderHeadPanelTitle = (rights, task) => (
       direction="row"
       component={StyledFullHeight}
     >
-      <Grid item>
+      <Grid>
         <Typography>
           <FormattedMessage module="tasksManagement" id="task.detailsPage.triage.headPanelTitle" />
         </Typography>
       </Grid>
-      <Grid item>
+      <Grid>
         <TaskHistoryDialog
           rights={rights}
           taskId={task.id}
@@ -63,7 +63,7 @@ class TaskHeadPanel extends FormPanel {
         {renderHeadPanelTitle(rights, task)}
         <Divider />
         <Grid container component={StyledItem}>
-          <Grid item xs={3} component={StyledItem}>
+          <Grid size={3} component={StyledItem}>
             <TextInput
               module="tasksManagement"
               label="task.source"
@@ -72,7 +72,7 @@ class TaskHeadPanel extends FormPanel {
               onChange={(source) => this.updateAttribute('source', source)}
             />
           </Grid>
-          <Grid item xs={3} component={StyledItem}>
+          <Grid size={3} component={StyledItem}>
             <TextInput
               module="tasksManagement"
               label="task.type"
@@ -81,7 +81,7 @@ class TaskHeadPanel extends FormPanel {
               onChange={(type) => this.updateAttribute('type', type)}
             />
           </Grid>
-          <Grid item xs={3} component={StyledItem}>
+          <Grid size={3} component={StyledItem}>
             <TextInput
               module="tasksManagement"
               label="task.entity"
@@ -90,7 +90,7 @@ class TaskHeadPanel extends FormPanel {
               onChange={(entity) => this.updateAttribute('entity', entity)}
             />
           </Grid>
-          <Grid item xs={3} component={StyledItem}>
+          <Grid size={3} component={StyledItem}>
             <TaskGroupPicker
               module="tasksManagement"
               required
@@ -102,7 +102,7 @@ class TaskHeadPanel extends FormPanel {
               onChange={(taskGroup) => this.updateAttribute('taskGroup', taskGroup)}
             />
           </Grid>
-          <Grid item xs={3} component={StyledItem}>
+          <Grid size={3} component={StyledItem}>
             <TextAreaInput
               module="tasksManagement"
               label="task.businessStatus"
@@ -111,7 +111,7 @@ class TaskHeadPanel extends FormPanel {
               onChange={(businessStatus) => this.updateAttribute('businessStatus', businessStatus)}
             />
           </Grid>
-          <Grid item xs={3} component={StyledItem}>
+          <Grid size={3} component={StyledItem}>
             <TaskStatusPicker
               label="task.status"
               withLabel
@@ -128,4 +128,5 @@ class TaskHeadPanel extends FormPanel {
   }
 }
 
+export { StyledTableTitle };
 export default withModulesManager(injectIntl(TaskHeadPanel));

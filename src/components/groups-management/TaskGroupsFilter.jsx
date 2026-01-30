@@ -50,19 +50,19 @@ function TaskGroupsFilter({
 
   return (
     <Grid container component={StyledForm}>
-      <Grid item xs={3} component={StyledItem}>
+      <Grid size={3} component={StyledItem}>
         <TextInput
           module="tasksManagement"
-          label={formatMessage('taskGroup.code')}
+          label="taskGroup.code"
           value={filterTextFieldValue('code')}
           onChange={onChangeStringFilter('code', CONTAINS_LOOKUP)}
         />
       </Grid>
-      <Grid item xs={3} component={StyledItem}>
+      <Grid size={3} component={StyledItem}>
         <GroupPolicyPicker
           label="taskGroup.completionPolicy"
           withLabel
-          nullLabel={formatMessage('defaultValue.any')}
+          nullLabel="defaultValue.any"
           withNull
           value={filterValue('completionPolicy')}
           onChange={(value) => onChangeFilters([

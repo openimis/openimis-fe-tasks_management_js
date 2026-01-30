@@ -121,4 +121,5 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => bindActionCreators({
 }, dispatch);
 
+export { TaskHistoryDialog };
 export default connect(mapStateToProps, mapDispatchToProps)(TaskHistoryDialog);

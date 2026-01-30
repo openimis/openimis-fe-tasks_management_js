@@ -45,8 +45,8 @@ function TasksManagementPage() {
 
   return (
     contributions && (
-      contributions.map((contribution) => (
-        <Box key={contribution.text}>
+      contributions.map((contribution, index) => (
+        <Box key={index}>
           <Paper component={StyledPaper}>
             <div>
               <Typography component={StyledTitle} button onClick={() => handleOpen(contribution.text)}>

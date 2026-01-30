@@ -143,4 +143,5 @@ const mapStateToProps = (state, props) => ({
   errorTask: state.tasksManagement.errorTask,
 });
 
+export { StyledPage };
 export default connect(mapStateToProps, mapDispatchToProps)(TaskDetailsPage);

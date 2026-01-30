@@ -159,4 +159,5 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
   journalize,
 }, dispatch);
 
+export { StyledPage };
 export default connect(mapStateToProps, mapDispatchToProps)(TaskGroupPage);

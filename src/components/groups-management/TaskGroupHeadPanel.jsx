@@ -26,7 +26,7 @@ const StyledFullHeight = styled('div')(({ theme }) => ({
 
 const renderHeadPanelTitle = () => (
   <Grid container component={StyledTableTitle}>
-    <Grid item>
+    <Grid>
       <Grid
         container
         align="center"
@@ -34,7 +34,7 @@ const renderHeadPanelTitle = () => (
         direction="column"
         component={StyledFullHeight}
       >
-        <Grid item>
+        <Grid>
           <Typography>
             <FormattedMessage module="tasksManagement" id="taskGroup.detailsPage.headPanelTitle" />
           </Typography>
@@ -55,7 +55,7 @@ class TaskGroupHeadPanel extends FormPanel {
         {renderHeadPanelTitle()}
         <Divider />
         <Grid container component={StyledItem}>
-          <Grid item xs={3} component={StyledItem}>
+          <Grid size={3} component={StyledItem}>
             <TextInput
               module="tasksManagement"
               label="taskGroup.code"
@@ -65,7 +65,7 @@ class TaskGroupHeadPanel extends FormPanel {
               required
             />
           </Grid>
-          <Grid item xs={3} component={StyledItem}>
+          <Grid size={3} component={StyledItem}>
             <GroupPolicyPicker
               label="taskGroup.completionPolicy"
               withLabel
@@ -76,7 +76,7 @@ class TaskGroupHeadPanel extends FormPanel {
               required
             />
           </Grid>
-          <Grid item xs={6} component={StyledItem}>
+          <Grid size={6} component={StyledItem}>
             <TaskExecutorsPicker
               required
               readOnly={readOnly}
@@ -85,7 +85,7 @@ class TaskGroupHeadPanel extends FormPanel {
               onChange={(executors) => this.updateAttribute('taskexecutorSet', executors)}
             />
           </Grid>
-          <Grid item xs={6} component={StyledItem}>
+          <Grid size={6} component={StyledItem}>
             <TaskSourcePicker
               readOnly={readOnly}
               value={taskGroup?.taskSources}
@@ -98,4 +98,5 @@ class TaskGroupHeadPanel extends FormPanel {
   }
 }
 
+export { StyledTableTitle };
 export default withModulesManager(injectIntl(TaskGroupHeadPanel));
