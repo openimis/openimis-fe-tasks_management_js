@@ -52,12 +52,12 @@ function TaskAllFilter({
 
   return (
     <Grid container component={StyledForm}>
-      <Grid item xs={3} component={StyledItem}>
+      <Grid size={3} component={StyledItem}>
         <PublishedComponent
           pubRef="tasksManagement.taskSourcesPicker"
           module={MODULE_NAME}
           withLabel
-          nullLabel={formatMessage(intl, MODULE_NAME, 'any')}
+          nullLabel="defaultValue.any"
           withNull
           value={filterValue('source')}
           onChange={(value) => onChangeFilters([
@@ -69,18 +69,18 @@ function TaskAllFilter({
           ])}
         />
       </Grid>
-      <Grid item xs={3} component={StyledItem}>
+      <Grid size={3} component={StyledItem}>
         <PublishedComponent
           pubRef="tasksManagement.taskTypesPicker"
           module={MODULE_NAME}
           withLabel
-          nullLabel={formatMessage(intl, MODULE_NAME, 'any')}
+          nullLabel="defaultValue.any"
           withNull
           value={filterValue('businessEvent')}
           onChange={onChangeStringFilter('businessEvent', CONTAINS_LOOKUP)}
         />
       </Grid>
-      <Grid item xs={3} component={StyledItem}>
+      <Grid size={3} component={StyledItem}>
         <TextInput
           module={MODULE_NAME}
           label="task.entity"
@@ -88,7 +88,7 @@ function TaskAllFilter({
           onChange={onChangeStringFilter('entityString', CONTAINS_LOOKUP)}
         />
       </Grid>
-      <Grid item xs={3} component={StyledItem}>
+      <Grid size={3} component={StyledItem}>
         <PublishedComponent
           pubRef="tasksManagement.taskGroupPicker"
           module={MODULE_NAME}
@@ -102,12 +102,12 @@ function TaskAllFilter({
           ])}
         />
       </Grid>
-      <Grid item xs={3} component={StyledItem}>
+      <Grid size={3} component={StyledItem}>
         <PublishedComponent
           pubRef="tasksManagement.taskStatusPicker"
           module={MODULE_NAME}
           withLabel
-          nullLabel={formatMessage(intl, MODULE_NAME, 'any')}
+          nullLabel="defaultValue.any"
           withNull
           value={filterValue('status')}
           onChange={(value) => onChangeFilters([
@@ -119,11 +119,11 @@ function TaskAllFilter({
           ])}
         />
       </Grid>
-      <Grid item xs={3} component={StyledItem}>
+      <Grid size={3} component={StyledItem}>
         <PublishedComponent
           pubRef="core.DatePicker"
           module={MODULE_NAME}
-          label={formatMessage(intl, MODULE_NAME, 'task.dateCreated.after')}
+          label="task.dateCreated.after"
           value={filterValue('dateCreated_Gte')}
           onChange={(v) => onChangeFilters([
             {
@@ -134,11 +134,11 @@ function TaskAllFilter({
           ])}
         />
       </Grid>
-      <Grid item xs={3} component={StyledItem}>
+      <Grid size={3} component={StyledItem}>
         <PublishedComponent
           pubRef="core.DatePicker"
           module={MODULE_NAME}
-          label={formatMessage(intl, MODULE_NAME, 'task.dateCreated.before')}
+          label="task.dateCreated.before"
           value={filterValue('dateCreated_Lte')}
           onChange={(v) => onChangeFilters([
             {
@@ -153,4 +153,5 @@ function TaskAllFilter({
   );
 }
 
+export { StyledForm };
 export default injectIntl(TaskAllFilter);
