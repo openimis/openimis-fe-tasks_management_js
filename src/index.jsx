@@ -2,11 +2,8 @@
 /* eslint-disable camelcase */
 /* eslint-disable import/prefer-default-export */
 import React from 'react';
-import { FormattedMessage } from '@openimis/fe-core';
-import AssignmentIcon from '@mui/icons-material/Assignment';
 import messages_en from './translations/en.json';
 import reducer from './reducer';
-import TasksMainMenu from './menus/TasksMainMenu';
 import TasksManagementPage from './pages/TasksManagementPage';
 import TaskDetailsPage from './pages/TaskDetailsPage';
 import GroupsManagementPage from './pages/GroupsManagementPage';
@@ -32,7 +29,30 @@ const ROUTE_GROUP_MANAGEMENT = 'tasks/groups/group';
 const DEFAULT_CONFIG = {
   translations: [{ key: 'en', messages: messages_en }],
   reducers: [{ key: 'tasksManagement', reducer }],
-  'core.MainMenu': [{ name: 'TasksMainMenu', component: TasksMainMenu }],
+  'fe-core.menus': [
+    {
+      id: 'tasksManagement',
+      name: 'menu.tasksManagement',
+      icon: 'Assignment',
+      position: 3,
+      entries: [
+        {
+          text: 'entries.tasksManagementView',
+          icon: 'Assignment',
+          route: '/tasks',
+          id: 'task.tasks',
+          filter: (rights) => rights.includes(RIGHT_TASKS_MANAGEMENT_SEARCH_ALL),
+        },
+        {
+          text: 'entries.tasksManagementAllView',
+          icon: 'Assignment',
+          route: '/allTasks',
+          id: 'task.allTasks',
+          filter: (rights) => rights.includes(RIGHT_TASKS_MANAGEMENT_SEARCH_ALL),
+        },
+      ],
+    },
+  ],
   'admin.MainMenu': [...getAdminMainMenuContributions()],
   'core.Router': [
     { path: ROUTE_TASKS_MANAGEMENT, component: TasksManagementPage },
@@ -53,22 +73,7 @@ const DEFAULT_CONFIG = {
     { key: 'tasksManagement.taskDetailsPage', ref: TaskDetailsPage },
     { key: 'tasksManagement.fetchTask', ref: fetchTask },
   ],
-  'Tasks.MainMenu': [
-    {
-      text: <FormattedMessage module="tasksManagement" id="entries.tasksManagementView" />,
-      icon: <AssignmentIcon />,
-      route: '/tasks',
-      id: 'task.tasks',
-      filter: (rights) => rights.includes(RIGHT_TASKS_MANAGEMENT_SEARCH_ALL),
-    },
-    {
-      text: <FormattedMessage module="tasksManagement" id="entries.tasksManagementAllView" />,
-      icon: <AssignmentIcon />,
-      route: '/AllTasks',
-      id: 'task.allTasks',
-      filter: (rights) => rights.includes(RIGHT_TASKS_MANAGEMENT_SEARCH_ALL),
-    },
-  ],
+
 
 };
 
