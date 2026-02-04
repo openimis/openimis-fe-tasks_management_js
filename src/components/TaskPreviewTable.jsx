@@ -11,59 +11,59 @@ import { useSelector } from 'react-redux';
 import TaskPreviewCell from './TaskPreviewCell';
 
 const StyledTable = styled('div')(({ theme }) => ({
-  ...theme.table,
+  ...theme.table ?? {},
 }));
 
 const StyledTableTitle = styled('div')(({ theme }) => ({
-  ...theme.table.title,
+  ...theme.table?.title ?? {},
 }));
 
 const StyledTableHeader = styled('div')(({ theme }) => ({
-  ...theme.table.header,
+  ...theme.table?.header ?? {},
 }));
 
 const StyledTableRow = styled('div')(({ theme }) => ({
-  ...theme.table.row,
+  ...theme.table?.row ?? {},
 }));
 
 const StyledTableLockedRow = styled('div')(({ theme }) => ({
-  ...theme.table.lockedRow,
+  ...theme.table?.lockedRow ?? {},
 }));
 
 const StyledTableLockedCell = styled('div')(({ theme }) => ({
-  ...theme.table.lockedCell,
+  ...theme.table?.lockedCell ?? {},
 }));
 
 const StyledTableHighlightedRow = styled('div')(({ theme }) => ({
-  ...theme.table.highlightedRow,
+  ...theme.table?.highlightedRow ?? {},
 }));
 
 const StyledTableHighlightedCell = styled('div')(({ theme }) => ({
-  ...theme.table.highlightedCell,
+  ...theme.table?.highlightedCell ?? {},
 }));
 
 const StyledTableHighlightedAltRow = styled('div')(({ theme }) => ({
-  ...theme.table.highlightedAltRow,
+  ...theme.table?.highlightedAltRow ?? {},
 }));
 
 const StyledTableHighlightedAltCell = styled('div')(({ theme }) => ({
-  ...theme.table.highlightedAltCell,
+  ...theme.table?.highlightedAltCell ?? {},
 }));
 
 const StyledTableDisabledRow = styled('div')(({ theme }) => ({
-  ...theme.table.disabledRow,
+  ...theme.table?.disabledRow ?? {},
 }));
 
 const StyledTableDisabledCell = styled('div')(({ theme }) => ({
-  ...theme.table.disabledCell,
+  ...theme.table?.disabledCell ?? {},
 }));
 
 const StyledTableFooter = styled('div')(({ theme }) => ({
-  ...theme.table.footer,
+  ...theme.table?.footer ?? {},
 }));
 
 const StyledPager = styled('div')(({ theme }) => ({
-  ...theme.table.pager,
+  ...theme.table?.pager ?? {},
 }));
 
 const StyledLeft = styled('div')(({ theme }) => ({

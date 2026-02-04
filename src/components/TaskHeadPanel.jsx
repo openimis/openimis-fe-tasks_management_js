@@ -17,11 +17,11 @@ import trimBusinessEvent from '../utils/trimBusinessEvent';
 import TaskHistoryDialog from './dialogs/TaskHistoryDialog';
 
 const StyledTableTitle = styled('div')(({ theme }) => ({
-  ...theme.table.title,
+  ...theme.table?.title ?? {},
 }));
 
 const StyledItem = styled('div')(({ theme }) => ({
-  ...theme.paper.item,
+  ...theme.paper?.item ?? {},
 }));
 
 const StyledFullHeight = styled('div')(({ theme }) => ({

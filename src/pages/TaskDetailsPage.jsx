@@ -17,7 +17,7 @@ import { clearTask, fetchTask, updateTask } from '../actions';
 import { TASK_STATUS as taskStatus } from '../constants';
 
 const StyledPage = styled('div')(({ theme }) => ({
-  ...theme.page,
+  ...theme.page ?? {},
 }));
 
 function TaskDetailsPage({

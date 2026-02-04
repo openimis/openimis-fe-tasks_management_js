@@ -16,15 +16,15 @@ import { TASK_CONTRIBUTION_KEY } from '../constants';
 import TaskSearcher from '../components/TaskSearcher';
 
 const StyledPage = styled('div')(({ theme }) => ({
-  ...theme.page,
+  ...theme.page ?? {},
 }));
 
 const StyledPaper = styled('div')(({ theme }) => ({
-  ...theme.paper.paper,
+  ...theme.paper?.paper ?? {},
 }));
 
 const StyledTitle = styled('div')(({ theme }) => ({
-  ...theme.paper.title,
+  ...theme.paper?.title ?? {},
   cursor: 'pointer',
   display: 'flex',
   justifyContent: 'space-between',

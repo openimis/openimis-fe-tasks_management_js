@@ -19,15 +19,15 @@ import {
 import { resolveTask } from '../actions';
 
 const StyledPaper = styled('div')(({ theme }) => ({
-  ...theme.paper.paper,
+  ...theme.paper?.paper ?? {},
 }));
 
 const StyledTitle = styled('div')(({ theme }) => ({
-  ...theme.paper.title,
+  ...theme.paper?.title ?? {},
 }));
 
 const StyledButton = styled('div')(({ theme }) => ({
-  ...theme.paper.button,
+  ...theme.paper?.button ?? {},
 }));
 
 const StyledFabContainer = styled('div')(({ theme }) => ({

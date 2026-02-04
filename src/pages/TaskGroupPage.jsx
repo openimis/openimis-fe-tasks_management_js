@@ -15,7 +15,7 @@ import {
 import { ACTION_TYPE } from '../reducer';
 
 const StyledPage = styled('div')(({ theme }) => ({
-  ...theme.page,
+  ...theme.page ?? {},
 }));
 
 function TaskGroupPage({

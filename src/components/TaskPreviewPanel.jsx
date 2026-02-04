@@ -6,11 +6,11 @@ import { EMPTY_STRING, TASK_CONTRIBUTION_KEY } from '../constants';
 import TaskPreviewTable from './TaskPreviewTable';
 
 const StyledPaper = styled('div')(({ theme }) => ({
-  ...theme.paper.paper,
+  ...theme.paper?.paper ?? {},
 }));
 
 const StyledTitle = styled('div')(({ theme }) => ({
-  ...theme.paper.title,
+  ...theme.paper?.title ?? {},
 }));
 
 function TaskPreviewPanel({ rights, edited, setAdditionalData }) {
