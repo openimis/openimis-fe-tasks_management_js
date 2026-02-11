@@ -4,7 +4,7 @@ import { Grid } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import _debounce from 'lodash/debounce';
 import {
-  TextInput, PublishedComponent, formatMessage, decodeId, toISODateTime,
+  TextInput, PublishedComponent, formatMessage, decodeId, toISODateTime, GRID_RESPONSIVE_STANDARD,
 } from '@openimis/fe-core';
 import { defaultFilterStyles } from '../utils/styles';
 import {
@@ -50,7 +50,7 @@ function TaskHistoryFilter({
 
   return (
     <Grid container component={StyledForm}>
-      <Grid size={3} component={StyledItem}>
+      <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
         <PublishedComponent
           pubRef="tasksManagement.taskSourcesPicker"
           module={MODULE_NAME}
@@ -67,7 +67,7 @@ function TaskHistoryFilter({
           ])}
         />
       </Grid>
-      <Grid size={3} component={StyledItem}>
+      <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
         <PublishedComponent
           pubRef="tasksManagement.taskTypesPicker"
           module={MODULE_NAME}
@@ -78,7 +78,7 @@ function TaskHistoryFilter({
           onChange={onChangeStringFilter('businessEvent', CONTAINS_LOOKUP)}
         />
       </Grid>
-      <Grid size={3} component={StyledItem}>
+      <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
         <TextInput
           module={MODULE_NAME}
           label="task.entity"
@@ -86,7 +86,7 @@ function TaskHistoryFilter({
           onChange={onChangeStringFilter('entityString', CONTAINS_LOOKUP)}
         />
       </Grid>
-      <Grid size={3} component={StyledItem}>
+      <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
         <PublishedComponent
           pubRef="tasksManagement.taskGroupPicker"
           module={MODULE_NAME}
@@ -100,7 +100,7 @@ function TaskHistoryFilter({
           ])}
         />
       </Grid>
-      <Grid size={3} component={StyledItem}>
+      <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
         <PublishedComponent
           pubRef="tasksManagement.taskStatusPicker"
           module={MODULE_NAME}
@@ -117,7 +117,7 @@ function TaskHistoryFilter({
           ])}
         />
       </Grid>
-      <Grid size={3} component={StyledItem}>
+      <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
         <PublishedComponent
           pubRef="core.DatePicker"
           module={MODULE_NAME}
@@ -132,7 +132,7 @@ function TaskHistoryFilter({
           ])}
         />
       </Grid>
-      <Grid size={3} component={StyledItem}>
+      <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
         <PublishedComponent
           pubRef="core.DatePicker"
           module={MODULE_NAME}
