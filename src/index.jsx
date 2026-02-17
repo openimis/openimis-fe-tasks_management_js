@@ -32,19 +32,19 @@ const DEFAULT_CONFIG = {
   'fe-core.menus': [
     {
       id: 'tasksManagement',
-      name: 'menu.tasksManagement',
+      name: 'tasksManagement.tasksMainMenu',
       icon: 'Assignment',
       position: 3,
       entries: [
         {
-          text: 'entries.tasksManagementView',
+          text: 'tasksManagement.entries.tasksManagementView',
           icon: 'Assignment',
           route: '/tasks',
           id: 'task.tasks',
           filter: (rights) => rights.includes(RIGHT_TASKS_MANAGEMENT_SEARCH_ALL),
         },
         {
-          text: 'entries.tasksManagementAllView',
+          text: 'tasksManagement.entries.tasksManagementAllView', // TODO: Add proper translation key for "All Tasks"
           icon: 'Assignment',
           route: '/allTasks',
           id: 'task.allTasks',
