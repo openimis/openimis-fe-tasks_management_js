@@ -39,7 +39,6 @@ function TaskHistoryDialog({
         onClick={handleOpen}
         variant="outlined"
         color="#DFEDEF"
-        className={classes.button}
         style={{
           border: '0px',
           textAlign: 'right',
