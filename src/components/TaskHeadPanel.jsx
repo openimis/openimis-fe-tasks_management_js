@@ -42,6 +42,13 @@ const renderHeadPanelTitle = (rights, task) => (
           <FormattedMessage module="tasksManagement" id="task.detailsPage.triage.headPanelTitle" />
         </Typography>
       </Grid>
+      {!task?.taskGroup && (
+        <Grid>
+          <Typography variant="body2" sx={{ margin: 1 }}>
+            <FormattedMessage module="tasksManagement" id="task.approval.taskGroup.requiredHint" />
+          </Typography>
+        </Grid>
+      )}
       <Grid>
         <TaskHistoryDialog
           rights={rights}
@@ -91,16 +98,26 @@ class TaskHeadPanel extends FormPanel {
             />
           </Grid>
           <Grid size={3} component={StyledItem}>
-            <TaskGroupPicker
-              module="tasksManagement"
-              required
-              withLabel
-              readOnly={!rights.includes(TASK_UPDATE)
-                || [TASK_STATUS.COMPLETED, TASK_STATUS.FAILED].includes(task.status)}
-              withNull
-              value={task?.taskGroup}
-              onChange={(taskGroup) => this.updateAttribute('taskGroup', taskGroup)}
-            />
+            <div style={(!task?.taskGroup
+              && rights.includes(TASK_UPDATE)
+              && ![TASK_STATUS.COMPLETED, TASK_STATUS.FAILED].includes(task.status))
+              ? {
+                border: '1px solid #d32f2f',
+                borderRadius: '4px',
+                padding: '4px',
+              } : {}}
+            >
+              <TaskGroupPicker
+                module="tasksManagement"
+                required
+                withLabel
+                readOnly={!rights.includes(TASK_UPDATE)
+                  || [TASK_STATUS.COMPLETED, TASK_STATUS.FAILED].includes(task.status)}
+                withNull
+                value={task?.taskGroup}
+                onChange={(taskGroup) => this.updateAttribute('taskGroup', taskGroup)}
+              />
+            </div>
           </Grid>
           <Grid size={3} component={StyledItem}>
             <TextAreaInput
