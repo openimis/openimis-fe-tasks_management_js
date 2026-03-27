@@ -13,34 +13,13 @@ import {
 } from '../constants';
 
 function TasksMainMenu(props) {
-  const { rights } = props;
-  const entries = [
-    {
-      text: formatMessage(props.intl, 'tasksManagement', 'entries.tasksManagementView'),
-      icon: <AssignmentIcon />,
-      route: '/tasks',
-      id: 'task.tasks',
-    },
-    {
-      text: formatMessage(props.intl, 'tasksManagement', 'entries.tasksManagementAllView'),
-      icon: <AssignmentIcon />,
-      route: '/AllTasks',
-      filter: (rights) => rights.includes(RIGHT_TASKS_MANAGEMENT_SEARCH_ALL),
-      id: 'task.allTasks',
-    },
-  ];
-  entries.push(
-    ...props.modulesManager
-      .getContribs(TASKS_MANAGEMENT_MAIN_MENU_CONTRIBUTION_KEY)
-      .filter((c) => !c.filter || c.filter(rights)),
-  );
-
   return (
     <MainMenuContribution
       {...props}
       header={formatMessage(props.intl, 'tasksManagement', 'tasksMainMenu')}
-      entries={entries}
       menuId="TasksMainMenu"
+      contributionKey={TASKS_MANAGEMENT_MAIN_MENU_CONTRIBUTION_KEY}
+      icon={<AssignmentIcon />}
     />
   );
 }
