@@ -7,12 +7,13 @@ import {
   useHistory,
   useModulesManager,
   useTranslations,
+  GetIconComponent,
 } from '@openimis/fe-core';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { IconButton, Tooltip } from '@mui/material';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import DeleteIcon from '@mui/icons-material/Delete';
+const VisibilityIcon = GetIconComponent("Visibility");
+const DeleteIcon = GetIconComponent("Delete");
 import {
   DEFAULT_PAGE_SIZE,
   TASK_GROUP_UPDATE,

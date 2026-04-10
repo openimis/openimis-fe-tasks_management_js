@@ -1,9 +1,6 @@
 import React from 'react';
-
-import {
-  People,
-} from '@mui/icons-material';
-
+import { GetIconComponent } from "@openimis/fe-core";
+const People = GetIconComponent("People")
 import { FormattedMessage } from '@openimis/fe-core';
 import {
   RIGHT_TASK_EXECUTIONER_GROUPS,

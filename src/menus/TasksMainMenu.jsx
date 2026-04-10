@@ -5,12 +5,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import AssignmentIcon from '@mui/icons-material/Assignment';
-import { formatMessage, MainMenuContribution, withModulesManager } from '@openimis/fe-core';
+import { GetIconComponent, formatMessage, MainMenuContribution, withModulesManager } from '@openimis/fe-core';
 import {
   RIGHT_TASKS_MANAGEMENT_SEARCH_ALL,
   TASKS_MANAGEMENT_MAIN_MENU_CONTRIBUTION_KEY,
 } from '../constants';
+const AssignmentIcon = GetIconComponent("Assignment");
 
 function TasksMainMenu(props) {
   return (

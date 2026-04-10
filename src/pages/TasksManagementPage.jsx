@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import {
   useModulesManager,
+  GetIconComponent,
 } from '@openimis/fe-core';
 import { useSelector } from 'react-redux';
 import {
@@ -9,8 +10,8 @@ import {
   Typography,
   Collapse,
 } from '@mui/material';
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
+const ExpandLess = GetIconComponent("ExpandLess");
+const ExpandMore = GetIconComponent("ExpandMore");
 import { styled } from '@mui/material/styles';
 import { TASK_CONTRIBUTION_KEY } from '../constants';
 import TaskSearcher from '../components/TaskSearcher';

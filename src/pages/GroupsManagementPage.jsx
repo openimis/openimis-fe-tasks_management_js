@@ -1,11 +1,11 @@
 import React from 'react';
 import {
-  Helmet, withTooltip, useTranslations, useModulesManager, useHistory,
+  GetIconComponent, Helmet, withTooltip, useTranslations, useModulesManager, useHistory,
 } from '@openimis/fe-core';
 import { styled } from '@mui/material/styles';
 import { useSelector } from 'react-redux';
 import { Fab } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
+const AddIcon = GetIconComponent("Add");
 import {
   TASK_GROUP_CREATE,
   TASK_GROUP_SEARCH,

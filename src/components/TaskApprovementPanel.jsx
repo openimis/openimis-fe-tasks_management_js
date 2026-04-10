@@ -5,9 +5,9 @@ import {
   Paper, Fab,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import ClearIcon from '@mui/icons-material/Clear';
-import CheckIcon from '@mui/icons-material/Check';
+
 import {
+  GetIconComponent,
   useTranslations,
   useModulesManager, coreConfirm, clearConfirm, journalize,
 } from '@openimis/fe-core';
@@ -17,7 +17,8 @@ import {
   TASK_CONTRIBUTION_KEY,
 } from '../constants';
 import { resolveTask } from '../actions';
-
+const ClearIcon = GetIconComponent("Clear");
+const CheckIcon = GetIconComponent("Check");
 const StyledPaper = styled('div')(({ theme }) => ({
   ...theme.paper?.paper ?? {},
 }));

@@ -3,9 +3,9 @@ import { styled } from '@mui/material/styles';
 import { connect, useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
-  Form, Helmet, useTranslations, useModulesManager, useHistory, clearConfirm, journalize, coreConfirm,
+  GetIconComponent, Form, Helmet, useTranslations, useModulesManager, useHistory, clearConfirm, journalize, coreConfirm,
 } from '@openimis/fe-core';
-import DeleteIcon from '@mui/icons-material/Delete';
+const DeleteIcon = GetIconComponent("Delete");
 import _ from 'lodash';
 import TaskGroupHeadPanel from '../components/groups-management/TaskGroupHeadPanel';
 import { EMPTY_STRING } from '../constants';

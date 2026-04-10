@@ -6,9 +6,10 @@ import {
   historyPush,
   useModulesManager,
   useTranslations,
+  GetIconComponent,
 } from '@openimis/fe-core';
 import { IconButton, Tooltip } from '@mui/material';
-import VisibilityIcon from '@mui/icons-material/Visibility';
+const VisibilityIcon = GetIconComponent("Visibility");
 import {
   RIGHT_TASKS_MANAGEMENT_SEARCH, DEFAULT_PAGE_SIZE, ROWS_PER_PAGE_OPTIONS, TASK_STATUS, TASK_ROUTE,
 } from '../constants';
