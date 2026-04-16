@@ -12,8 +12,7 @@ import TaskStatusPicker from './pickers/TaskStatusPicker';
 import TaskPreviewCell from './components/TaskPreviewCell';
 import TaskGroupPicker from './pickers/TaskGroupPicker';
 import TaskSearcher from './components/TaskSearcher';
-import getAdminMainMenuContributions from './contributions/AdminMainMenuContributions';
-import { TASK_ROUTE, RIGHT_TASKS_MANAGEMENT_SEARCH_ALL } from './constants';
+import { TASK_ROUTE, RIGHT_TASKS_MANAGEMENT_SEARCH_ALL, RIGHT_TASK_EXECUTIONER_GROUPS } from './constants';
 import { fetchTask, resolveTask } from './actions';
 import TasksAllPage from './pages/TasksAllPage';
 import TaskTypesPicker from './pickers/TaskTypesPicker';
@@ -29,36 +28,27 @@ const ROUTE_GROUP_MANAGEMENT = 'tasks/groups/group';
 const DEFAULT_CONFIG = {
   translations: [{ key: 'en', messages: messages_en }],
   reducers: [{ key: 'tasksManagement', reducer }],
-  'fe-core.menus': [
+  'core.MainMenu': [{ name: 'tasksManagement.tasksMainMenu', id:"tasksManagement.MainMenu", icon: "Assignment", text: "tasksManagement.tasksMainMenu" }],
+  'tasksManagement.MainMenu': [
     {
-      id: 'tasksManagement',
-      name: 'tasksManagement.tasksMainMenu',
-      icon: 'Assignment',
-      position: 3,
-      entries: [
-        {
-          text: 'tasksManagement.entries.tasksManagementView',
-          icon: 'Assignment',
-          route: '/tasks',
-          id: 'task.tasks',
-          filter: (rights) => rights.includes(RIGHT_TASKS_MANAGEMENT_SEARCH_ALL),
-        },
-        {
-          text: 'tasksManagement.entries.tasksManagementAllView', // TODO: Add proper translation key for "All Tasks"
-          icon: 'Assignment',
-          route: '/allTasks',
-          id: 'task.allTasks',
-          filter: (rights) => rights.includes(RIGHT_TASKS_MANAGEMENT_SEARCH_ALL),
-        },
-      ],
+      route: ROUTE_TASKS_MANAGEMENT,
     },
+  {
+      route: ROUTE_TASKS_ALL_MANAGEMENT,
+    },
+
   ],
-  'admin.MainMenu': [...getAdminMainMenuContributions()],
+  'admin.MainMenu': [{
+    
+    route: ROUTE_GROUPS_MANAGEMENT,
+
+  }],
   'core.Router': [
-    { path: ROUTE_TASKS_MANAGEMENT, component: TasksManagementPage },
-    { path: ROUTE_TASKS_ALL_MANAGEMENT, component: TasksAllPage },
+    { path: ROUTE_TASKS_MANAGEMENT,  text: "tasksManagement.entries.tasksManagementView", id: 'task.tasks', icon: 'Assignment', rights: [RIGHT_TASKS_MANAGEMENT_SEARCH_ALL],component: TasksManagementPage },
+    { path: ROUTE_TASKS_ALL_MANAGEMENT,  text: "tasksManagement.entries.tasksManagementAllView", id: 'task.Alltasks', icon: 'Assignment', rights: [RIGHT_TASKS_MANAGEMENT_SEARCH_ALL], component: TasksAllPage },
+    { path: ROUTE_GROUPS_MANAGEMENT, text: "tasksManagement.menu.taskExecutionerGroups", id: 'admin.taskExecutionerGroups', icon: 'Assignment', rights: [RIGHT_TASK_EXECUTIONER_GROUPS],component: GroupsManagementPage },
+
     { path: `${ROUTE_TASK_MANAGEMENT}/:task_uuid?`, component: TaskDetailsPage },
-    { path: ROUTE_GROUPS_MANAGEMENT, component: GroupsManagementPage },
     { path: `${ROUTE_GROUP_MANAGEMENT}/:task_group_uuid?`, component: TaskGroupPage },
   ],
   refs: [
