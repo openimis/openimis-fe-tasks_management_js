@@ -44,7 +44,7 @@ const renderHeadPanelTitle = (rights, task) => (
       </Grid>
       {!task?.taskGroup && (
         <Grid>
-          <Typography variant="body2" size={sx={{ margin: 1 }}}>
+          <Typography variant="body2" size={sx={margin: 1 }}>
             <FormattedMessage module="tasksManagement" id="task.approval.taskGroup.requiredHint" />
           </Typography>
         </Grid>
