@@ -22,23 +22,26 @@ on:
         required: false
         default: 'public'
       tag:
-        required: false
-        description: 'Optional tag for the published package (e.g., latest, beta)'
+        required: true
 
 jobs:
-  npmjs:
+  call-npm-publish-workflow:
     uses: openimis/openimis-fe_js/.github/workflows/module-npmpublish.yml@develop
     with:
       registry_url: 'https://registry.npmjs.org/'
-      tag:  ${{ github.event.inputs.tag }}
+      node_version: ${{ github.event.inputs.node_version || '20' }}
+      access: ${{ github.event.inputs.access || 'public' }}
+      scope: ${{ github.event.inputs.scope || 'openimis' }}
+      tag: ${{ github.event.inputs.tag }}
     secrets:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-  gpr:
-    needs: npmjs
+  call-gpr-publish-workflow:
     uses: openimis/openimis-fe_js/.github/workflows/module-npmpublish.yml@develop
     with:
       registry_url: 'https://npm.pkg.github.com/'
-      tag:  ${{ github.event.inputs.tag }}
+      node_version: ${{ github.event.inputs.node_version || '20' }}
+      access: ${{ github.event.inputs.access || 'public' }}
+      scope: ${{ github.event.inputs.scope || 'openimis' }}
+      tag: ${{ github.event.inputs.tag }}
     secrets:
       NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
