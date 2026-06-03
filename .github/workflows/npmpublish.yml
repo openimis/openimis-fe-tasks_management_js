@@ -26,14 +26,16 @@ on:
         description: 'Optional tag for the published package (e.g., latest, beta)'
 
 jobs:
-  call-npm-publish-workflow:
+  npmjs:
     uses: openimis/openimis-fe_js/.github/workflows/module-npmpublish.yml@develop
     with:
       registry_url: 'https://registry.npmjs.org/'
       tag:  ${{ github.event.inputs.tag }}
     secrets:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-  call-gpr-publish-workflow:
+
+  gpr:
+    needs: npmjs
     uses: openimis/openimis-fe_js/.github/workflows/module-npmpublish.yml@develop
     with:
       registry_url: 'https://npm.pkg.github.com/'
