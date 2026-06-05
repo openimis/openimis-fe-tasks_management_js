@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { makeStyles } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
 import {
   Form, Helmet,
   useHistory,
@@ -16,8 +16,8 @@ import TaskApprovementPanel from '../components/TaskApprovementPanel';
 import { clearTask, fetchTask, updateTask } from '../actions';
 import { TASK_STATUS as taskStatus } from '../constants';
 
-const useStyles = makeStyles((theme) => ({
-  page: theme.page,
+const StyledPage = styled('div')(({ theme }) => ({
+  ...theme.page ?? {},
 }));
 
 function TaskDetailsPage({
@@ -33,7 +33,6 @@ function TaskDetailsPage({
   hideBody = false,
 }) {
   const modulesManager = useModulesManager();
-  const classes = useStyles();
   const history = useHistory();
   const { formatMessage } = useTranslations('tasksManagement', modulesManager);
   const [editedTask, setEditedTask] = useState({});
@@ -99,7 +98,7 @@ function TaskDetailsPage({
   };
 
   return (
-    <div className={classes.page}>
+    <StyledPage>
       <Helmet title={formatMessage('task.detailsPage.triage.title')} />
       <Form
         module="tasksManagement"
@@ -122,7 +121,7 @@ function TaskDetailsPage({
           `tasksManagement.saveButton.tooltip.${canSave() ? 'enabled' : 'disabled'}`,
         )}
       />
-    </div>
+    </StyledPage>
   );
 }
 
@@ -144,4 +143,5 @@ const mapStateToProps = (state, props) => ({
   errorTask: state.tasksManagement.errorTask,
 });
 
+export { StyledPage };
 export default connect(mapStateToProps, mapDispatchToProps)(TaskDetailsPage);

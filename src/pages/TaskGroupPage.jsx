@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { makeStyles } from '@material-ui/styles';
+import { styled } from '@mui/material/styles';
 import { connect, useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
-  Form, Helmet, useTranslations, useModulesManager, useHistory, clearConfirm, journalize, coreConfirm,
+  GetIconComponent, Form, Helmet, useTranslations, useModulesManager, useHistory, clearConfirm, journalize, coreConfirm,
 } from '@openimis/fe-core';
-import DeleteIcon from '@material-ui/icons/Delete';
+const DeleteIcon = GetIconComponent("Delete");
 import _ from 'lodash';
 import TaskGroupHeadPanel from '../components/groups-management/TaskGroupHeadPanel';
 import { EMPTY_STRING } from '../constants';
@@ -14,14 +14,13 @@ import {
 } from '../actions';
 import { ACTION_TYPE } from '../reducer';
 
-const useStyles = makeStyles((theme) => ({
-  page: theme.page,
+const StyledPage = styled('div')(({ theme }) => ({
+  ...theme.page ?? {},
 }));
 
 function TaskGroupPage({
   rights, taskGroup, taskGroupUuid, confirmed, journalize, mutation, submittingMutation, coreConfirm,
 }) {
-  const classes = useStyles();
   const dispatch = useDispatch();
   const modulesManager = useModulesManager();
   const history = useHistory();
@@ -118,7 +117,7 @@ function TaskGroupPage({
   useEffect(() => () => dispatch(clearTaskGroup()), []);
 
   return (
-    <div className={classes.page}>
+    <StyledPage>
       <Helmet title={formatMessageWithValues('taskGroup.detailsPage.title', titleParams(editedTaskGroup))} />
       <Form
         module="tasksManagement"
@@ -138,7 +137,7 @@ function TaskGroupPage({
         setConfirmedAction={setConfirmedAction}
         saveTooltip={formatMessage('saveButton.tooltip')}
       />
-    </div>
+    </StyledPage>
   );
 }
 
@@ -160,4 +159,5 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
   journalize,
 }, dispatch);
 
+export { StyledPage };
 export default connect(mapStateToProps, mapDispatchToProps)(TaskGroupPage);

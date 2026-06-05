@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import {
   useModulesManager,
+  GetIconComponent,
 } from '@openimis/fe-core';
 import { useSelector } from 'react-redux';
 import {
@@ -8,28 +9,31 @@ import {
   Paper,
   Typography,
   Collapse,
-} from '@material-ui/core';
-import ExpandLess from '@material-ui/icons/ExpandLess';
-import ExpandMore from '@material-ui/icons/ExpandMore';
-import { makeStyles } from '@material-ui/core/styles';
+} from '@mui/material';
+const ExpandLess = GetIconComponent("ExpandLess");
+const ExpandMore = GetIconComponent("ExpandMore");
+import { styled } from '@mui/material/styles';
 import { TASK_CONTRIBUTION_KEY } from '../constants';
 import TaskSearcher from '../components/TaskSearcher';
 
-const useStyles = makeStyles((theme) => ({
-  page: theme.page,
-  paper: theme.paper.paper,
-  title: {
-    ...theme.paper.title,
-    cursor: 'pointer',
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
+const StyledPage = styled('div')(({ theme }) => ({
+  ...theme.page ?? {},
+}));
+
+const StyledPaper = styled('div')(({ theme }) => ({
+  ...theme.paper?.paper ?? {},
+}));
+
+const StyledTitle = styled('div')(({ theme }) => ({
+  ...theme.paper?.title ?? {},
+  cursor: 'pointer',
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
 }));
 
 function TasksManagementPage() {
   const rights = useSelector((store) => store.core?.user?.i_user?.rights ?? []);
-  const classes = useStyles();
   const modulesManager = useModulesManager();
 
   const contributions = modulesManager.getContribs(TASK_CONTRIBUTION_KEY);
@@ -42,23 +46,22 @@ function TasksManagementPage() {
 
   return (
     contributions && (
-      contributions.map((contribution) => (
-        <Box key={contribution.text}>
-          <Paper className={classes.paper}>
-            <div className={classes.titleContainer}>
-              <Typography className={classes.title} button onClick={() => handleOpen(contribution.text)}>
+      contributions.map((contribution, index) => (
+        <Box key={index}>
+          <Paper component={StyledPaper}>
+            <div>
+              <Typography component={StyledTitle} button onClick={() => handleOpen(contribution.text)}>
                 {contribution.text}
                 {expandedContributionId === contribution.text ? <ExpandLess /> : <ExpandMore />}
               </Typography>
             </div>
             <Collapse in={expandedContributionId === contribution.text} timeout="auto" unmountOnExit>
-              <div className={classes.page}>
+              <StyledPage>
                 <TaskSearcher
                   contribution={contribution}
                   rights={rights}
-                  classes={classes}
                 />
-              </div>
+              </StyledPage>
             </Collapse>
           </Paper>
         </Box>

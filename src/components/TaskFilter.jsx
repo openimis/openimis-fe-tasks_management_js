@@ -1,18 +1,27 @@
 import React from 'react';
 import { injectIntl } from 'react-intl';
-import { Grid } from '@material-ui/core';
-import { withTheme, withStyles } from '@material-ui/core/styles';
+import { Grid } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import _debounce from 'lodash/debounce';
 import {
-  TextInput, PublishedComponent, formatMessage, decodeId, toISODateTime,
+  TextInput, PublishedComponent, formatMessage, decodeId, toISODateTime, GRID_RESPONSIVE_STANDARD,
 } from '@openimis/fe-core';
+
 import { defaultFilterStyles } from '../utils/styles';
 import {
   CONTAINS_LOOKUP, DEFAULT_DEBOUNCE_TIME, EMPTY_STRING, MODULE_NAME,
 } from '../constants';
 
-function TaskHistoryFilter({
-  intl, classes, filters, onChangeFilters,
+const StyledForm = styled('div')(({ theme }) => ({
+  ...defaultFilterStyles(theme).form,
+}));
+
+const StyledItem = styled('div')(({ theme }) => ({
+  ...defaultFilterStyles(theme).item,
+}));
+
+function TaskFilter({
+  intl, filters, onChangeFilters,
 }) {
   const debouncedOnChangeFilters = _debounce(onChangeFilters, DEFAULT_DEBOUNCE_TIME);
 
@@ -41,44 +50,33 @@ function TaskHistoryFilter({
   };
 
   return (
-    <Grid container className={classes.form}>
-      <Grid item xs={3} className={classes.item}>
-        <PublishedComponent
-          pubRef="tasksManagement.taskSourcesPicker"
+    <Grid container component={StyledForm}>
+      <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
+        <TextInput
           module={MODULE_NAME}
-          withLabel
-          nullLabel={formatMessage(intl, MODULE_NAME, 'any')}
-          withNull
-          value={filterValue('source')}
-          onChange={(value) => onChangeFilters([
-            {
-              id: 'source',
-              value,
-              filter: value ? `source: "${value}"` : EMPTY_STRING,
-            },
-          ])}
+          label="task.source"
+          value={filterTextFieldValue('source')}
+          onChange={onChangeStringFilter('source', CONTAINS_LOOKUP)}
+          readOnly
         />
       </Grid>
-      <Grid item xs={3} className={classes.item}>
-        <PublishedComponent
-          pubRef="tasksManagement.taskTypesPicker"
+      <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
+        <TextInput
           module={MODULE_NAME}
-          withLabel
-          nullLabel={formatMessage(intl, MODULE_NAME, 'any')}
-          withNull
-          value={filterValue('businessEvent')}
+          label="task.type"
+          value={filterTextFieldValue('type')}
           onChange={onChangeStringFilter('businessEvent', CONTAINS_LOOKUP)}
         />
       </Grid>
-      <Grid item xs={3} className={classes.item}>
+      <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
         <TextInput
           module={MODULE_NAME}
           label="task.entity"
-          value={filterTextFieldValue('entityString')}
+          value={filterTextFieldValue('entity')}
           onChange={onChangeStringFilter('entityString', CONTAINS_LOOKUP)}
         />
       </Grid>
-      <Grid item xs={3} className={classes.item}>
+      <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
         <PublishedComponent
           pubRef="tasksManagement.taskGroupPicker"
           module={MODULE_NAME}
@@ -92,7 +90,7 @@ function TaskHistoryFilter({
           ])}
         />
       </Grid>
-      <Grid item xs={3} className={classes.item}>
+      <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
         <PublishedComponent
           pubRef="tasksManagement.taskStatusPicker"
           module={MODULE_NAME}
@@ -109,7 +107,7 @@ function TaskHistoryFilter({
           ])}
         />
       </Grid>
-      <Grid item xs={3} className={classes.item}>
+      <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
         <PublishedComponent
           pubRef="core.DatePicker"
           module={MODULE_NAME}
@@ -124,7 +122,7 @@ function TaskHistoryFilter({
           ])}
         />
       </Grid>
-      <Grid item xs={3} className={classes.item}>
+      <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
         <PublishedComponent
           pubRef="core.DatePicker"
           module={MODULE_NAME}
@@ -143,4 +141,5 @@ function TaskHistoryFilter({
   );
 }
 
-export default injectIntl(withTheme(withStyles(defaultFilterStyles)(TaskHistoryFilter)));
+export { StyledForm };
+export default injectIntl(TaskFilter);

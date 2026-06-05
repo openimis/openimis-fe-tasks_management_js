@@ -1,5 +1,6 @@
 import React from 'react';
-import { Grid, Divider, Typography } from '@material-ui/core';
+import { Grid, Divider, Typography } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import {
   withModulesManager,
   FormPanel,
@@ -7,30 +8,33 @@ import {
   FormattedMessage,
 } from '@openimis/fe-core';
 import { injectIntl } from 'react-intl';
-import { withTheme, withStyles } from '@material-ui/core/styles';
 import TaskExecutorsPicker from '../../pickers/TaskExecutorsPicker';
 import GroupPolicyPicker from '../../pickers/GroupPolicyPicker';
 import TaskSourcePicker from '../../pickers/TaskSourcePicker';
 
-const styles = (theme) => ({
-  tableTitle: theme.table.title,
-  item: theme.paper.item,
-  fullHeight: {
-    height: '100%',
-  },
-});
+const StyledTableTitle = styled('div')(({ theme }) => ({
+  ...theme.table?.title ?? {},
+}));
 
-const renderHeadPanelTitle = (classes) => (
-  <Grid container className={classes.tableTitle}>
-    <Grid item>
+const StyledItem = styled('div')(({ theme }) => ({
+  ...theme.paper?.item ?? {},
+}));
+
+const StyledFullHeight = styled('div')(({ theme }) => ({
+  height: '100%',
+}));
+
+const renderHeadPanelTitle = () => (
+  <Grid container component={StyledTableTitle}>
+    <Grid>
       <Grid
         container
         align="center"
         justify="center"
         direction="column"
-        className={classes.fullHeight}
+        component={StyledFullHeight}
       >
-        <Grid item>
+        <Grid>
           <Typography>
             <FormattedMessage module="tasksManagement" id="taskGroup.detailsPage.headPanelTitle" />
           </Typography>
@@ -43,15 +47,15 @@ const renderHeadPanelTitle = (classes) => (
 class TaskGroupHeadPanel extends FormPanel {
   render() {
     const {
-      edited, classes, readOnly,
+      edited, readOnly,
     } = this.props;
     const taskGroup = { ...edited };
     return (
       <>
-        {renderHeadPanelTitle(classes)}
+        {renderHeadPanelTitle()}
         <Divider />
-        <Grid container className={classes.item}>
-          <Grid item xs={3} className={classes.item}>
+        <Grid container component={StyledItem}>
+          <Grid size={3} component={StyledItem}>
             <TextInput
               module="tasksManagement"
               label="taskGroup.code"
@@ -61,7 +65,7 @@ class TaskGroupHeadPanel extends FormPanel {
               required
             />
           </Grid>
-          <Grid item xs={3} className={classes.item}>
+          <Grid size={3} component={StyledItem}>
             <GroupPolicyPicker
               label="taskGroup.completionPolicy"
               withLabel
@@ -72,7 +76,7 @@ class TaskGroupHeadPanel extends FormPanel {
               required
             />
           </Grid>
-          <Grid item xs={6} className={classes.item}>
+          <Grid size={6} component={StyledItem}>
             <TaskExecutorsPicker
               required
               readOnly={readOnly}
@@ -81,7 +85,7 @@ class TaskGroupHeadPanel extends FormPanel {
               onChange={(executors) => this.updateAttribute('taskexecutorSet', executors)}
             />
           </Grid>
-          <Grid item xs={6} className={classes.item}>
+          <Grid size={6} component={StyledItem}>
             <TaskSourcePicker
               readOnly={readOnly}
               value={taskGroup?.taskSources}
@@ -94,4 +98,5 @@ class TaskGroupHeadPanel extends FormPanel {
   }
 }
 
-export default withModulesManager(injectIntl(withTheme(withStyles(styles)(TaskGroupHeadPanel))));
+export { StyledTableTitle };
+export default withModulesManager(injectIntl(TaskGroupHeadPanel));

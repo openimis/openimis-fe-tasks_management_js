@@ -1,6 +1,6 @@
 import React from 'react';
-import { Grid } from '@material-ui/core';
-import { makeStyles } from '@material-ui/styles';
+import { Grid } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import _debounce from 'lodash/debounce';
 import { TextInput } from '@openimis/fe-core';
 import {
@@ -8,14 +8,13 @@ import {
 } from '../../constants';
 import GroupPolicyPicker from '../../pickers/GroupPolicyPicker';
 
-const useStyles = makeStyles((theme) => ({
-  form: {
-    padding: '0 0 10px 0',
-    width: '100%',
-  },
-  item: {
-    padding: theme.spacing(1),
-  },
+const StyledForm = styled('div')(({ theme }) => ({
+  padding: '0 0 10px 0',
+  width: '100%',
+}));
+
+const StyledItem = styled('div')(({ theme }) => ({
+  padding: theme.spacing(1),
 }));
 
 function TaskGroupsFilter({
@@ -23,8 +22,6 @@ function TaskGroupsFilter({
   onChangeFilters,
   formatMessage,
 }) {
-  const classes = useStyles();
-
   const debouncedOnChangeFilters = _debounce(onChangeFilters, DEFAULT_DEBOUNCE_TIME);
 
   const filterValue = (filterName) => filters?.[filterName]?.value;
@@ -52,20 +49,20 @@ function TaskGroupsFilter({
   };
 
   return (
-    <Grid container className={classes.form}>
-      <Grid item xs={3} className={classes.item}>
+    <Grid container component={StyledForm}>
+      <Grid size={3} component={StyledItem}>
         <TextInput
           module="tasksManagement"
-          label={formatMessage('taskGroup.code')}
+          label="taskGroup.code"
           value={filterTextFieldValue('code')}
           onChange={onChangeStringFilter('code', CONTAINS_LOOKUP)}
         />
       </Grid>
-      <Grid item xs={3} className={classes.item}>
+      <Grid size={3} component={StyledItem}>
         <GroupPolicyPicker
           label="taskGroup.completionPolicy"
           withLabel
-          nullLabel={formatMessage('defaultValue.any')}
+          nullLabel="defaultValue.any"
           withNull
           value={filterValue('completionPolicy')}
           onChange={(value) => onChangeFilters([

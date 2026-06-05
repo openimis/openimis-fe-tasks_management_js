@@ -7,12 +7,13 @@ import {
   useHistory,
   useModulesManager,
   useTranslations,
+  GetIconComponent,
 } from '@openimis/fe-core';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { IconButton, Tooltip } from '@material-ui/core';
-import VisibilityIcon from '@material-ui/icons/Visibility';
-import DeleteIcon from '@material-ui/icons/Delete';
+import { IconButton, Tooltip } from '@mui/material';
+const VisibilityIcon = GetIconComponent("Visibility");
+const DeleteIcon = GetIconComponent("Delete");
 import {
   DEFAULT_PAGE_SIZE,
   TASK_GROUP_UPDATE,
@@ -55,7 +56,11 @@ function TaskGroupsSearcher({
     formatMessage('taskGroup.delete.confirm.message'),
   );
 
-  useEffect(() => taskGroupToDelete && openDeleteTaskGroupConfirmDialog(), [taskGroupToDelete]);
+  useEffect(() => {
+    if (taskGroupToDelete) {
+      openDeleteTaskGroupConfirmDialog();
+    }
+  }, [taskGroupToDelete]);
 
   useEffect(() => {
     if (taskGroupToDelete && confirmed) {
@@ -70,7 +75,6 @@ function TaskGroupsSearcher({
     if (taskGroupToDelete && confirmed !== null) {
       setTaskGroupToDelete(null);
     }
-    return () => confirmed && clearConfirm(false);
   }, [confirmed]);
 
   useEffect(() => {
@@ -202,4 +206,5 @@ const mapDispatchToProps = (dispatch) => bindActionCreators(
   dispatch,
 );
 
+export { TaskGroupsSearcher };
 export default connect(mapStateToProps, mapDispatchToProps)(TaskGroupsSearcher);

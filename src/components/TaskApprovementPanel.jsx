@@ -2,32 +2,42 @@ import React, { useEffect, useRef, useState } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import {
-  makeStyles, Paper, Fab,
-} from '@material-ui/core';
+  Paper, Fab,
+} from '@mui/material';
+import { styled } from '@mui/material/styles';
+
 import {
+  GetIconComponent,
   useTranslations,
   useModulesManager, coreConfirm, clearConfirm, journalize,
 } from '@openimis/fe-core';
-import ClearIcon from '@material-ui/icons/Clear';
-import CheckIcon from '@material-ui/icons/Check';
 import {
   APPROVED, EMPTY_STRING,
   FAILED, TASK_STATUS,
   TASK_CONTRIBUTION_KEY,
 } from '../constants';
 import { resolveTask } from '../actions';
+const ClearIcon = GetIconComponent("Clear");
+const CheckIcon = GetIconComponent("Check");
+const StyledPaper = styled('div')(({ theme }) => ({
+  ...theme.paper?.paper ?? {},
+}));
 
-const useStyles = makeStyles((theme) => ({
-  paper: theme.paper.paper,
-  title: theme.paper.title,
-  button: theme.paper.button,
-  fabContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-  },
-  fab: {
-    margin: theme.spacing(1),
-  },
+const StyledTitle = styled('div')(({ theme }) => ({
+  ...theme.paper?.title ?? {},
+}));
+
+const StyledButton = styled('div')(({ theme }) => ({
+  ...theme.paper?.button ?? {},
+}));
+
+const StyledFabContainer = styled('div')(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'center',
+}));
+
+const StyledFab = styled('div')(({ theme }) => ({
+  margin: theme.spacing(1),
 }));
 
 function TaskApprovementPanel({
@@ -43,7 +53,6 @@ function TaskApprovementPanel({
   additionalData,
 }) {
   const modulesManager = useModulesManager();
-  const classes = useStyles();
   const { formatMessage } = useTranslations('tasksManagement', modulesManager);
   const prevSubmittingMutationRef = useRef();
   const [approveOrFail, setApproveOrFail] = useState(EMPTY_STRING);
@@ -84,7 +93,6 @@ function TaskApprovementPanel({
         );
       }
     }
-    return () => confirmed && clearConfirm(false);
   }, [confirmed]);
 
   const openResolveTaskConfirmDialog = (choiceString) => coreConfirm(
@@ -116,9 +124,9 @@ function TaskApprovementPanel({
   }
 
   return (
-    <Paper className={classes.paper}>
-      <div className={classes.fabContainer}>
-        <div className={classes.fab}>
+    <Paper component={StyledPaper}>
+      <StyledFabContainer>
+        <StyledFab>
           <Fab
             color="primary"
             disabled={task.status === TASK_STATUS.RECEIVED || disable}
@@ -126,8 +134,8 @@ function TaskApprovementPanel({
           >
             <CheckIcon />
           </Fab>
-        </div>
-        <div className={classes.fab}>
+        </StyledFab>
+        <StyledFab>
           <Fab
             color="primary"
             disabled={task.status === TASK_STATUS.RECEIVED || disable}
@@ -135,8 +143,8 @@ function TaskApprovementPanel({
           >
             <ClearIcon />
           </Fab>
-        </div>
-      </div>
+        </StyledFab>
+      </StyledFabContainer>
     </Paper>
   );
 }
@@ -156,4 +164,5 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
   journalize,
 }, dispatch);
 
+export { StyledPaper };
 export default connect(mapStateToProps, mapDispatchToProps)(TaskApprovementPanel);

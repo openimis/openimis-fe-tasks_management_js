@@ -6,6 +6,7 @@
   "tasksManagement.task.detailsPage.triage.title": "Task",
   "tasksManagement.task.detailsPage.triage.preview": "Preview",
   "tasksManagement.task.detailsPage.triage.headPanelTitle": "General Information",
+  "tasksManagement.task.approval.taskGroup.requiredHint": "Please assign a task group to approve this task.",
   "tasksManagement.task.source": "Source",
   "tasksManagement.task.type": "Type",
   "tasksManagement.task.entity": "Entity",
