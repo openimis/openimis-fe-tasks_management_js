@@ -115,7 +115,7 @@ function TaskApprovementPanel({
     if (contrib?.confirmationPanel) {
       return (
         <contrib.confirmationPanel
-          task
+          task={task}
           defaultAction={handleButtonClick}
           defaultDisabled={disable}
         />
