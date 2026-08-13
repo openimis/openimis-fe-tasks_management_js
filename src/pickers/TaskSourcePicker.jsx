@@ -31,7 +31,10 @@ function TaskSourcePicker({
       withLabel={withLabel}
       withPlaceholder={!value?.length}
       options={sources}
-      value={value}
+      // A multiple Autocomplete must never receive undefined: MUI calls
+      // value.filter/map internally and throws while the owning record is
+      // still loading (or reloading after a mutation).
+      value={value ?? []}
       getOptionLabel={(source) => `${source.name}`}
       onChange={onChange}
       filterSelectedOptions

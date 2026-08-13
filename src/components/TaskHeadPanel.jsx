@@ -119,15 +119,19 @@ class TaskHeadPanel extends FormPanel {
               />
             </div>
           </Grid>
-          <Grid size={3} component={StyledItem}>
-            <TextAreaInput
-              module="tasksManagement"
-              label="task.businessStatus"
-              readOnly={readOnly}
-              value={task?.businessStatus}
-              onChange={(businessStatus) => this.updateAttribute('businessStatus', businessStatus)}
-            />
-          </Grid>
+          {/* Flow tasks: businessStatus is a deprecated adapter that only
+              shows the last writer - the decisions panel replaces it */}
+          {!task?.flow && (
+            <Grid size={3} component={StyledItem}>
+              <TextAreaInput
+                module="tasksManagement"
+                label="task.businessStatus"
+                readOnly={readOnly}
+                value={task?.businessStatus}
+                onChange={(businessStatus) => this.updateAttribute('businessStatus', businessStatus)}
+              />
+            </Grid>
+          )}
           <Grid size={3} component={StyledItem}>
             <TaskStatusPicker
               label="task.status"

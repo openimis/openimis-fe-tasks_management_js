@@ -34,6 +34,26 @@ const TASK_FULL_PROJECTION = () => [
   'data',
   'businessData',
   'jsonExt',
+  'flow{id, uuid, code}',
+  'currentStep{id, uuid, order}',
+];
+
+const TASK_FLOW_LIST_PROJECTION = () => [
+  'id',
+  'uuid',
+  'code',
+  'name',
+  'stepCount',
+];
+
+const TASK_DECISION_PROJECTION = () => [
+  'id',
+  'uuid',
+  'decision',
+  'recordId',
+  'dateCreated',
+  'user{id, username, lastName, otherNames}',
+  'flowStep{id, uuid, order, taskGroup{id, code}}',
 ];
 
 const TASK_PROJECTION = () => [
@@ -211,4 +231,133 @@ export function resolveTask(task, clientMutationLabel, user, approveOrFail, addi
     ACTION_TYPE.RESOLVE_TASK,
     clientMutationLabel,
   );
+}
+
+const decodeIdIfEncoded = (id) => {
+  try {
+    return String(id).includes('-') ? id : decodeId(id);
+  } catch {
+    return id;
+  }
+};
+
+// Steps ride in the flow payload; order derives from list position on the BE.
+const formatFlowStepsGQL = (steps) => {
+  if (!steps) return '';
+  const rows = steps.map((step) => {
+    const groupId = step?.taskGroup?.uuid ?? decodeIdIfEncoded(step?.taskGroup?.id);
+    return `{taskGroupId: "${groupId}"`
+      + `${step?.completionPolicy ? `, completionPolicy: ${step.completionPolicy}` : ''}`
+      + `${step?.threshold ? `, threshold: ${step.threshold}` : ''}}`;
+  });
+  return `steps: [${rows.join(', ')}]`;
+};
+
+export const formatTaskFlowGQL = (flow, includeSteps = true) => {
+  const taskSources = flow?.taskSources?.map((source) => source.name ?? source);
+  const taskSourcesString = taskSources
+    ? `[${taskSources.map((name) => `"${name}"`).join(', ')}]`
+    : '[]';
+  return `
+  ${flow?.id ? `id: "${flow.uuid ?? decodeIdIfEncoded(flow.id)}"` : ''}
+  ${flow?.code ? `code: "${formatGQLString(flow.code)}"` : ''}
+  ${flow?.name ? `name: "${formatGQLString(flow.name)}"` : ''}
+  taskSources: ${taskSourcesString}
+  ${includeSteps ? formatFlowStepsGQL(flow?.steps) : ''}
+  `;
+};
+
+export function fetchTaskFlows(modulesManager, params) {
+  const payload = formatPageQueryWithCount('taskFlow', params, TASK_FLOW_LIST_PROJECTION());
+  return graphql(payload, ACTION_TYPE.SEARCH_TASK_FLOWS);
+}
+
+// Detail fetch by id must keep superseded versions reachable (a task pinned
+// to an old version links here); fetch by code is a head lookup (post
+// create/replace refresh), where a superseded row with the same code must
+// NOT shadow the new head.
+export function fetchTaskFlow(modulesManager, variables) {
+  return graphqlWithVariables(
+    `
+      query getTaskFlow ($taskFlowUuid: ID, $code: String, $showSuperseded: Boolean) {
+        taskFlow(id: $taskFlowUuid, code: $code, showSuperseded: $showSuperseded) {
+          edges {
+            node {
+              id
+              uuid
+              code
+              name
+              version
+              replacementUuid
+              dateValidTo
+              taskSources
+              inFlightCount
+              steps {
+                id
+                uuid
+                order
+                completionPolicy
+                threshold
+                effectivePolicy
+                effectiveThreshold
+                taskGroup { id uuid code completionPolicy threshold taskexecutorSet { totalCount } }
+              }
+            }
+          }
+        }
+      }
+      `,
+    { showSuperseded: !variables?.code, ...variables },
+    ACTION_TYPE.GET_TASK_FLOW,
+  );
+}
+
+export const clearTaskFlow = () => (dispatch) => {
+  dispatch({
+    type: CLEAR(ACTION_TYPE.GET_TASK_FLOW),
+  });
+};
+
+export function createTaskFlow(flow, clientMutationLabel) {
+  return PERFORM_MUTATION(
+    MUTATION_SERVICE.TASK_FLOW.CREATE,
+    formatTaskFlowGQL(flow),
+    ACTION_TYPE.CREATE_TASK_FLOW,
+    clientMutationLabel,
+  );
+}
+
+export function updateTaskFlow(flow, clientMutationLabel) {
+  // Non-semantic update: name + source binding. Steps deliberately excluded -
+  // the BE refuses a modified steps payload on update anyway.
+  return PERFORM_MUTATION(
+    MUTATION_SERVICE.TASK_FLOW.UPDATE,
+    formatTaskFlowGQL(flow, false),
+    ACTION_TYPE.UPDATE_TASK_FLOW,
+    clientMutationLabel,
+  );
+}
+
+export function replaceTaskFlow(flow, clientMutationLabel) {
+  return PERFORM_MUTATION(
+    MUTATION_SERVICE.TASK_FLOW.REPLACE,
+    formatTaskFlowGQL(flow),
+    ACTION_TYPE.REPLACE_TASK_FLOW,
+    clientMutationLabel,
+  );
+}
+
+export function deleteTaskFlow(flow, clientMutationLabel) {
+  const flowUuids = `ids: ["${flow?.uuid ?? decodeIdIfEncoded(flow?.id)}"]`;
+  return PERFORM_MUTATION(
+    MUTATION_SERVICE.TASK_FLOW.DELETE,
+    flowUuids,
+    ACTION_TYPE.DELETE_TASK_FLOW,
+    clientMutationLabel,
+  );
+}
+
+export function fetchTaskDecisions(modulesManager, params) {
+  const payload = formatPageQueryWithCount('taskDecision', params, TASK_DECISION_PROJECTION());
+  return graphql(payload, ACTION_TYPE.SEARCH_TASK_DECISIONS);
 }

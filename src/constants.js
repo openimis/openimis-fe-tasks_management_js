@@ -54,6 +54,13 @@ export const TASK_GROUP_CREATE = 190002;
 export const TASK_GROUP_UPDATE = 190003;
 export const TASK_GROUP_DELETE = 190004;
 
+export const TASK_FLOW_SEARCH = 192001;
+export const TASK_FLOW_CREATE = 192002;
+export const TASK_FLOW_UPDATE = 192003;
+export const TASK_FLOW_DELETE = 192004;
+
+export const TASKS_MANAGEMENT_ROUTE_FLOWS_FLOW = 'tasksManagement.route.flow';
+
 export const TASK_UPDATE = 191003;
 
 export const RIGHT_TASK_EXECUTIONER_GROUPS = 190001;
