@@ -131,7 +131,9 @@ function TaskFlowPage({
   ].filter(Boolean);
 
   useEffect(() => {
-    if (confirmed) confirmedAction();
+    // `confirmed` can still be true from a confirm raised on another page, so
+    // guard the callback: it is null until this page arms one.
+    if (confirmed && confirmedAction) confirmedAction();
     return () => confirmed && clearConfirm(null);
   }, [confirmed]);
 

@@ -57,7 +57,12 @@ function TaskFlowsSearcher({
     formatMessage('taskFlow.delete.confirm.message'),
   );
 
-  useEffect(() => taskFlowToDelete && openDeleteTaskFlowConfirmDialog(), [taskFlowToDelete]);
+  // Block body on purpose: a concise arrow would return `null` whenever there
+  // is nothing to delete, and React then calls that value as the cleanup on
+  // unmount ("destroy is not a function"), blanking the page on navigation.
+  useEffect(() => {
+    if (taskFlowToDelete) openDeleteTaskFlowConfirmDialog();
+  }, [taskFlowToDelete]);
 
   useEffect(() => {
     if (taskFlowToDelete && confirmed) {
