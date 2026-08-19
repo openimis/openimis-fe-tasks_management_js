@@ -8,10 +8,11 @@ import {
   TextAreaInput,
   FormattedMessage,
   formatMessage,
+  formatMessageWithValues,
 } from '@openimis/fe-core';
 import { injectIntl } from 'react-intl';
 import TaskStatusPicker from '../pickers/TaskStatusPicker';
-import TaskGroupPicker from '../pickers/TaskGroupPicker';
+import TaskAssignmentPicker, { ASSIGNMENT_KIND, assignmentFromTask } from '../pickers/TaskAssignmentPicker';
 import { TASK_STATUS, TASK_UPDATE } from '../constants';
 import trimBusinessEvent from '../utils/trimBusinessEvent';
 import TaskHistoryDialog from './dialogs/TaskHistoryDialog';
@@ -42,7 +43,7 @@ const renderHeadPanelTitle = (rights, task) => (
           <FormattedMessage module="tasksManagement" id="task.detailsPage.triage.headPanelTitle" />
         </Typography>
       </Grid>
-      {!task?.taskGroup && (
+      {!task?.taskGroup && !task?.flow && (
         <Grid>
           <Typography variant="body2" sx={{ margin: 1 }}>
             <FormattedMessage module="tasksManagement" id="task.approval.taskGroup.requiredHint" />
@@ -65,6 +66,26 @@ class TaskHeadPanel extends FormPanel {
       intl, edited, readOnly, rights,
     } = this.props;
     const task = { ...edited };
+    const assignment = assignmentFromTask(task);
+    // Votes are recorded against the steps of the flow the task is on, so a
+    // task that has been decided on can no longer be re-pointed - the service
+    // refuses it, and the picker says so rather than letting the save fail.
+    const assignmentLocked = (task?.decisionCount ?? 0) > 0;
+    const assignmentReadOnly = !rights.includes(TASK_UPDATE)
+      || assignmentLocked
+      || [TASK_STATUS.COMPLETED, TASK_STATUS.FAILED].includes(task.status);
+    const assignmentHint = (() => {
+      if (assignmentLocked) return formatMessage(intl, 'tasksManagement', 'taskAssignment.lockedHint');
+      // Naming the consequence up front: saving reroutes a live task.
+      if (assignment?.kind === ASSIGNMENT_KIND.FLOW && task?.assignment) {
+        return formatMessageWithValues(
+          intl, 'tasksManagement', 'taskAssignment.willStartFlowHint',
+          { code: assignment.code },
+        );
+      }
+      if (task?.flow) return formatMessage(intl, 'tasksManagement', 'taskAssignment.flowDerivedHint');
+      return null;
+    })();
     return (
       <>
         {renderHeadPanelTitle(rights, task)}
@@ -98,7 +119,7 @@ class TaskHeadPanel extends FormPanel {
             />
           </Grid>
           <Grid size={3} component={StyledItem}>
-            <div style={(!task?.taskGroup
+            <div style={(!assignment
               && rights.includes(TASK_UPDATE)
               && ![TASK_STATUS.COMPLETED, TASK_STATUS.FAILED].includes(task.status))
               ? {
@@ -107,16 +128,18 @@ class TaskHeadPanel extends FormPanel {
                 padding: '4px',
               } : {}}
             >
-              <TaskGroupPicker
-                module="tasksManagement"
+              <TaskAssignmentPicker
                 required
                 withLabel
-                readOnly={!rights.includes(TASK_UPDATE)
-                  || [TASK_STATUS.COMPLETED, TASK_STATUS.FAILED].includes(task.status)}
-                withNull
-                value={task?.taskGroup}
-                onChange={(taskGroup) => this.updateAttribute('taskGroup', taskGroup)}
+                readOnly={assignmentReadOnly}
+                value={assignment}
+                onChange={(target) => this.updateAttribute('assignment', target)}
               />
+              {assignmentHint && (
+                <Typography variant="caption" color="textSecondary">
+                  {assignmentHint}
+                </Typography>
+              )}
             </div>
           </Grid>
           {/* Flow tasks: businessStatus is a deprecated adapter that only

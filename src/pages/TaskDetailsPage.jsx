@@ -92,7 +92,11 @@ function TaskDetailsPage({
     return true;
   };
 
-  const isMandatoryFieldsEmpty = () => !editedTask?.taskGroup;
+  // Either shape of assignment satisfies the requirement: a flow carries its
+  // own pool, a group is the pool.
+  const isMandatoryFieldsEmpty = () => !editedTask?.taskGroup
+    && !editedTask?.flow
+    && !editedTask?.assignment;
 
   const canSave = () => !isMandatoryFieldsEmpty() && doesTaskChange();
 

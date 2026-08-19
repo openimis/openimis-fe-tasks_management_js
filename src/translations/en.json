@@ -135,5 +135,13 @@
   "tasksManagement.taskDecision.date": "Date",
   "tasksManagement.taskDecision.flatTask": "Whole task",
   "tasksManagement.task.flow.advanced.title": "Approval recorded",
-  "tasksManagement.task.flow.advanced.message": "This step is approved - the task moved to step {order} ({group}). It will leave your list once you close it."
+  "tasksManagement.task.flow.advanced.message": "This step is approved - the task moved to step {order} ({group}). It will leave your list once you close it.",
+  "tasksManagement.taskAssignment.label": "Assigned to",
+  "tasksManagement.taskAssignment.placeholder": "Search for an approval flow or task group...",
+  "tasksManagement.taskAssignment.kind.FLOW": "Flow",
+  "tasksManagement.taskAssignment.kind.GROUP": "Group",
+  "tasksManagement.taskAssignment.flowDetail": "{stepCount} steps",
+  "tasksManagement.taskAssignment.flowDerivedHint": "The executor pool follows the flow's current step.",
+  "tasksManagement.taskAssignment.willStartFlowHint": "Saving moves this task to step 1 of {code} and hands it to that step's pool.",
+  "tasksManagement.taskAssignment.lockedHint": "Decisions have been recorded, so this task can no longer be reassigned."
 }

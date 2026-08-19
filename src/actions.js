@@ -36,6 +36,7 @@ const TASK_FULL_PROJECTION = () => [
   'jsonExt',
   'flow{id, uuid, code}',
   'currentStep{id, uuid, order}',
+  'decisionCount',
 ];
 
 const TASK_FLOW_LIST_PROJECTION = () => [
@@ -105,11 +106,28 @@ export const formatTaskGroupGQL = (taskGroup) => {
   `;
 };
 
-export const formatTaskGQL = (task) => `
+// Assignment is one field on screen and two shapes on the wire: a flow is
+// pinned by id and derives its own group, a group is set directly. Moving a
+// flow task back to a plain group also has to say so - detachFlow is explicit
+// on purpose, so an update that does not mention the flow never unbinds one.
+export const formatTaskGQL = (task) => {
+  const assignment = task?.assignment;
+  if (assignment?.kind === 'FLOW') {
+    return `
   ${task?.id ? `id: "${task.id}"` : ''}
-  ${task?.taskGroup?.id ? 'status: ACCEPTED' : ''}
-  ${task?.taskGroup?.id ? `taskGroupId: "${decodeId(task.taskGroup.id)}"` : ''}
+  flowId: "${assignment.uuid}"
   `;
+  }
+  const groupUuid = assignment?.kind === 'GROUP'
+    ? assignment.uuid
+    : (task?.taskGroup?.id && decodeId(task.taskGroup.id));
+  return `
+  ${task?.id ? `id: "${task.id}"` : ''}
+  ${groupUuid ? 'status: ACCEPTED' : ''}
+  ${groupUuid ? `taskGroupId: "${groupUuid}"` : ''}
+  ${assignment?.kind === 'GROUP' && task?.flow ? 'detachFlow: true' : ''}
+  `;
+};
 
 export const formatTaskResolveGQL = (task, user, approveOrFail, additionalData) => `
   ${task?.id ? `id: "${task.id}"` : ''}
