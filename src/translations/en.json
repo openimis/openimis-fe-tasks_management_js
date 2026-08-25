@@ -143,5 +143,10 @@
   "tasksManagement.taskAssignment.flowDetail": "{stepCount} steps",
   "tasksManagement.taskAssignment.flowDerivedHint": "The executor pool follows the flow's current step.",
   "tasksManagement.taskAssignment.willStartFlowHint": "Saving moves this task to step 1 of {code} and hands it to that step's pool.",
-  "tasksManagement.taskAssignment.lockedHint": "Decisions have been recorded, so this task can no longer be reassigned."
+  "tasksManagement.taskAssignment.lockedHint": "Decisions have been recorded, so this task can no longer be reassigned.",
+  "tasksManagement.taskDecision.record.progress": "Progress",
+  "tasksManagement.taskDecision.record.outcome": "Outcome",
+  "tasksManagement.taskDecision.record.rejectedAt": "Rejected at step {order}",
+  "tasksManagement.taskDecision.record.surviving": "Still in review",
+  "tasksManagement.taskDecision.record.approved": "Approved"
 }
