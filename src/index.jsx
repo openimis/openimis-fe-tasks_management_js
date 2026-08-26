@@ -63,7 +63,7 @@ const DEFAULT_CONFIG = {
 
     { path: `${ROUTE_TASK_MANAGEMENT}/:task_uuid?`, component: TaskDetailsPage },
     { path: `${ROUTE_GROUP_MANAGEMENT}/:task_group_uuid?`, component: TaskGroupPage },
-    { path: `${ROUTE_FLOW_MANAGEMENT}/:task_flow_uuid?`, component: TaskFlowPage },
+    { path: `${ROUTE_FLOW_MANAGEMENT}/:task_flow_uuid?`, rights: [TASK_FLOW_SEARCH], component: TaskFlowPage },
   ],
   refs: [
     { key: TASK_ROUTE, ref: ROUTE_TASK_MANAGEMENT },

@@ -55,6 +55,13 @@ function TaskFlowPage({
   useEffect(() => {
     if (taskFlowUuid) {
       dispatch(fetchTaskFlow(modulesManager, { taskFlowUuid }));
+    } else {
+      // The create route ("Add flow") shares this page component with the
+      // edit route, and Redux's taskFlow slice is not scoped per-route - a
+      // flow viewed just before navigating here would otherwise still be
+      // sitting in the store, silently turning "create" into "update" of
+      // that leftover flow (handleSave branches on taskFlow?.id).
+      dispatch(clearTaskFlow());
     }
   }, [taskFlowUuid]);
 
@@ -144,10 +151,13 @@ function TaskFlowPage({
       if (mutation?.actionType === ACTION_TYPE.DELETE_TASK_FLOW) {
         back();
       }
-      if (mutation?.actionType === ACTION_TYPE.REPLACE_TASK_FLOW && taskFlow?.code) {
-        // The replace superseded this row; re-fetch the new head by code and
-        // stay on the page (the uuid in the URL is now the old version).
-        dispatch(fetchTaskFlow(modulesManager, { code: taskFlow.code }));
+      if (mutation?.actionType === ACTION_TYPE.REPLACE_TASK_FLOW && editedTaskFlow?.code) {
+        // The replace superseded this row; re-fetch the new head by the
+        // submitted code (not taskFlow.code - if code and steps changed in
+        // the same save, taskFlow.code is still the pre-replace value and
+        // this would look up the wrong, no-longer-head row) and stay on the
+        // page (the uuid in the URL is now the old version).
+        dispatch(fetchTaskFlow(modulesManager, { code: editedTaskFlow.code }));
       }
       if (mutation?.actionType === ACTION_TYPE.CREATE_TASK_FLOW && editedTaskFlow?.code) {
         dispatch(fetchTaskFlow(modulesManager, { code: editedTaskFlow.code }));
