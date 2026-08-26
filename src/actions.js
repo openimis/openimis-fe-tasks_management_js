@@ -278,7 +278,11 @@ export const formatTaskFlowGQL = (flow, includeSteps = true) => {
     : '[]';
   const idPart = flow?.id ? `id: "${flow.uuid ?? decodeIdIfEncoded(flow.id)}"` : '';
   const codePart = flow?.code ? `code: "${formatGQLString(flow.code)}"` : '';
-  const namePart = flow?.name ? `name: "${formatGQLString(flow.name)}"` : '';
+  // Truthiness would drop an explicit clear-to-empty from the payload and
+  // leave the backend's previous name in place; only an absent/unset name
+  // (create with no name yet) should omit the field entirely.
+  const namePart = flow?.name !== undefined && flow?.name !== null
+    ? `name: "${formatGQLString(flow.name)}"` : '';
   const stepsPart = includeSteps ? formatFlowStepsGQL(flow?.steps) : '';
   return `
   ${idPart}
@@ -382,4 +386,44 @@ export function deleteTaskFlow(flow, clientMutationLabel) {
 export function fetchTaskDecisions(modulesManager, params) {
   const payload = formatPageQueryWithCount('taskDecision', params, TASK_DECISION_PROJECTION());
   return graphql(payload, ACTION_TYPE.SEARCH_TASK_DECISIONS);
+}
+
+// taskDecision is a relay connection capped server-side at
+// RELAY_CONNECTION_MAX_LIMIT (100) even when no `first` is requested - a
+// single fetchTaskDecisions call silently truncates a batch task with a
+// larger ledger. Walks every page and dispatches one combined result so the
+// panel and the approval-race check both see the complete ledger.
+export function fetchAllTaskDecisions(params) {
+  return async (dispatch) => {
+    dispatch({ type: REQUEST(ACTION_TYPE.SEARCH_TASK_DECISIONS) });
+    let after = null;
+    let edges = [];
+    let totalCount = 0;
+    let failure = null;
+    for (let guard = 0; guard < 1000; guard += 1) {
+      const pageParams = after ? [...params, `after: "${after}"`] : params;
+      const payload = formatPageQueryWithCount('taskDecision', pageParams, TASK_DECISION_PROJECTION());
+      // eslint-disable-next-line no-await-in-loop
+      const response = await dispatch(graphql(payload, 'TASK_MANAGEMENT_TASK_DECISIONS_PAGE'));
+      const page = response?.payload?.data?.taskDecision;
+      if (response?.error || !page) {
+        failure = response;
+        break;
+      }
+      edges = edges.concat(page.edges ?? []);
+      totalCount = page.totalCount ?? totalCount;
+      if (!page.pageInfo?.hasNextPage) {
+        break;
+      }
+      after = page.pageInfo.endCursor;
+    }
+    if (failure) {
+      dispatch({ type: ERROR(ACTION_TYPE.SEARCH_TASK_DECISIONS), payload: failure.payload });
+      return;
+    }
+    dispatch({
+      type: SUCCESS(ACTION_TYPE.SEARCH_TASK_DECISIONS),
+      payload: { data: { taskDecision: { totalCount, edges, pageInfo: { hasNextPage: false } } } },
+    });
+  };
 }

@@ -7,7 +7,7 @@ import { styled } from '@mui/material/styles';
 import {
   ProgressOrError, useModulesManager, useTranslations, formatDateFromISO,
 } from '@openimis/fe-core';
-import { fetchTaskDecisions } from '../../actions';
+import { fetchAllTaskDecisions } from '../../actions';
 import { TASK_STATUS } from '../../constants';
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
@@ -63,7 +63,7 @@ function TaskDecisionsPanel({
 
   useEffect(() => {
     if (task?.id && !submittingMutation) {
-      dispatch(fetchTaskDecisions(modulesManager, [`taskId: "${task.id}"`, 'isDeleted: false']));
+      dispatch(fetchAllTaskDecisions([`taskId: "${task.id}"`, 'isDeleted: false']));
     }
   }, [task?.id, task?.businessStatus, submittingMutation]);
 
