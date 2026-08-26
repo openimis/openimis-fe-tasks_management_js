@@ -103,6 +103,9 @@ function TaskFlowsSearcher({
     if (rights.includes(TASK_FLOW_UPDATE)) {
       headers.push('emptyLabel');
     }
+    if (rights.includes(TASK_FLOW_DELETE)) {
+      headers.push('emptyLabel');
+    }
     return headers;
   };
 

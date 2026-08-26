@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Grid } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import _debounce from 'lodash/debounce';
-import { TextInput } from '@openimis/fe-core';
+import { TextInput, formatGQLString } from '@openimis/fe-core';
 import {
   CONTAINS_LOOKUP, DEFAULT_DEBOUNCE_TIME, EMPTY_STRING,
 } from '../../constants';
@@ -21,16 +21,23 @@ function TaskFlowsFilter({
   onChangeFilters,
   formatMessage,
 }) {
-  const debouncedOnChangeFilters = _debounce(onChangeFilters, DEFAULT_DEBOUNCE_TIME);
+  // Recreating the debounced function on every render resets its timer on
+  // every keystroke, defeating debouncing entirely - it must be created once
+  // and reused across renders.
+  const debouncedOnChangeFilters = useMemo(
+    () => _debounce(onChangeFilters, DEFAULT_DEBOUNCE_TIME),
+    [onChangeFilters],
+  );
 
   const filterTextFieldValue = (filterName) => filters?.[filterName]?.value ?? EMPTY_STRING;
 
   const onChangeStringFilter = (filterName, lookup = null) => (value) => {
+    const escaped = formatGQLString(value);
     debouncedOnChangeFilters([
       {
         id: filterName,
         value,
-        filter: lookup ? `${filterName}_${lookup}: "${value}"` : `${filterName}: "${value}"`,
+        filter: lookup ? `${filterName}_${lookup}: "${escaped}"` : `${filterName}: "${escaped}"`,
       },
     ]);
   };

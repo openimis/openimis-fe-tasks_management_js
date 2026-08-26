@@ -264,9 +264,9 @@ const formatFlowStepsGQL = (steps) => {
   if (!steps) return '';
   const rows = steps.map((step) => {
     const groupId = step?.taskGroup?.uuid ?? decodeIdIfEncoded(step?.taskGroup?.id);
-    return `{taskGroupId: "${groupId}"`
-      + `${step?.completionPolicy ? `, completionPolicy: ${step.completionPolicy}` : ''}`
-      + `${step?.threshold ? `, threshold: ${step.threshold}` : ''}}`;
+    const completionPolicyPart = step?.completionPolicy ? `, completionPolicy: ${step.completionPolicy}` : '';
+    const thresholdPart = step?.threshold ? `, threshold: ${step.threshold}` : '';
+    return `{taskGroupId: "${groupId}"${completionPolicyPart}${thresholdPart}}`;
   });
   return `steps: [${rows.join(', ')}]`;
 };
@@ -276,12 +276,16 @@ export const formatTaskFlowGQL = (flow, includeSteps = true) => {
   const taskSourcesString = taskSources
     ? `[${taskSources.map((name) => `"${name}"`).join(', ')}]`
     : '[]';
+  const idPart = flow?.id ? `id: "${flow.uuid ?? decodeIdIfEncoded(flow.id)}"` : '';
+  const codePart = flow?.code ? `code: "${formatGQLString(flow.code)}"` : '';
+  const namePart = flow?.name ? `name: "${formatGQLString(flow.name)}"` : '';
+  const stepsPart = includeSteps ? formatFlowStepsGQL(flow?.steps) : '';
   return `
-  ${flow?.id ? `id: "${flow.uuid ?? decodeIdIfEncoded(flow.id)}"` : ''}
-  ${flow?.code ? `code: "${formatGQLString(flow.code)}"` : ''}
-  ${flow?.name ? `name: "${formatGQLString(flow.name)}"` : ''}
+  ${idPart}
+  ${codePart}
+  ${namePart}
   taskSources: ${taskSourcesString}
-  ${includeSteps ? formatFlowStepsGQL(flow?.steps) : ''}
+  ${stepsPart}
   `;
 };
 

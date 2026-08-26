@@ -52,6 +52,7 @@ function TaskApprovementPanel({
   confirmed,
   additionalData,
   taskDecisions,
+  fetchedTaskDecisions,
 }) {
   const modulesManager = useModulesManager();
   const { formatMessage } = useTranslations('tasksManagement', modulesManager);
@@ -65,6 +66,13 @@ function TaskApprovementPanel({
     // sitting in two step pools would stay disabled at the later step. The
     // ledger row at the CURRENT step is the disable criterion instead.
     if (task?.flow && user) {
+      if (!fetchedTaskDecisions) {
+        // The ledger for this task hasn't loaded yet - an empty array here
+        // proves nothing. Keep the buttons disabled rather than risk a
+        // reviewer re-submitting a vote they already cast at this step.
+        setDisable(true);
+        return;
+      }
       const currentStepId = task?.currentStep?.id;
       const votedAtCurrentStep = (taskDecisions ?? []).some((decision) => {
         try {
@@ -86,7 +94,7 @@ function TaskApprovementPanel({
         setDisable(false);
       }
     }
-  }, [task.businessStatus, task?.currentStep?.id, taskDecisions, user]);
+  }, [task.businessStatus, task?.currentStep?.id, taskDecisions, fetchedTaskDecisions, user]);
 
   useEffect(() => {
     if (prevSubmittingMutationRef.current && !submittingMutation) {
@@ -174,6 +182,7 @@ const mapStateToProps = (state) => ({
   submittingMutation: state.tasksManagement.submittingMutation,
   mutation: state.tasksManagement.mutation,
   taskDecisions: state.tasksManagement.taskDecisions,
+  fetchedTaskDecisions: state.tasksManagement.fetchedTaskDecisions,
 });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
