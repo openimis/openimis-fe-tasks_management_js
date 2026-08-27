@@ -251,7 +251,7 @@ export function resolveTask(task, clientMutationLabel, user, approveOrFail, addi
   );
 }
 
-const decodeIdIfEncoded = (id) => {
+export const decodeIdIfEncoded = (id) => {
   try {
     return String(id).includes('-') ? id : decodeId(id);
   } catch {
@@ -388,14 +388,25 @@ export function fetchTaskDecisions(modulesManager, params) {
   return graphql(payload, ACTION_TYPE.SEARCH_TASK_DECISIONS);
 }
 
+// Every decision fetch writes to one global slice, and a multi-page walk
+// stays in flight long enough for a navigation to overtake it. This token
+// makes the newest request the only one allowed to land: an older walk that
+// finishes later drops its result instead of overwriting the task now on
+// screen (which would also feed TaskApprovementPanel the wrong ledger).
+let taskDecisionsRequestToken = 0;
+
 // taskDecision is a relay connection capped server-side at
 // RELAY_CONNECTION_MAX_LIMIT (100) even when no `first` is requested - a
 // single fetchTaskDecisions call silently truncates a batch task with a
 // larger ledger. Walks every page and dispatches one combined result so the
 // panel and the approval-race check both see the complete ledger.
-export function fetchAllTaskDecisions(params) {
+export function fetchAllTaskDecisions(params, taskId) {
   return async (dispatch) => {
-    dispatch({ type: REQUEST(ACTION_TYPE.SEARCH_TASK_DECISIONS) });
+    taskDecisionsRequestToken += 1;
+    const token = taskDecisionsRequestToken;
+    const isStale = () => token !== taskDecisionsRequestToken;
+
+    dispatch({ type: REQUEST(ACTION_TYPE.SEARCH_TASK_DECISIONS), meta: { taskId } });
     let after = null;
     let edges = [];
     let totalCount = 0;
@@ -405,6 +416,7 @@ export function fetchAllTaskDecisions(params) {
       const payload = formatPageQueryWithCount('taskDecision', pageParams, TASK_DECISION_PROJECTION());
       // eslint-disable-next-line no-await-in-loop
       const response = await dispatch(graphql(payload, 'TASK_MANAGEMENT_TASK_DECISIONS_PAGE'));
+      if (isStale()) return;
       const page = response?.payload?.data?.taskDecision;
       if (response?.error || !page) {
         failure = response;
@@ -417,13 +429,19 @@ export function fetchAllTaskDecisions(params) {
       }
       after = page.pageInfo.endCursor;
     }
+    if (isStale()) return;
     if (failure) {
-      dispatch({ type: ERROR(ACTION_TYPE.SEARCH_TASK_DECISIONS), payload: failure.payload });
+      dispatch({
+        type: ERROR(ACTION_TYPE.SEARCH_TASK_DECISIONS),
+        payload: failure.payload,
+        meta: { taskId },
+      });
       return;
     }
     dispatch({
       type: SUCCESS(ACTION_TYPE.SEARCH_TASK_DECISIONS),
       payload: { data: { taskDecision: { totalCount, edges, pageInfo: { hasNextPage: false } } } },
+      meta: { taskId },
     });
   };
 }

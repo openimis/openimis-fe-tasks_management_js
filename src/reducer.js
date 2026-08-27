@@ -104,6 +104,9 @@ const STORE_STATE = {
   fetchedTaskDecisions: false,
   taskDecisionsPageInfo: {},
   taskDecisionsTotalCount: 0,
+  // Which task the decisions in the slice belong to - readers must ignore
+  // them when it does not match the task they are rendering.
+  taskDecisionsTaskId: null,
 };
 
 function reducer(
@@ -323,6 +326,7 @@ function reducer(
         fetchedTaskDecisions: false,
         taskDecisions: [],
         errorTaskDecisions: null,
+        taskDecisionsTaskId: action.meta?.taskId ?? null,
       };
     case SUCCESS(ACTION_TYPE.SEARCH_TASK_DECISIONS):
       return {
@@ -333,6 +337,7 @@ function reducer(
         fetchedTaskDecisions: true,
         taskDecisionsPageInfo: pageInfo(action.payload.data.taskDecision),
         taskDecisionsTotalCount: action.payload.data.taskDecision?.totalCount ?? 0,
+        taskDecisionsTaskId: action.meta?.taskId ?? state.taskDecisionsTaskId,
       };
     case ERROR(ACTION_TYPE.SEARCH_TASK_DECISIONS):
       return {

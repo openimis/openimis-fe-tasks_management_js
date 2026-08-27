@@ -11,9 +11,14 @@ import {
 import _ from 'lodash';
 import TaskFlowHeadPanel from '../components/flows/TaskFlowHeadPanel';
 import TaskFlowStepsEditor from '../components/flows/TaskFlowStepsEditor';
-import { EMPTY_STRING, GROUP_RESOLVE_POLICY } from '../constants';
+import {
+  EMPTY_STRING, GROUP_RESOLVE_POLICY,
+  TASK_FLOW_CREATE, TASK_FLOW_UPDATE, TASK_FLOW_DELETE,
+  TASKS_MANAGEMENT_ROUTE_FLOWS_FLOW,
+} from '../constants';
 import {
   fetchTaskFlow, clearTaskFlow, deleteTaskFlow, updateTaskFlow, createTaskFlow, replaceTaskFlow,
+  decodeIdIfEncoded,
 } from '../actions';
 import { ACTION_TYPE } from '../reducer';
 
@@ -23,15 +28,27 @@ const StyledPage = styled('div')(({ theme }) => ({
   ...theme.page ?? {},
 }));
 
-// Steps compare on what the BE persists: pool, override policy, threshold
+// Steps compare on what the BE persists: pool, override policy, threshold.
+// The pool id is normalised to the decoded UUID because the two sources
+// disagree: a persisted step carries `uuid`, while a step whose pool was just
+// picked carries only the relay `id`. Comparing them raw makes re-selecting
+// the same group look like a semantic change and forces a needless new
+// version.
+const stepPoolId = (step) => {
+  const group = step?.taskGroup;
+  if (!group) return null;
+  return group.uuid ?? decodeIdIfEncoded(group.id) ?? null;
+};
+
 const stepsFingerprint = (steps) => (steps ?? []).map((step) => [
-  step?.taskGroup?.uuid ?? step?.taskGroup?.id ?? null,
+  stepPoolId(step),
   step?.completionPolicy ?? null,
   step?.threshold ?? null,
 ]);
 
 function TaskFlowPage({
   rights, taskFlow, taskFlowUuid, confirmed, journalize, mutation, submittingMutation, coreConfirm,
+  clearConfirm,
 }) {
   const dispatch = useDispatch();
   const modulesManager = useModulesManager();
@@ -44,9 +61,20 @@ function TaskFlowPage({
   // disabled after the first mutation on a page that is not remounted.
   const [formResetKey, setFormResetKey] = useState(0);
   const prevSubmittingMutationRef = useRef();
+  // Set when a replace has just superseded the row the URL points at, so the
+  // head that arrives next can take over the route.
+  const awaitingNewHeadRef = useRef(false);
   const back = () => history.goBack();
 
   const superseded = !!taskFlow?.replacementUuid;
+  // The route is reachable with TASK_FLOW_SEARCH so a reviewer can inspect a
+  // flow, which means the page itself has to gate editing - neither the head
+  // panel nor the steps editor enforces rights on its own. Create and update
+  // are separate rights, and which one applies depends on whether this is the
+  // create route or an existing flow.
+  const isNewFlow = !taskFlow?.id;
+  const canEdit = rights.includes(isNewFlow ? TASK_FLOW_CREATE : TASK_FLOW_UPDATE);
+  const readOnly = superseded || !canEdit;
 
   const titleParams = (flow) => ({
     code: flow?.code ?? EMPTY_STRING,
@@ -80,7 +108,7 @@ function TaskFlowPage({
 
   const doesFlowChange = () => !_.isEqual(taskFlow, editedTaskFlow);
 
-  const canSave = () => !superseded && !mandatoryFieldsEmpty() && doesFlowChange();
+  const canSave = () => canEdit && !superseded && !mandatoryFieldsEmpty() && doesFlowChange();
 
   const doReplace = useCallback(() => dispatch(replaceTaskFlow(
     editedTaskFlow,
@@ -130,7 +158,7 @@ function TaskFlowPage({
   };
 
   const actions = [
-    !!taskFlow?.id && !superseded && {
+    !!taskFlow?.id && !superseded && rights.includes(TASK_FLOW_DELETE) && {
       doIt: openDeleteTaskFlowConfirmDialog,
       icon: <DeleteIcon />,
       tooltip: formatMessage('deleteButton.tooltip'),
@@ -156,7 +184,9 @@ function TaskFlowPage({
         // submitted code (not taskFlow.code - if code and steps changed in
         // the same save, taskFlow.code is still the pre-replace value and
         // this would look up the wrong, no-longer-head row) and stay on the
-        // page (the uuid in the URL is now the old version).
+        // page - the uuid in the URL is the superseded version until the
+        // effect below swaps in the new head's uuid.
+        awaitingNewHeadRef.current = true;
         dispatch(fetchTaskFlow(modulesManager, { code: editedTaskFlow.code }));
       }
       if (mutation?.actionType === ACTION_TYPE.CREATE_TASK_FLOW && editedTaskFlow?.code) {
@@ -181,15 +211,28 @@ function TaskFlowPage({
     setEditedTaskFlow(taskFlow ?? {});
   }, [taskFlow]);
 
+  useEffect(() => {
+    // After a replace the page shows the new head while the URL still names
+    // the superseded version, so a refresh or a shared link would reopen the
+    // old read-only row. Point the route at what is actually on screen.
+    if (!awaitingNewHeadRef.current) return;
+    const headUuid = taskFlow?.uuid;
+    if (!headUuid || headUuid === taskFlowUuid) return;
+    awaitingNewHeadRef.current = false;
+    history.replace(
+      `/${modulesManager.getRef(TASKS_MANAGEMENT_ROUTE_FLOWS_FLOW)}/${headUuid}`,
+    );
+  }, [taskFlow?.uuid]);
+
   useEffect(() => () => dispatch(clearTaskFlow()), []);
 
   const StepsPanel = useCallback(({ edited, onEditedChanged }) => (
     <TaskFlowStepsEditor
       steps={edited?.steps ?? []}
-      readOnly={superseded}
+      readOnly={readOnly}
       onChange={(steps) => onEditedChanged({ ...edited, steps })}
     />
-  ), [superseded]);
+  ), [readOnly]);
 
   return (
     <StyledPage>
@@ -208,7 +251,7 @@ function TaskFlowPage({
         save={handleSave}
         HeadPanel={TaskFlowHeadPanel}
         Panels={[StepsPanel]}
-        readOnly={superseded}
+        readOnly={readOnly}
         formatMessage={formatMessage}
         rights={rights}
         actions={actions}

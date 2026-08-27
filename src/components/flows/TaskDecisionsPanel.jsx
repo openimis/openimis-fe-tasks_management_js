@@ -54,7 +54,7 @@ const groupByRecord = (decisions) => {
 
 function TaskDecisionsPanel({
   edited, taskDecisions, fetchingTaskDecisions, errorTaskDecisions, fetchedTaskDecisions,
-  submittingMutation,
+  submittingMutation, taskDecisionsTaskId,
 }) {
   const dispatch = useDispatch();
   const modulesManager = useModulesManager();
@@ -63,14 +63,19 @@ function TaskDecisionsPanel({
 
   useEffect(() => {
     if (task?.id && !submittingMutation) {
-      dispatch(fetchAllTaskDecisions([`taskId: "${task.id}"`, 'isDeleted: false']));
+      dispatch(fetchAllTaskDecisions([`taskId: "${task.id}"`, 'isDeleted: false'], task.id));
     }
   }, [task?.id, task?.businessStatus, submittingMutation]);
 
   const decisionUser = (decision) => [decision?.user?.username, decision?.user?.lastName]
     .filter(Boolean).join(' - ');
 
-  const recordRows = groupByRecord(taskDecisions ?? []);
+  // The slice is global; only trust it while it holds THIS task's ledger,
+  // otherwise a response for a previously viewed task renders here.
+  const decisionsMatchTask = taskDecisionsTaskId === task?.id;
+  const ledger = decisionsMatchTask ? (taskDecisions ?? []) : [];
+  const ledgerReady = fetchedTaskDecisions && decisionsMatchTask;
+  const recordRows = groupByRecord(ledger);
   const taskClosed = [TASK_STATUS.COMPLETED, TASK_STATUS.FAILED].includes(task?.status);
 
   const decisionStep = (decision) => (decision?.flowStep
@@ -88,7 +93,7 @@ function TaskDecisionsPanel({
       </Grid>
       <Divider />
       <ProgressOrError progress={fetchingTaskDecisions} error={errorTaskDecisions} />
-      {fetchedTaskDecisions && recordRows.length > 0 && (
+      {ledgerReady && recordRows.length > 0 && (
         <>
           <Table size="small">
             <TableHead>
@@ -127,7 +132,7 @@ function TaskDecisionsPanel({
           <Divider />
         </>
       )}
-      {fetchedTaskDecisions && (
+      {ledgerReady && (
         <Table size="small">
           <TableHead>
             <TableRow>
@@ -139,7 +144,7 @@ function TaskDecisionsPanel({
             </TableRow>
           </TableHead>
           <TableBody>
-            {taskDecisions.length === 0 && (
+            {ledger.length === 0 && (
               <TableRow>
                 <TableCell colSpan={5}>
                   <Typography variant="body2">
@@ -148,7 +153,7 @@ function TaskDecisionsPanel({
                 </TableCell>
               </TableRow>
             )}
-            {taskDecisions.map((decision) => (
+            {ledger.map((decision) => (
               <TableRow key={decision.uuid}>
                 <TableCell>{decisionStep(decision)}</TableCell>
                 <TableCell>{decisionUser(decision)}</TableCell>
@@ -168,6 +173,7 @@ function TaskDecisionsPanel({
 
 const mapStateToProps = (state) => ({
   taskDecisions: state.tasksManagement.taskDecisions,
+  taskDecisionsTaskId: state.tasksManagement.taskDecisionsTaskId,
   fetchingTaskDecisions: state.tasksManagement.fetchingTaskDecisions,
   fetchedTaskDecisions: state.tasksManagement.fetchedTaskDecisions,
   errorTaskDecisions: state.tasksManagement.errorTaskDecisions,

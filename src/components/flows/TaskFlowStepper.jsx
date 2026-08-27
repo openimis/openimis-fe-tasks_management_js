@@ -37,11 +37,15 @@ function TaskFlowStepper({
 
   const flowUuid = task?.flow?.uuid;
 
+  // Depends on the store value too, not just flowUuid: a late response for a
+  // previously viewed flow can overwrite the shared slice after this one
+  // loaded. The guard below then hides the stepper, and without re-running
+  // here nothing would ever fetch the right flow again.
   useEffect(() => {
-    if (flowUuid && taskFlow?.uuid !== flowUuid) {
+    if (flowUuid && taskFlow?.uuid !== flowUuid && !fetchingTaskFlow) {
       dispatch(fetchTaskFlow(modulesManager, { taskFlowUuid: flowUuid }));
     }
-  }, [flowUuid]);
+  }, [flowUuid, taskFlow?.uuid, fetchingTaskFlow]);
 
   if (!flowUuid || fetchingTaskFlow || taskFlow?.uuid !== flowUuid) return null;
 
