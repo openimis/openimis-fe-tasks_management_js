@@ -9,7 +9,7 @@ import { styled } from '@mui/material/styles';
 import {
   GetIconComponent,
   useTranslations,
-  useModulesManager, coreConfirm, clearConfirm, journalize,
+  useModulesManager, coreConfirm, clearConfirm, journalize, decodeId,
 } from '@openimis/fe-core';
 import {
   APPROVED, EMPTY_STRING,
@@ -51,6 +51,9 @@ function TaskApprovementPanel({
   journalize,
   confirmed,
   additionalData,
+  taskDecisions,
+  fetchedTaskDecisions,
+  taskDecisionsTaskId,
 }) {
   const modulesManager = useModulesManager();
   const { formatMessage } = useTranslations('tasksManagement', modulesManager);
@@ -60,6 +63,31 @@ function TaskApprovementPanel({
   const task = { ...edited };
 
   useEffect(() => {
+    // Flow tasks: businessStatus is an overwritten legacy adapter - a user
+    // sitting in two step pools would stay disabled at the later step. The
+    // ledger row at the CURRENT step is the disable criterion instead.
+    if (task?.flow && user) {
+      // The decisions slice is global, so it can still hold another task's
+      // ledger (or none yet). Either way an empty/foreign array proves
+      // nothing about this user's vote - stay disabled rather than risk a
+      // reviewer re-submitting a vote they already cast at this step.
+      if (!fetchedTaskDecisions || taskDecisionsTaskId !== task?.id) {
+        setDisable(true);
+        return;
+      }
+      const currentStepId = task?.currentStep?.id;
+      const votedAtCurrentStep = (taskDecisions ?? []).some((decision) => {
+        try {
+          return decision?.flowStep?.id === currentStepId
+            && decodeId(decision?.user?.id) === user?.id
+            && !decision?.recordId;
+        } catch {
+          return false;
+        }
+      });
+      setDisable(votedAtCurrentStep);
+      return;
+    }
     if (task?.businessStatus && user) {
       const businesStatus = JSON.parse(task.businessStatus);
       if (Object.keys(businesStatus).includes(user?.id)) {
@@ -68,7 +96,10 @@ function TaskApprovementPanel({
         setDisable(false);
       }
     }
-  }, [task.businessStatus, user]);
+  }, [
+    task.businessStatus, task?.currentStep?.id, taskDecisions, fetchedTaskDecisions,
+    taskDecisionsTaskId, task?.id, user,
+  ]);
 
   useEffect(() => {
     if (prevSubmittingMutationRef.current && !submittingMutation) {
@@ -155,6 +186,9 @@ const mapStateToProps = (state) => ({
   confirmed: state.core.confirmed,
   submittingMutation: state.tasksManagement.submittingMutation,
   mutation: state.tasksManagement.mutation,
+  taskDecisions: state.tasksManagement.taskDecisions,
+  fetchedTaskDecisions: state.tasksManagement.fetchedTaskDecisions,
+  taskDecisionsTaskId: state.tasksManagement.taskDecisionsTaskId,
 });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({

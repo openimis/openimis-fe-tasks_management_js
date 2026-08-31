@@ -32,6 +32,13 @@ export const ACTION_TYPE = {
   RESOLVE_TASK: 'TASK_MANAGEMENT_RESOLVE_TASK',
   SEARCH_TASKS: 'TASK_MANAGEMENT_SEARCH_TASKS',
   SEARCH_TASK_HISTORY: 'TASK_MANAGEMENT_SEARCH_TASK_HISTORY',
+  SEARCH_TASK_FLOWS: 'TASK_MANAGEMENT_TASK_FLOWS',
+  GET_TASK_FLOW: 'TASK_MANAGEMENT_TASK_FLOW',
+  CREATE_TASK_FLOW: 'TASK_MANAGEMENT_CREATE_TASK_FLOW',
+  UPDATE_TASK_FLOW: 'TASK_MANAGEMENT_UPDATE_TASK_FLOW',
+  REPLACE_TASK_FLOW: 'TASK_MANAGEMENT_REPLACE_TASK_FLOW',
+  DELETE_TASK_FLOW: 'TASK_MANAGEMENT_DELETE_TASK_FLOW',
+  SEARCH_TASK_DECISIONS: 'TASK_MANAGEMENT_TASK_DECISIONS',
 };
 
 export const MUTATION_SERVICE = {
@@ -43,6 +50,12 @@ export const MUTATION_SERVICE = {
   TASK: {
     UPDATE: 'updateTask',
     RESOLVE: 'resolveTask',
+  },
+  TASK_FLOW: {
+    CREATE: 'createTaskFlow',
+    UPDATE: 'updateTaskFlow',
+    REPLACE: 'replaceTaskFlow',
+    DELETE: 'deleteTaskFlow',
   },
 };
 
@@ -75,6 +88,25 @@ const STORE_STATE = {
   taskHistory: [],
   taskHistoryPageInfo: {},
   taskHistoryTotalCount: 0,
+  taskFlows: [],
+  fetchingTaskFlows: false,
+  errorTaskFlows: null,
+  fetchedTaskFlows: false,
+  taskFlowsPageInfo: {},
+  taskFlowsTotalCount: 0,
+  taskFlow: {},
+  fetchingTaskFlow: false,
+  errorTaskFlow: null,
+  fetchedTaskFlow: false,
+  taskDecisions: [],
+  fetchingTaskDecisions: false,
+  errorTaskDecisions: null,
+  fetchedTaskDecisions: false,
+  taskDecisionsPageInfo: {},
+  taskDecisionsTotalCount: 0,
+  // Which task the decisions in the slice belong to - readers must ignore
+  // them when it does not match the task they are rendering.
+  taskDecisionsTaskId: null,
 };
 
 function reducer(
@@ -230,6 +262,89 @@ function reducer(
         errorTask: null,
         fetchedTask: false,
       };
+    case REQUEST(ACTION_TYPE.SEARCH_TASK_FLOWS):
+      return {
+        ...state,
+        fetchingTaskFlows: true,
+        fetchedTaskFlows: false,
+        taskFlows: [],
+        errorTaskFlows: null,
+      };
+    case SUCCESS(ACTION_TYPE.SEARCH_TASK_FLOWS):
+      return {
+        ...state,
+        taskFlows: parseData(action.payload.data.taskFlow),
+        fetchingTaskFlows: false,
+        errorTaskFlows: formatGraphQLError(action.payload),
+        fetchedTaskFlows: true,
+        taskFlowsPageInfo: pageInfo(action.payload.data.taskFlow),
+        taskFlowsTotalCount: action.payload.data.taskFlow?.totalCount ?? 0,
+      };
+    case ERROR(ACTION_TYPE.SEARCH_TASK_FLOWS):
+      return {
+        ...state,
+        fetchingTaskFlows: false,
+        errorTaskFlows: formatServerError(action.payload),
+      };
+    case REQUEST(ACTION_TYPE.GET_TASK_FLOW):
+      return {
+        ...state,
+        fetchingTaskFlow: true,
+        fetchedTaskFlow: false,
+      };
+    case SUCCESS(ACTION_TYPE.GET_TASK_FLOW):
+      return {
+        ...state,
+        taskFlow: parseData(action.payload.data.taskFlow)?.map((flow) => ({
+          ...flow,
+          id: decodeId(flow.id),
+          taskSources: flow?.taskSources?.map((source) => ({ id: source, name: source })) ?? [],
+          steps: flow?.steps?.map((step) => ({ ...step })) ?? [],
+        }))?.[0],
+        fetchingTaskFlow: false,
+        errorTaskFlow: formatGraphQLError(action.payload),
+        fetchedTaskFlow: true,
+      };
+    case ERROR(ACTION_TYPE.GET_TASK_FLOW):
+      return {
+        ...state,
+        fetchingTaskFlow: false,
+        errorTaskFlow: formatServerError(action.payload),
+      };
+    case CLEAR(ACTION_TYPE.GET_TASK_FLOW):
+      return {
+        ...state,
+        taskFlow: {},
+        fetchingTaskFlow: false,
+        errorTaskFlow: null,
+        fetchedTaskFlow: false,
+      };
+    case REQUEST(ACTION_TYPE.SEARCH_TASK_DECISIONS):
+      return {
+        ...state,
+        fetchingTaskDecisions: true,
+        fetchedTaskDecisions: false,
+        taskDecisions: [],
+        errorTaskDecisions: null,
+        taskDecisionsTaskId: action.meta?.taskId ?? null,
+      };
+    case SUCCESS(ACTION_TYPE.SEARCH_TASK_DECISIONS):
+      return {
+        ...state,
+        taskDecisions: parseData(action.payload.data.taskDecision),
+        fetchingTaskDecisions: false,
+        errorTaskDecisions: formatGraphQLError(action.payload),
+        fetchedTaskDecisions: true,
+        taskDecisionsPageInfo: pageInfo(action.payload.data.taskDecision),
+        taskDecisionsTotalCount: action.payload.data.taskDecision?.totalCount ?? 0,
+        taskDecisionsTaskId: action.meta?.taskId ?? state.taskDecisionsTaskId,
+      };
+    case ERROR(ACTION_TYPE.SEARCH_TASK_DECISIONS):
+      return {
+        ...state,
+        fetchingTaskDecisions: false,
+        errorTaskDecisions: formatServerError(action.payload),
+      };
     case REQUEST(ACTION_TYPE.MUTATION):
       return dispatchMutationReq(state, action);
     case ERROR(ACTION_TYPE.MUTATION):
@@ -244,6 +359,14 @@ function reducer(
       return dispatchMutationResp(state, MUTATION_SERVICE.TASK.RESOLVE, action);
     case SUCCESS(ACTION_TYPE.DELETE_TASK_GROUP):
       return dispatchMutationResp(state, MUTATION_SERVICE.TASK_GROUP.DELETE, action);
+    case SUCCESS(ACTION_TYPE.CREATE_TASK_FLOW):
+      return dispatchMutationResp(state, MUTATION_SERVICE.TASK_FLOW.CREATE, action);
+    case SUCCESS(ACTION_TYPE.UPDATE_TASK_FLOW):
+      return dispatchMutationResp(state, MUTATION_SERVICE.TASK_FLOW.UPDATE, action);
+    case SUCCESS(ACTION_TYPE.REPLACE_TASK_FLOW):
+      return dispatchMutationResp(state, MUTATION_SERVICE.TASK_FLOW.REPLACE, action);
+    case SUCCESS(ACTION_TYPE.DELETE_TASK_FLOW):
+      return dispatchMutationResp(state, MUTATION_SERVICE.TASK_FLOW.DELETE, action);
     default:
       return state;
   }

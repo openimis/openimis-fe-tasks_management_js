@@ -8,11 +8,14 @@ import {
   useModulesManager,
   useTranslations,
   decodeId,
+  coreAlert,
 } from '@openimis/fe-core';
 import _ from 'lodash';
 import TaskHeadPanel from '../components/TaskHeadPanel';
 import TaskPreviewPanel from '../components/TaskPreviewPanel';
 import TaskApprovementPanel from '../components/TaskApprovementPanel';
+import TaskFlowStepper from '../components/flows/TaskFlowStepper';
+import TaskDecisionsPanel from '../components/flows/TaskDecisionsPanel';
 import { clearTask, fetchTask, updateTask } from '../actions';
 import { TASK_STATUS as taskStatus } from '../constants';
 
@@ -30,14 +33,16 @@ function TaskDetailsPage({
   submittingMutation,
   mutation,
   clearTask,
+  coreAlert,
   hideBody = false,
 }) {
   const modulesManager = useModulesManager();
   const history = useHistory();
-  const { formatMessage } = useTranslations('tasksManagement', modulesManager);
+  const { formatMessage, formatMessageWithValues } = useTranslations('tasksManagement', modulesManager);
   const [editedTask, setEditedTask] = useState({});
   const [additionalData, setAdditionalData] = useState(null);
   const submittingMutationRef = useRef();
+  const prevTaskRef = useRef();
   const back = () => history.goBack();
 
   useEffect(() => {
@@ -55,6 +60,25 @@ function TaskDetailsPage({
 
   useEffect(() => {
     if (task) {
+      // A refetch showing a higher step order means this viewer's approval
+      // advanced a flow task - name the handoff instead of letting the task
+      // silently vanish from their list.
+      const prevTask = prevTaskRef.current;
+      if (
+        prevTask?.id && prevTask.id === task.id
+        && task?.flow && task.status === taskStatus.ACCEPTED
+        && prevTask?.currentStep?.order != null
+        && task?.currentStep?.order > prevTask.currentStep.order
+      ) {
+        coreAlert(
+          formatMessage('task.flow.advanced.title'),
+          formatMessageWithValues('task.flow.advanced.message', {
+            order: task.currentStep.order,
+            group: task?.taskGroup?.code ?? '?',
+          }),
+        );
+      }
+      prevTaskRef.current = task;
       setEditedTask(task);
     }
   }, [task]);
@@ -68,7 +92,11 @@ function TaskDetailsPage({
     return true;
   };
 
-  const isMandatoryFieldsEmpty = () => !editedTask?.taskGroup;
+  // Either shape of assignment satisfies the requirement: a flow carries its
+  // own pool, a group is the pool.
+  const isMandatoryFieldsEmpty = () => !editedTask?.taskGroup
+    && !editedTask?.flow
+    && !editedTask?.assignment;
 
   const canSave = () => !isMandatoryFieldsEmpty() && doesTaskChange();
 
@@ -88,8 +116,16 @@ function TaskDetailsPage({
 
   const panels = () => {
     const panels = [];
+    // Flow tasks read top-down: situation (stepper) -> subject (preview) ->
+    // history (decisions) -> act (approvement). Flat tasks render as before.
+    if (task?.flow) {
+      panels.push(TaskFlowStepper);
+    }
     if (!hideBody) {
       panels.push(TaskPreviewPanel);
+    }
+    if (task?.flow) {
+      panels.push(TaskDecisionsPanel);
     }
     if (task && isCurrentUserInTaskGroup() && task.status === taskStatus.ACCEPTED) {
       panels.push(TaskApprovementPanel);
@@ -129,6 +165,7 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
   fetchTask,
   updateTask,
   clearTask,
+  coreAlert,
 }, dispatch);
 
 const mapStateToProps = (state, props) => ({
