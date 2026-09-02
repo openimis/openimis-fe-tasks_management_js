@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { GetIconComponent, formatMessage, MainMenuContribution, withModulesManager } from '@openimis/fe-core';
 import {
-  RIGHT_TASKS_MANAGEMENT_SEARCH_ALL,
   TASKS_MANAGEMENT_MAIN_MENU_CONTRIBUTION_KEY,
 } from '../constants';
 const AssignmentIcon = GetIconComponent("Assignment");

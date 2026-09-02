@@ -15,8 +15,7 @@ import TaskPreviewCell from './components/TaskPreviewCell';
 import TaskGroupPicker from './pickers/TaskGroupPicker';
 import TaskSearcher from './components/TaskSearcher';
 import {
-  TASK_ROUTE, RIGHT_TASKS_MANAGEMENT_SEARCH, RIGHT_TASKS_MANAGEMENT_SEARCH_ALL,
-  RIGHT_TASK_EXECUTIONER_GROUPS, TASK_FLOW_SEARCH,
+  TASK_ROUTE, RIGHT_TASKS_MANAGEMENT_SEARCH, RIGHT_TASK_EXECUTIONER_GROUPS, TASK_FLOW_SEARCH,
 } from './constants';
 import { fetchTask, resolveTask } from './actions';
 import TasksAllPage from './pages/TasksAllPage';
@@ -56,8 +55,8 @@ const DEFAULT_CONFIG = {
 
   }],
   'core.Router': [
-    { path: ROUTE_TASKS_MANAGEMENT,  text: "tasksManagement.entries.tasksManagementView", id: 'task.tasks', icon: 'Assignment', rights: [RIGHT_TASKS_MANAGEMENT_SEARCH_ALL],component: TasksManagementPage },
-    { path: ROUTE_TASKS_ALL_MANAGEMENT,  text: "tasksManagement.entries.tasksManagementAllView", id: 'task.Alltasks', icon: 'Assignment', rights: [RIGHT_TASKS_MANAGEMENT_SEARCH, RIGHT_TASKS_MANAGEMENT_SEARCH_ALL], component: TasksAllPage },
+    { path: ROUTE_TASKS_MANAGEMENT,  text: "tasksManagement.entries.tasksManagementView", id: 'task.tasks', icon: 'Assignment', rights: [RIGHT_TASKS_MANAGEMENT_SEARCH],component: TasksManagementPage },
+    { path: ROUTE_TASKS_ALL_MANAGEMENT,  text: "tasksManagement.entries.tasksManagementAllView", id: 'task.Alltasks', icon: 'Assignment', rights: [RIGHT_TASKS_MANAGEMENT_SEARCH], component: TasksAllPage },
     { path: ROUTE_GROUPS_MANAGEMENT, text: "tasksManagement.menu.taskExecutionerGroups", id: 'admin.taskExecutionerGroups', icon: 'Assignment', rights: [RIGHT_TASK_EXECUTIONER_GROUPS],component: GroupsManagementPage },
 
     { path: ROUTE_FLOWS_MANAGEMENT, text: "tasksManagement.menu.taskFlows", id: 'admin.taskFlows', icon: 'AccountTree', rights: [TASK_FLOW_SEARCH], component: FlowsManagementPage },

@@ -6,7 +6,6 @@ import TaskAllSearcher from '../components/TaskAllSearcher';
 
 import {
   RIGHT_TASKS_MANAGEMENT_SEARCH,
-  RIGHT_TASKS_MANAGEMENT_SEARCH_ALL,
 } from '../constants';
 
 const StyledPage = styled('div')(({ theme }) => ({
@@ -29,10 +28,9 @@ function TasksAllPage() {
   const rights = useSelector((store) => store.core?.user?.i_user?.rights ?? []);
   return (
     <StyledPage>
-      {/* SEARCH scopes to the user's own actionable tasks via TaskGQLType.get_queryset;
-          SEARCH_ALL sees every task (triage/admin). Either right may open this page. */}
-      {(rights.includes(RIGHT_TASKS_MANAGEMENT_SEARCH)
-        || rights.includes(RIGHT_TASKS_MANAGEMENT_SEARCH_ALL)) && (
+      {/* TaskGQLType.get_queryset scopes rows: triage/admin see every task,
+          a plain executor sees only their own actionable ones. */}
+      {rights.includes(RIGHT_TASKS_MANAGEMENT_SEARCH) && (
         <TaskAllSearcher
           rights={rights}
         />
