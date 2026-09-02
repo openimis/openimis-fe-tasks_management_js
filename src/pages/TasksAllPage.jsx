@@ -5,6 +5,7 @@ import { styled } from '@mui/material/styles';
 import TaskAllSearcher from '../components/TaskAllSearcher';
 
 import {
+  RIGHT_TASKS_MANAGEMENT_SEARCH,
   RIGHT_TASKS_MANAGEMENT_SEARCH_ALL,
 } from '../constants';
 
@@ -28,7 +29,10 @@ function TasksAllPage() {
   const rights = useSelector((store) => store.core?.user?.i_user?.rights ?? []);
   return (
     <StyledPage>
-      {rights.includes(RIGHT_TASKS_MANAGEMENT_SEARCH_ALL) && (
+      {/* SEARCH scopes to the user's own actionable tasks via TaskGQLType.get_queryset;
+          SEARCH_ALL sees every task (triage/admin). Either right may open this page. */}
+      {(rights.includes(RIGHT_TASKS_MANAGEMENT_SEARCH)
+        || rights.includes(RIGHT_TASKS_MANAGEMENT_SEARCH_ALL)) && (
         <TaskAllSearcher
           rights={rights}
         />
