@@ -5,7 +5,7 @@ import { styled } from '@mui/material/styles';
 import TaskAllSearcher from '../components/TaskAllSearcher';
 
 import {
-  RIGHT_TASKS_MANAGEMENT_SEARCH_ALL,
+  RIGHT_TASKS_MANAGEMENT_SEARCH,
 } from '../constants';
 
 const StyledPage = styled('div')(({ theme }) => ({
@@ -28,7 +28,9 @@ function TasksAllPage() {
   const rights = useSelector((store) => store.core?.user?.i_user?.rights ?? []);
   return (
     <StyledPage>
-      {rights.includes(RIGHT_TASKS_MANAGEMENT_SEARCH_ALL) && (
+      {/* TaskGQLType.get_queryset scopes rows: triage/admin see every task,
+          a plain executor sees only their own actionable ones. */}
+      {rights.includes(RIGHT_TASKS_MANAGEMENT_SEARCH) && (
         <TaskAllSearcher
           rights={rights}
         />
