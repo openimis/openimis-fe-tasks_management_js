@@ -100,27 +100,24 @@ describe('tasks management actions', () => {
 
   describe('mutations', () => {
     const group = { id: globalId('TaskGroupGQLType', 'group-1'), code: 'G1', completionPolicy: 'ALL' };
-    const flow = { uuid: 'flow-1', id: globalId('TaskFlowGQLType', 'flow-1'), code: 'F1', name: 'Flow' };
+    const flow = {
+      uuid: 'flow-1', id: globalId('TaskFlowGQLType', 'flow-1'), code: 'F1', name: 'Flow',
+    };
 
     it.each([
-      ['createTaskGroup', () => actions.createTaskGroup(group, 'label'), 'createTaskGroup', ACTION_TYPE.CREATE_TASK_GROUP],
-      ['updateTaskGroup', () => actions.updateTaskGroup(group, 'label'), 'updateTaskGroup', ACTION_TYPE.UPDATE_TASK_GROUP],
-      ['deleteTaskGroup', () => actions.deleteTaskGroup(group, 'label'), 'deleteTaskGroup', ACTION_TYPE.DELETE_TASK_GROUP],
-      ['updateTask', () => actions.updateTask({ id: 'task-1' }, 'label'), 'updateTask', ACTION_TYPE.UPDATE_TASK],
-      ['resolveTask', () => actions.resolveTask({ id: 'task-1' }, 'label'), 'resolveTask', ACTION_TYPE.RESOLVE_TASK],
-      ['createTaskFlow', () => actions.createTaskFlow(flow, 'label'), 'createTaskFlow', ACTION_TYPE.CREATE_TASK_FLOW],
-      ['updateTaskFlow', () => actions.updateTaskFlow(flow, 'label'), 'updateTaskFlow', ACTION_TYPE.UPDATE_TASK_FLOW],
-      ['replaceTaskFlow', () => actions.replaceTaskFlow(flow, 'label'), 'replaceTaskFlow', ACTION_TYPE.REPLACE_TASK_FLOW],
-      ['deleteTaskFlow', () => actions.deleteTaskFlow(flow, 'label'), 'deleteTaskFlow', ACTION_TYPE.DELETE_TASK_FLOW],
-    ])('%s calls its own mutation and raises the shared request and error types', (
-      _label,
-      create,
-      mutationName,
-      actionType,
-    ) => {
+      ['createTaskGroup', () => actions.createTaskGroup(group, 'label'), ACTION_TYPE.CREATE_TASK_GROUP],
+      ['updateTaskGroup', () => actions.updateTaskGroup(group, 'label'), ACTION_TYPE.UPDATE_TASK_GROUP],
+      ['deleteTaskGroup', () => actions.deleteTaskGroup(group, 'label'), ACTION_TYPE.DELETE_TASK_GROUP],
+      ['updateTask', () => actions.updateTask({ id: 'task-1' }, 'label'), ACTION_TYPE.UPDATE_TASK],
+      ['resolveTask', () => actions.resolveTask({ id: 'task-1' }, 'label'), ACTION_TYPE.RESOLVE_TASK],
+      ['createTaskFlow', () => actions.createTaskFlow(flow, 'label'), ACTION_TYPE.CREATE_TASK_FLOW],
+      ['updateTaskFlow', () => actions.updateTaskFlow(flow, 'label'), ACTION_TYPE.UPDATE_TASK_FLOW],
+      ['replaceTaskFlow', () => actions.replaceTaskFlow(flow, 'label'), ACTION_TYPE.REPLACE_TASK_FLOW],
+      ['deleteTaskFlow', () => actions.deleteTaskFlow(flow, 'label'), ACTION_TYPE.DELETE_TASK_FLOW],
+    ])('%s calls its own mutation and raises the shared request and error types', (mutation, create, actionType) => {
       const result = create();
 
-      expect(query(result)).toContain(`mutation ${mutationName} { ${mutationName}( input: {`);
+      expect(query(result)).toContain(`mutation ${mutation} { ${mutation}( input: {`);
       expect(result.type).toEqual([
         REQUEST(ACTION_TYPE.MUTATION),
         SUCCESS(actionType),

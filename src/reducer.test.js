@@ -63,7 +63,10 @@ describe('tasks management reducer', () => {
 
     it.each(SEARCHES)('stores the %s page with its count and page info', (_label, actionType, entity, field) => {
       const state = respond(dispatch(initial(), REQUEST(actionType)), actionType, {
-        [entity]: relayPage([{ id: globalId('Type', 'row-1'), code: 'A' }], { totalCount: 7, pageInfo: { hasNextPage: true } }),
+        [entity]: relayPage(
+          [{ id: globalId('Type', 'row-1'), code: 'A' }],
+          { totalCount: 7, pageInfo: { hasNextPage: true } },
+        ),
       });
 
       expect(state[field]).toHaveLength(1);
