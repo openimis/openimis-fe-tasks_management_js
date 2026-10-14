@@ -76,7 +76,7 @@ function TaskHistorySearcher({
   const itemFormatters = () => [
     (taskHistory) => taskHistory.source,
     (taskHistory) => trimBusinessEvent(taskHistory.businessEvent),
-    (taskHistory) => taskHistory.businessStatus,
+    (taskHistory) => taskHistory.entityString,
     (taskHistory) => taskHistory?.taskGroup?.code,
     (taskHistory) => taskHistory.version,
     (taskHistory) => formatDateTimeFromISO(taskHistory?.dateUpdated),
