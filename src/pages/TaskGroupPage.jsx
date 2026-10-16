@@ -26,7 +26,7 @@ function TaskGroupPage({
   const history = useHistory();
   const { formatMessage, formatMessageWithValues } = useTranslations('tasksManagement', modulesManager);
   const [editedTaskGroup, setEditedTaskGroup] = useState({});
-  const [confirmedAction, setConfirmedAction] = useState(() => null);
+  const [confirmedAction, setConfirmedAction] = useState(null);
   const prevSubmittingMutationRef = useRef();
   const back = () => history.goBack();
 
@@ -93,7 +93,9 @@ function TaskGroupPage({
   ];
 
   useEffect(() => {
-    if (confirmed) confirmedAction();
+    // `confirmed` is not reset once a dialog has been answered, so this effect also runs
+    // on mount with a stale `true` - and until something sets it, confirmedAction is null.
+    if (confirmed && typeof confirmedAction === "function") confirmedAction();
     return () => confirmed && clearConfirm(null);
   }, [confirmed]);
 
