@@ -26,7 +26,6 @@ function TaskGroupPage({
   const history = useHistory();
   const { formatMessage, formatMessageWithValues } = useTranslations('tasksManagement', modulesManager);
   const [editedTaskGroup, setEditedTaskGroup] = useState({});
-  const [confirmedAction, setConfirmedAction] = useState(null);
   const prevSubmittingMutationRef = useRef();
   const back = () => history.goBack();
 
@@ -75,12 +74,12 @@ function TaskGroupPage({
   ));
 
   const openDeleteTaskGroupConfirmDialog = () => {
-    setConfirmedAction(() => deleteTaskGroupCallback);
     coreConfirm(
       formatMessageWithValues('taskGroup.delete.confirm.title', {
         id: taskGroup?.id,
       }),
       formatMessage('taskGroup.delete.confirm.message'),
+      { onConfirm: deleteTaskGroupCallback },
     );
   };
 
@@ -91,13 +90,6 @@ function TaskGroupPage({
       tooltip: formatMessage('deleteButton.tooltip'),
     },
   ];
-
-  useEffect(() => {
-    // `confirmed` is not reset once a dialog has been answered, so this effect also runs
-    // on mount with a stale `true` - and until something sets it, confirmedAction is null.
-    if (confirmed && typeof confirmedAction === "function") confirmedAction();
-    return () => confirmed && clearConfirm(null);
-  }, [confirmed]);
 
   useEffect(() => {
     if (prevSubmittingMutationRef.current && !submittingMutation) {

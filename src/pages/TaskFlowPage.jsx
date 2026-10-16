@@ -55,7 +55,6 @@ function TaskFlowPage({
   const history = useHistory();
   const { formatMessage, formatMessageWithValues } = useTranslations('tasksManagement', modulesManager);
   const [editedTaskFlow, setEditedTaskFlow] = useState({});
-  const [confirmedAction, setConfirmedAction] = useState(() => null);
   // fe-core Form releases its internal saving/dirty latch only when its
   // `reset` (or `edited_id`) prop changes; without this the save Fab stays
   // disabled after the first mutation on a page that is not remounted.
@@ -127,7 +126,6 @@ function TaskFlowPage({
       return;
     }
     if (stepsDirty()) {
-      setConfirmedAction(() => doReplace);
       coreConfirm(
         formatMessageWithValues('taskFlow.replace.confirm.title', { code: taskFlow?.code }),
         formatMessageWithValues('taskFlow.replace.confirm.message', {
@@ -135,6 +133,7 @@ function TaskFlowPage({
           newVersion: (taskFlow?.version ?? 1) + 1,
           inFlightCount: taskFlow?.inFlightCount ?? 0,
         }),
+        { onConfirm: doReplace },
       );
       return;
     }
@@ -150,10 +149,10 @@ function TaskFlowPage({
   ));
 
   const openDeleteTaskFlowConfirmDialog = () => {
-    setConfirmedAction(() => deleteTaskFlowCallback);
     coreConfirm(
       formatMessageWithValues('taskFlow.delete.confirm.title', { code: taskFlow?.code }),
       formatMessage('taskFlow.delete.confirm.message'),
+      { onConfirm: deleteTaskFlowCallback },
     );
   };
 
@@ -164,13 +163,6 @@ function TaskFlowPage({
       tooltip: formatMessage('deleteButton.tooltip'),
     },
   ].filter(Boolean);
-
-  useEffect(() => {
-    // `confirmed` can still be true from a confirm raised on another page, so
-    // guard the callback: it is null until this page arms one.
-    if (confirmed && confirmedAction) confirmedAction();
-    return () => confirmed && clearConfirm(null);
-  }, [confirmed]);
 
   useEffect(() => {
     if (prevSubmittingMutationRef.current && !submittingMutation) {
