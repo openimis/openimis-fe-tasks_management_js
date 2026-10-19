@@ -247,7 +247,6 @@ function TaskFlowPage({
         formatMessage={formatMessage}
         rights={rights}
         actions={actions}
-        setConfirmedAction={setConfirmedAction}
         saveTooltip={formatMessage(
           `taskFlow.saveButton.tooltip.${stepsDirty() && taskFlow?.id ? 'newVersion' : 'save'}`,
         )}

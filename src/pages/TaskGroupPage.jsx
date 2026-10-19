@@ -128,7 +128,6 @@ function TaskGroupPage({
         formatMessage={formatMessage}
         rights={rights}
         actions={actions}
-        setConfirmedAction={setConfirmedAction}
         saveTooltip={formatMessage('saveButton.tooltip')}
       />
     </StyledPage>
