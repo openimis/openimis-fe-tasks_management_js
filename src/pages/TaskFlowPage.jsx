@@ -5,7 +5,7 @@ import { styled } from '@mui/material/styles';
 import { connect, useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
-  Form, Helmet, useTranslations, useModulesManager, useHistory, clearConfirm, journalize, coreConfirm,
+  Form, Helmet, useTranslations, useModulesManager, useHistory, journalize, coreConfirm,
   GetIconComponent,
 } from '@openimis/fe-core';
 import _ from 'lodash';
@@ -47,8 +47,7 @@ const stepsFingerprint = (steps) => (steps ?? []).map((step) => [
 ]);
 
 function TaskFlowPage({
-  rights, taskFlow, taskFlowUuid, confirmed, journalize, mutation, submittingMutation, coreConfirm,
-  clearConfirm,
+  rights, taskFlow, taskFlowUuid, journalize, mutation, submittingMutation, coreConfirm,
 }) {
   const dispatch = useDispatch();
   const modulesManager = useModulesManager();
@@ -257,7 +256,6 @@ function TaskFlowPage({
 
 const mapStateToProps = (state, props) => ({
   rights: state?.core?.user?.i_user?.rights ?? [],
-  confirmed: state.core.confirmed,
   submittingMutation: state.tasksManagement.submittingMutation,
   mutation: state.tasksManagement.mutation,
   taskFlowUuid: props.match.params.task_flow_uuid,
@@ -269,7 +267,6 @@ const mapStateToProps = (state, props) => ({
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
   coreConfirm,
-  clearConfirm,
   journalize,
 }, dispatch);
 

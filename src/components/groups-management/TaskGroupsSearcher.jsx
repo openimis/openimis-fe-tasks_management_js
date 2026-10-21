@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
-  clearConfirm,
   coreConfirm,
   journalize,
   Searcher,
@@ -27,8 +26,6 @@ import { fetchTaskGroups, deleteTaskGroup } from '../../actions';
 function TaskGroupsSearcher({
   rights,
   coreConfirm,
-  clearConfirm,
-  confirmed,
   journalize,
   submittingMutation,
   mutation,
@@ -45,37 +42,8 @@ function TaskGroupsSearcher({
   const modulesManager = useModulesManager();
   const { formatMessage, formatMessageWithValues } = useTranslations('tasksManagement', modulesManager);
 
-  const [taskGroupToDelete, setTaskGroupToDelete] = useState(null);
   const [deletedTaskGroupsUuids, setDeletedTaskGroupsUuids] = useState([]);
   const prevSubmittingMutationRef = useRef();
-
-  const openDeleteTaskGroupConfirmDialog = () => coreConfirm(
-    formatMessageWithValues('taskGroup.delete.confirm.title', {
-      code: taskGroupToDelete.code,
-    }),
-    formatMessage('taskGroup.delete.confirm.message'),
-  );
-
-  useEffect(() => {
-    if (taskGroupToDelete) {
-      openDeleteTaskGroupConfirmDialog();
-    }
-  }, [taskGroupToDelete]);
-
-  useEffect(() => {
-    if (taskGroupToDelete && confirmed) {
-      deleteTaskGroup(
-        taskGroupToDelete,
-        formatMessageWithValues('taskGroup.delete.mutationLabel', {
-          id: taskGroupToDelete?.id,
-        }),
-      );
-      setDeletedTaskGroupsUuids([...deletedTaskGroupsUuids, taskGroupToDelete.id]);
-    }
-    if (taskGroupToDelete && confirmed !== null) {
-      setTaskGroupToDelete(null);
-    }
-  }, [confirmed]);
 
   useEffect(() => {
     if (prevSubmittingMutationRef.current && !submittingMutation) {
@@ -106,7 +74,25 @@ function TaskGroupsSearcher({
 
   const onDoubleClick = (taskGroup) => rights.includes(TASK_GROUP_UPDATE) && openGroup(taskGroup);
 
-  const onDelete = (taskGroup) => setTaskGroupToDelete(taskGroup);
+  // The delete travels with its own dialog; acting on the shared
+  // state.core.confirmed deleted the row on any other dialog's "Yes" (OP-3214).
+  const onDelete = (taskGroup) => coreConfirm(
+    formatMessageWithValues('taskGroup.delete.confirm.title', {
+      code: taskGroup.code,
+    }),
+    formatMessage('taskGroup.delete.confirm.message'),
+    {
+      onConfirm: () => {
+        deleteTaskGroup(
+          taskGroup,
+          formatMessageWithValues('taskGroup.delete.mutationLabel', {
+            id: taskGroup.id,
+          }),
+        );
+        setDeletedTaskGroupsUuids((uuids) => [...uuids, taskGroup.id]);
+      },
+    },
+  );
 
   const itemFormatters = () => {
     const formatters = [
@@ -190,7 +176,6 @@ const mapStateToProps = (state) => ({
   taskGroups: state.tasksManagement.taskGroups,
   taskGroupsPageInfo: state.tasksManagement.taskGroupsPageInfo,
   taskGroupsTotalCount: state.tasksManagement.taskGroupsTotalCount,
-  confirmed: state.core.confirmed,
   submittingMutation: state.tasksManagement.submittingMutation,
   mutation: state.tasksManagement.mutation,
 });
@@ -200,7 +185,6 @@ const mapDispatchToProps = (dispatch) => bindActionCreators(
     fetchTaskGroups,
     deleteTaskGroup,
     coreConfirm,
-    clearConfirm,
     journalize,
   },
   dispatch,
