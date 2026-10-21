@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles';
 import { connect, useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
-  GetIconComponent, Form, Helmet, useTranslations, useModulesManager, useHistory, clearConfirm, journalize, coreConfirm,
+  GetIconComponent, Form, Helmet, useTranslations, useModulesManager, useHistory, journalize, coreConfirm,
 } from '@openimis/fe-core';
 const DeleteIcon = GetIconComponent("Delete");
 import _ from 'lodash';
@@ -19,7 +19,7 @@ const StyledPage = styled('div')(({ theme }) => ({
 }));
 
 function TaskGroupPage({
-  rights, taskGroup, taskGroupUuid, confirmed, journalize, mutation, submittingMutation, coreConfirm,
+  rights, taskGroup, taskGroupUuid, journalize, mutation, submittingMutation, coreConfirm,
 }) {
   const dispatch = useDispatch();
   const modulesManager = useModulesManager();
@@ -136,7 +136,6 @@ function TaskGroupPage({
 
 const mapStateToProps = (state, props) => ({
   rights: state?.core?.user?.i_user?.rights ?? [],
-  confirmed: state.core.confirmed,
   submittingMutation: state.tasksManagement.submittingMutation,
   mutation: state.tasksManagement.mutation,
   taskGroupUuid: props.match.params.task_group_uuid,
@@ -148,7 +147,6 @@ const mapStateToProps = (state, props) => ({
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
   coreConfirm,
-  clearConfirm,
   journalize,
 }, dispatch);
 
