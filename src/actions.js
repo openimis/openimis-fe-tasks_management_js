@@ -244,6 +244,13 @@ export function updateTask(task, clientMutationLabel) {
 }
 
 export function resolveTask(task, clientMutationLabel, user, approveOrFail, additionalData = null) {
+  // businessStatus is the outcome and the backend requires it; without one the
+  // mutation can only be rejected, so it is never sent (OP-3208).
+  if (!user?.id || !approveOrFail) {
+    // eslint-disable-next-line no-console
+    console.error('resolveTask called without an outcome; nothing sent', { taskId: task?.id });
+    return () => {};
+  }
   return PERFORM_MUTATION(
     MUTATION_SERVICE.TASK.RESOLVE,
     formatTaskResolveGQL(task, user, approveOrFail, additionalData),
