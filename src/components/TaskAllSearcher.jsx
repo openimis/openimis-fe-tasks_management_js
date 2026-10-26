@@ -103,7 +103,7 @@ function TaskAllSearcher({
     if (entityIds) {
       filters.entityIds = {
         value: entityIds,
-        filter: `entityIds: [${entityIds.map((id) => `"${id}"`)}]`,
+        filter: `entityIds: ${JSON.stringify(entityIds)}`,
       };
     }
     return filters;
