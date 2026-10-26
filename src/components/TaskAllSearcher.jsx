@@ -18,7 +18,7 @@ import { fetchTasks } from '../actions';
 import trimBusinessEvent from '../utils/trimBusinessEvent';
 
 function TaskAllSearcher({
-  rights, showFilters = true,
+  rights, entityIds, showFilters = true,
 }) {
   const history = useHistory();
   const modulesManager = useModulesManager();
@@ -100,6 +100,12 @@ function TaskAllSearcher({
         filter: 'isDeleted: false',
       },
     };
+    if (entityIds) {
+      filters.entityIds = {
+        value: entityIds,
+        filter: `entityIds: [${entityIds.map((id) => `"${id}"`)}]`,
+      };
+    }
     return filters;
   };
 
