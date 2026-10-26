@@ -18,7 +18,7 @@ import { fetchTasks } from '../actions';
 import trimBusinessEvent from '../utils/trimBusinessEvent';
 
 function TaskSearcher({
-  rights, contribution, entityId, entityIds, showFilters = true,
+  rights, contribution, entityId, entityIds, groupId, showFilters = true,
 }) {
   const history = useHistory();
   const modulesManager = useModulesManager();
@@ -116,6 +116,14 @@ function TaskSearcher({
       filters.entityIds = {
         value: entityIds,
         filter: `entityIds: [${entityIds.map((id) => `"${id}"`)}]`,
+      };
+    }
+    // The group's tasks are resolved on the server, so the filter does not depend on
+    // which of its members happen to be loaded.
+    if (groupId) {
+      filters.groupId = {
+        value: groupId,
+        filter: `groupId: "${groupId}"`,
       };
     }
     return filters;
