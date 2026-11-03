@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles';
 import { connect, useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
-  GetIconComponent, Form, Helmet, useTranslations, useModulesManager, useHistory, clearConfirm, journalize, coreConfirm,
+  GetIconComponent, Form, Helmet, useTranslations, useModulesManager, useHistory, journalize, coreConfirm,
 } from '@openimis/fe-core';
 const DeleteIcon = GetIconComponent("Delete");
 import _ from 'lodash';
@@ -19,14 +19,13 @@ const StyledPage = styled('div')(({ theme }) => ({
 }));
 
 function TaskGroupPage({
-  rights, taskGroup, taskGroupUuid, confirmed, journalize, mutation, submittingMutation, coreConfirm,
+  rights, taskGroup, taskGroupUuid, journalize, mutation, submittingMutation, coreConfirm,
 }) {
   const dispatch = useDispatch();
   const modulesManager = useModulesManager();
   const history = useHistory();
   const { formatMessage, formatMessageWithValues } = useTranslations('tasksManagement', modulesManager);
   const [editedTaskGroup, setEditedTaskGroup] = useState({});
-  const [confirmedAction, setConfirmedAction] = useState(() => null);
   const prevSubmittingMutationRef = useRef();
   const back = () => history.goBack();
 
@@ -75,12 +74,12 @@ function TaskGroupPage({
   ));
 
   const openDeleteTaskGroupConfirmDialog = () => {
-    setConfirmedAction(() => deleteTaskGroupCallback);
     coreConfirm(
       formatMessageWithValues('taskGroup.delete.confirm.title', {
         id: taskGroup?.id,
       }),
       formatMessage('taskGroup.delete.confirm.message'),
+      { onConfirm: deleteTaskGroupCallback },
     );
   };
 
@@ -91,11 +90,6 @@ function TaskGroupPage({
       tooltip: formatMessage('deleteButton.tooltip'),
     },
   ];
-
-  useEffect(() => {
-    if (confirmed) confirmedAction();
-    return () => confirmed && clearConfirm(null);
-  }, [confirmed]);
 
   useEffect(() => {
     if (prevSubmittingMutationRef.current && !submittingMutation) {
@@ -134,7 +128,6 @@ function TaskGroupPage({
         formatMessage={formatMessage}
         rights={rights}
         actions={actions}
-        setConfirmedAction={setConfirmedAction}
         saveTooltip={formatMessage('saveButton.tooltip')}
       />
     </StyledPage>
@@ -143,7 +136,6 @@ function TaskGroupPage({
 
 const mapStateToProps = (state, props) => ({
   rights: state?.core?.user?.i_user?.rights ?? [],
-  confirmed: state.core.confirmed,
   submittingMutation: state.tasksManagement.submittingMutation,
   mutation: state.tasksManagement.mutation,
   taskGroupUuid: props.match.params.task_group_uuid,
@@ -155,7 +147,6 @@ const mapStateToProps = (state, props) => ({
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
   coreConfirm,
-  clearConfirm,
   journalize,
 }, dispatch);
 

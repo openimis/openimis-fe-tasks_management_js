@@ -3,6 +3,7 @@
   "tasksManagement.defaultValue.any": "Any",
   "tasksManagement.entries.tasksManagementView": "Tasks",
   "tasksManagement.task.searcherResultsTitle": "{tasksTotalCount} Tasks Found",
+  "tasksManagement.pendingTaskCount.label": "{count, plural, one {# pending task} other {# pending tasks}}",
   "tasksManagement.task.detailsPage.triage.title": "Task",
   "tasksManagement.task.detailsPage.triage.preview": "Preview",
   "tasksManagement.task.detailsPage.triage.headPanelTitle": "General Information",

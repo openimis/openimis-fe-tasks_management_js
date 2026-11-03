@@ -14,8 +14,9 @@ import TaskStatusPicker from './pickers/TaskStatusPicker';
 import TaskPreviewCell from './components/TaskPreviewCell';
 import TaskGroupPicker from './pickers/TaskGroupPicker';
 import TaskSearcher from './components/TaskSearcher';
+import PendingTaskCount from './components/PendingTaskCount';
 import {
-  TASK_ROUTE, RIGHT_TASKS_MANAGEMENT_SEARCH, RIGHT_TASK_EXECUTIONER_GROUPS, TASK_FLOW_SEARCH,
+  TASK_ROUTE, TASKS_ALL_ROUTE, RIGHT_TASKS_MANAGEMENT_SEARCH, RIGHT_TASK_EXECUTIONER_GROUPS, TASK_FLOW_SEARCH,
 } from './constants';
 import { fetchTask, resolveTask } from './actions';
 import TasksAllPage from './pages/TasksAllPage';
@@ -67,6 +68,7 @@ const DEFAULT_CONFIG = {
   ],
   refs: [
     { key: TASK_ROUTE, ref: ROUTE_TASK_MANAGEMENT },
+    { key: TASKS_ALL_ROUTE, ref: ROUTE_TASKS_ALL_MANAGEMENT },
     { key: 'tasksManagement.route.group', ref: ROUTE_GROUP_MANAGEMENT },
     { key: 'tasksManagement.route.flow', ref: ROUTE_FLOW_MANAGEMENT },
     { key: 'tasksManagement.taskStatusPicker', ref: TaskStatusPicker },
@@ -75,6 +77,7 @@ const DEFAULT_CONFIG = {
     { key: 'tasksManagement.taskPreviewCell', ref: TaskPreviewCell },
     { key: 'tasksManagement.taskGroupPicker', ref: TaskGroupPicker },
     { key: 'tasksManagement.taskSearcher', ref: TaskSearcher },
+    { key: 'tasksManagement.PendingTaskCount', ref: PendingTaskCount },
     { key: 'tasksManagement.taskDetailsPage', ref: TaskDetailsPage },
     { key: 'tasksManagement.fetchTask', ref: fetchTask },
   ],

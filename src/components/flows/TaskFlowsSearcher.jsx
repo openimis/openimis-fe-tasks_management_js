@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
-  clearConfirm,
   coreConfirm,
   journalize,
   Searcher,
@@ -28,8 +27,6 @@ const DeleteIcon = GetIconComponent('Delete');
 function TaskFlowsSearcher({
   rights,
   coreConfirm,
-  clearConfirm,
-  confirmed,
   journalize,
   submittingMutation,
   mutation,
@@ -46,39 +43,28 @@ function TaskFlowsSearcher({
   const modulesManager = useModulesManager();
   const { formatMessage, formatMessageWithValues } = useTranslations('tasksManagement', modulesManager);
 
-  const [taskFlowToDelete, setTaskFlowToDelete] = useState(null);
   const [deletedTaskFlowUuids, setDeletedTaskFlowUuids] = useState([]);
   const prevSubmittingMutationRef = useRef();
 
-  const openDeleteTaskFlowConfirmDialog = () => coreConfirm(
+  // The delete travels with its own dialog; acting on the shared
+  // state.core.confirmed deleted the row on any other dialog's "Yes" (OP-3214).
+  const onDelete = (flow) => coreConfirm(
     formatMessageWithValues('taskFlow.delete.confirm.title', {
-      code: taskFlowToDelete.code,
+      code: flow.code,
     }),
     formatMessage('taskFlow.delete.confirm.message'),
+    {
+      onConfirm: () => {
+        deleteTaskFlow(
+          flow,
+          formatMessageWithValues('taskFlow.delete.mutationLabel', {
+            code: flow.code,
+          }),
+        );
+        setDeletedTaskFlowUuids((uuids) => [...uuids, flow.id]);
+      },
+    },
   );
-
-  // Block body on purpose: a concise arrow would return `null` whenever there
-  // is nothing to delete, and React then calls that value as the cleanup on
-  // unmount ("destroy is not a function"), blanking the page on navigation.
-  useEffect(() => {
-    if (taskFlowToDelete) openDeleteTaskFlowConfirmDialog();
-  }, [taskFlowToDelete]);
-
-  useEffect(() => {
-    if (taskFlowToDelete && confirmed) {
-      deleteTaskFlow(
-        taskFlowToDelete,
-        formatMessageWithValues('taskFlow.delete.mutationLabel', {
-          code: taskFlowToDelete?.code,
-        }),
-      );
-      setDeletedTaskFlowUuids([...deletedTaskFlowUuids, taskFlowToDelete.id]);
-    }
-    if (taskFlowToDelete && confirmed !== null) {
-      setTaskFlowToDelete(null);
-    }
-    return () => confirmed && clearConfirm(false);
-  }, [confirmed]);
 
   useEffect(() => {
     if (prevSubmittingMutationRef.current && !submittingMutation) {
@@ -133,7 +119,7 @@ function TaskFlowsSearcher({
     if (rights.includes(TASK_FLOW_DELETE)) {
       formatters.push((flow) => (
         <Tooltip title={formatMessage('deleteButton.tooltip')}>
-          <IconButton onClick={() => setTaskFlowToDelete(flow)}>
+          <IconButton onClick={() => onDelete(flow)}>
             <DeleteIcon />
           </IconButton>
         </Tooltip>
@@ -194,7 +180,6 @@ const mapStateToProps = (state) => ({
   taskFlows: state.tasksManagement.taskFlows,
   taskFlowsPageInfo: state.tasksManagement.taskFlowsPageInfo,
   taskFlowsTotalCount: state.tasksManagement.taskFlowsTotalCount,
-  confirmed: state.core.confirmed,
   submittingMutation: state.tasksManagement.submittingMutation,
   mutation: state.tasksManagement.mutation,
 });
@@ -204,7 +189,6 @@ const mapDispatchToProps = (dispatch) => bindActionCreators(
     fetchTaskFlows,
     deleteTaskFlow,
     coreConfirm,
-    clearConfirm,
     journalize,
   },
   dispatch,

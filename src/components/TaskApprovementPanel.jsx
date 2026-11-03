@@ -9,10 +9,10 @@ import { styled } from '@mui/material/styles';
 import {
   GetIconComponent,
   useTranslations,
-  useModulesManager, coreConfirm, clearConfirm, journalize, decodeId,
+  useModulesManager, coreConfirm, journalize, decodeId,
 } from '@openimis/fe-core';
 import {
-  APPROVED, EMPTY_STRING,
+  APPROVED,
   FAILED, TASK_STATUS,
   TASK_CONTRIBUTION_KEY,
 } from '../constants';
@@ -46,10 +46,8 @@ function TaskApprovementPanel({
   resolveTask,
   submittingMutation,
   coreConfirm,
-  clearConfirm,
   mutation,
   journalize,
-  confirmed,
   additionalData,
   taskDecisions,
   fetchedTaskDecisions,
@@ -58,7 +56,6 @@ function TaskApprovementPanel({
   const modulesManager = useModulesManager();
   const { formatMessage } = useTranslations('tasksManagement', modulesManager);
   const prevSubmittingMutationRef = useRef();
-  const [approveOrFail, setApproveOrFail] = useState(EMPTY_STRING);
   const [disable, setDisable] = useState(false);
   const task = { ...edited };
 
@@ -111,32 +108,28 @@ function TaskApprovementPanel({
     prevSubmittingMutationRef.current = submittingMutation;
   });
 
-  useEffect(() => {
-    if (task?.id && user?.id) {
-      if (confirmed) {
-        setDisable(true);
-        resolveTask(
-          task,
-          formatMessage('task.resolve.mutationLabel'),
-          user,
-          approveOrFail,
-          additionalData,
-        );
-      }
-    }
-  }, [confirmed]);
-
-  const openResolveTaskConfirmDialog = (choiceString) => coreConfirm(
-    formatMessage('task.resolve.confirm.title'),
-    choiceString === APPROVED ? formatMessage('task.resolve.confirm.approve.message')
-      : formatMessage('task.resolve.confirm.fail.message'),
-  );
-
+  // The outcome travels with the dialog that asked for it. Reading the shared
+  // state.core.confirmed here resolved the task on mount whenever any other
+  // screen had last been answered "Yes" (OP-3208).
   const handleButtonClick = (choiceString) => {
-    if (task?.id && user?.id) {
-      openResolveTaskConfirmDialog(choiceString);
-      setApproveOrFail(choiceString);
-    }
+    if (!task?.id || !user?.id || !choiceString) return;
+    coreConfirm(
+      formatMessage('task.resolve.confirm.title'),
+      choiceString === APPROVED ? formatMessage('task.resolve.confirm.approve.message')
+        : formatMessage('task.resolve.confirm.fail.message'),
+      {
+        onConfirm: () => {
+          setDisable(true);
+          resolveTask(
+            task,
+            formatMessage('task.resolve.mutationLabel'),
+            user,
+            choiceString,
+            additionalData,
+          );
+        },
+      },
+    );
   };
 
   if (task.source) {
@@ -183,7 +176,6 @@ function TaskApprovementPanel({
 const mapStateToProps = (state) => ({
   rights: !!state.core && !!state.core.user && !!state.core.user.i_user ? state.core.user.i_user.rights : [],
   user: !!state.core && !!state.core.user ? state.core.user : null,
-  confirmed: state.core.confirmed,
   submittingMutation: state.tasksManagement.submittingMutation,
   mutation: state.tasksManagement.mutation,
   taskDecisions: state.tasksManagement.taskDecisions,
@@ -194,7 +186,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => bindActionCreators({
   resolveTask,
   coreConfirm,
-  clearConfirm,
   journalize,
 }, dispatch);
 

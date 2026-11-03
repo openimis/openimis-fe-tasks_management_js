@@ -5,7 +5,7 @@ import { styled } from '@mui/material/styles';
 import { connect, useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
-  Form, Helmet, useTranslations, useModulesManager, useHistory, clearConfirm, journalize, coreConfirm,
+  Form, Helmet, useTranslations, useModulesManager, useHistory, journalize, coreConfirm,
   GetIconComponent,
 } from '@openimis/fe-core';
 import _ from 'lodash';
@@ -47,15 +47,13 @@ const stepsFingerprint = (steps) => (steps ?? []).map((step) => [
 ]);
 
 function TaskFlowPage({
-  rights, taskFlow, taskFlowUuid, confirmed, journalize, mutation, submittingMutation, coreConfirm,
-  clearConfirm,
+  rights, taskFlow, taskFlowUuid, journalize, mutation, submittingMutation, coreConfirm,
 }) {
   const dispatch = useDispatch();
   const modulesManager = useModulesManager();
   const history = useHistory();
   const { formatMessage, formatMessageWithValues } = useTranslations('tasksManagement', modulesManager);
   const [editedTaskFlow, setEditedTaskFlow] = useState({});
-  const [confirmedAction, setConfirmedAction] = useState(() => null);
   // fe-core Form releases its internal saving/dirty latch only when its
   // `reset` (or `edited_id`) prop changes; without this the save Fab stays
   // disabled after the first mutation on a page that is not remounted.
@@ -127,7 +125,6 @@ function TaskFlowPage({
       return;
     }
     if (stepsDirty()) {
-      setConfirmedAction(() => doReplace);
       coreConfirm(
         formatMessageWithValues('taskFlow.replace.confirm.title', { code: taskFlow?.code }),
         formatMessageWithValues('taskFlow.replace.confirm.message', {
@@ -135,6 +132,7 @@ function TaskFlowPage({
           newVersion: (taskFlow?.version ?? 1) + 1,
           inFlightCount: taskFlow?.inFlightCount ?? 0,
         }),
+        { onConfirm: doReplace },
       );
       return;
     }
@@ -150,10 +148,10 @@ function TaskFlowPage({
   ));
 
   const openDeleteTaskFlowConfirmDialog = () => {
-    setConfirmedAction(() => deleteTaskFlowCallback);
     coreConfirm(
       formatMessageWithValues('taskFlow.delete.confirm.title', { code: taskFlow?.code }),
       formatMessage('taskFlow.delete.confirm.message'),
+      { onConfirm: deleteTaskFlowCallback },
     );
   };
 
@@ -164,13 +162,6 @@ function TaskFlowPage({
       tooltip: formatMessage('deleteButton.tooltip'),
     },
   ].filter(Boolean);
-
-  useEffect(() => {
-    // `confirmed` can still be true from a confirm raised on another page, so
-    // guard the callback: it is null until this page arms one.
-    if (confirmed && confirmedAction) confirmedAction();
-    return () => confirmed && clearConfirm(null);
-  }, [confirmed]);
 
   useEffect(() => {
     if (prevSubmittingMutationRef.current && !submittingMutation) {
@@ -255,7 +246,6 @@ function TaskFlowPage({
         formatMessage={formatMessage}
         rights={rights}
         actions={actions}
-        setConfirmedAction={setConfirmedAction}
         saveTooltip={formatMessage(
           `taskFlow.saveButton.tooltip.${stepsDirty() && taskFlow?.id ? 'newVersion' : 'save'}`,
         )}
@@ -266,7 +256,6 @@ function TaskFlowPage({
 
 const mapStateToProps = (state, props) => ({
   rights: state?.core?.user?.i_user?.rights ?? [],
-  confirmed: state.core.confirmed,
   submittingMutation: state.tasksManagement.submittingMutation,
   mutation: state.tasksManagement.mutation,
   taskFlowUuid: props.match.params.task_flow_uuid,
@@ -278,7 +267,6 @@ const mapStateToProps = (state, props) => ({
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
   coreConfirm,
-  clearConfirm,
   journalize,
 }, dispatch);
 

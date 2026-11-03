@@ -47,6 +47,7 @@ export const GROUP_RESOLVE_POLICY_LIST = [GROUP_RESOLVE_POLICY.ALL, GROUP_RESOLV
 export const RIGHT_TASKS_MANAGEMENT_SEARCH = 191001;
 
 export const TASKS_MANAGEMENT_ROUTE_GROUPS_GROUP = 'tasksManagement.route.group';
+export const TASKS_ALL_ROUTE = 'tasksManagement.route.allTasks';
 
 export const TASK_GROUP_SEARCH = 190001;
 export const TASK_GROUP_CREATE = 190002;
