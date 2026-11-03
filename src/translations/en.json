@@ -1,4 +1,10 @@
 {
+  "tasksManagement.notification.assigned.title": "Task assigned",
+  "tasksManagement.notification.assigned.message": "A task from {source} was assigned to {group}.",
+  "tasksManagement.notification.completed.title": "Task completed",
+  "tasksManagement.notification.completed.message": "The task from {source} was completed.",
+  "tasksManagement.notification.failed.title": "Task failed",
+  "tasksManagement.notification.failed.message": "The task from {source} failed.",
   "tasksManagement.tasksMainMenu": "Tasks Management",
   "tasksManagement.defaultValue.any": "Any",
   "tasksManagement.entries.tasksManagementView": "Tasks",
