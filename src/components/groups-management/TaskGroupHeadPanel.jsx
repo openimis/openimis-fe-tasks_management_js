@@ -6,18 +6,18 @@ import {
   FormPanel,
   TextInput,
   FormattedMessage,
+  injectIntl,
 } from '@openimis/fe-core';
-import { injectIntl } from 'react-intl';
 import TaskExecutorsPicker from '../../pickers/TaskExecutorsPicker';
 import GroupPolicyPicker from '../../pickers/GroupPolicyPicker';
 import TaskSourcePicker from '../../pickers/TaskSourcePicker';
 
 const StyledTableTitle = styled('div')(({ theme }) => ({
-  ...theme.table?.title ?? {},
+  ...(theme.table?.title ?? {}),
 }));
 
 const StyledItem = styled('div')(({ theme }) => ({
-  ...theme.paper?.item ?? {},
+  ...(theme.paper?.item ?? {}),
 }));
 
 const StyledFullHeight = styled('div')(({ theme }) => ({

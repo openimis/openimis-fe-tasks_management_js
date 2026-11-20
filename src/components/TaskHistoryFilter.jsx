@@ -1,10 +1,9 @@
 import React from 'react';
-import { injectIntl } from 'react-intl';
 import { Grid } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import _debounce from 'lodash/debounce';
 import {
-  TextInput, PublishedComponent, formatMessage, decodeId, toISODateTime, GRID_RESPONSIVE_STANDARD,
+  TextInput, PublishedComponent, formatMessage, decodeId, toISODateTime, GRID_RESPONSIVE_STANDARD, injectIntl,
 } from '@openimis/fe-core';
 import { defaultFilterStyles } from '../utils/styles';
 import {

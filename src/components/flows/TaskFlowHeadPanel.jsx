@@ -6,17 +6,17 @@ import {
   TextInput,
   NumberInput,
   FormattedMessage,
+  injectIntl,
 } from '@openimis/fe-core';
-import { injectIntl } from 'react-intl';
 import { styled } from '@mui/material/styles';
 import TaskSourcePicker from '../../pickers/TaskSourcePicker';
 
 const StyledTableTitle = styled('div')(({ theme }) => ({
-  ...theme.table?.title ?? {},
+  ...(theme.table?.title ?? {}),
 }));
 
 const StyledItem = styled('div')(({ theme }) => ({
-  ...theme.paper?.item ?? {},
+  ...(theme.paper?.item ?? {}),
 }));
 
 const StyledFullHeight = styled('div')(() => ({

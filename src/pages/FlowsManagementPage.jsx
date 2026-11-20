@@ -15,11 +15,11 @@ import TaskFlowsSearcher from '../components/flows/TaskFlowsSearcher';
 const AddIcon = GetIconComponent('Add');
 
 const StyledPage = styled('div')(({ theme }) => ({
-  ...theme.page ?? {},
+  ...(theme.page ?? {}),
 }));
 
 const StyledFab = styled('div')(({ theme }) => ({
-  ...theme.fab ?? {},
+  ...(theme.fab ?? {}),
 }));
 
 function FlowsManagementPage() {

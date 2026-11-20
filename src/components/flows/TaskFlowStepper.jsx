@@ -11,7 +11,7 @@ import { fetchTaskFlow } from '../../actions';
 import { GROUP_RESOLVE_POLICY, TASK_STATUS } from '../../constants';
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
-  ...theme.paper?.paper ?? {},
+  ...(theme.paper?.paper ?? {}),
 }));
 
 const StyledWarning = styled(Typography)(({ theme }) => ({
