@@ -10,19 +10,7 @@ import {
 } from '../constants';
 
 const StyledPage = styled('div')(({ theme }) => ({
-  ...theme.page ?? {},
-}));
-
-const StyledPaper = styled('div')(({ theme }) => ({
-  ...theme.paper?.paper ?? {},
-}));
-
-const StyledTitle = styled('div')(({ theme }) => ({
-  ...theme.paper?.title ?? {},
-  cursor: 'pointer',
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
+  ...theme.page,
 }));
 
 function TasksAllPage() {

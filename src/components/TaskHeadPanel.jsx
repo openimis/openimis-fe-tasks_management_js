@@ -9,8 +9,8 @@ import {
   FormattedMessage,
   formatMessage,
   formatMessageWithValues,
+  injectIntl,
 } from '@openimis/fe-core';
-import { injectIntl } from 'react-intl';
 import TaskStatusPicker from '../pickers/TaskStatusPicker';
 import TaskAssignmentPicker, { ASSIGNMENT_KIND, assignmentFromTask } from '../pickers/TaskAssignmentPicker';
 import { TASK_STATUS, TASK_UPDATE } from '../constants';
@@ -18,11 +18,11 @@ import trimBusinessEvent from '../utils/trimBusinessEvent';
 import TaskHistoryDialog from './dialogs/TaskHistoryDialog';
 
 const StyledTableTitle = styled('div')(({ theme }) => ({
-  ...theme.table?.title ?? {},
+  ...theme.table?.title,
 }));
 
 const StyledItem = styled('div')(({ theme }) => ({
-  ...theme.paper?.item ?? {},
+  ...theme.paper?.item,
 }));
 
 const StyledFullHeight = styled('div')(({ theme }) => ({

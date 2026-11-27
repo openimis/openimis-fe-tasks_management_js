@@ -8,7 +8,8 @@ import {
 
 const searcherProps = vi.fn();
 
-vi.mock('@openimis/fe-core', () => ({
+vi.mock('@openimis/fe-core', async () => ({
+  injectIntl: (await import("@openimis/fe-core/testing")).injectIntl,
   GetIconComponent: (name) => function Icon() { return <span>{name}</span>; },
   useTranslations: () => ({
     formatMessage: (key) => key,
