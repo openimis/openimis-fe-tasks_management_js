@@ -11,15 +11,15 @@ import { fetchAllTaskDecisions } from '../../actions';
 import { TASK_STATUS } from '../../constants';
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
-  ...theme.paper?.paper ?? {},
+  ...theme.paper?.paper,
 }));
 
 const StyledTableTitle = styled('div')(({ theme }) => ({
-  ...theme.table?.title ?? {},
+  ...theme.table?.title,
 }));
 
 const StyledItem = styled('div')(({ theme }) => ({
-  ...theme.paper?.item ?? {},
+  ...theme.paper?.item,
 }));
 
 const DECISION_REJECTED = 'REJECTED';

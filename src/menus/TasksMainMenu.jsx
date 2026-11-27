@@ -4,8 +4,8 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { injectIntl } from 'react-intl';
-import { GetIconComponent, formatMessage, MainMenuContribution, withModulesManager } from '@openimis/fe-core';
+
+import { GetIconComponent, formatMessage, MainMenuContribution, withModulesManager, injectIntl } from '@openimis/fe-core';
 import {
   TASKS_MANAGEMENT_MAIN_MENU_CONTRIBUTION_KEY,
 } from '../constants';
