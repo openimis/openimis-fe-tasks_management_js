@@ -25,7 +25,7 @@ import { ACTION_TYPE } from '../reducer';
 const DeleteIcon = GetIconComponent('Delete');
 
 const StyledPage = styled('div')(({ theme }) => ({
-  ...(theme.page ?? {}),
+  ...theme.page,
 }));
 
 // Steps compare on what the BE persists: pool, override policy, threshold.
